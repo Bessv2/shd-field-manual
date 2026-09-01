@@ -1,0 +1,1256 @@
+<title>SHD Field Manual</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --bg:#f3efe6;
+    --surface:#ffffff;
+    --surface-2:#ece6d6;
+    --surface-3:#e2dac6;
+    --border:#d9cfb8;
+    --text:#211d17;
+    --text-muted:#6e6353;
+    --accent:#a85a0e;
+    --accent-strong:#8c4b0c;
+    --accent-ink:#fffaf1;
+    --red:#a83530;
+    --blue:#1c5aa0;
+    --yellow:#8a6a00;
+    --tier-s:#a85a0e;
+    --tier-a:#3f7d4a;
+    --tier-b:#3563a8;
+    --tier-c:#6e6353;
+    --tier-d:#a83530;
+    --good:#3f7d4a;
+    --shadow:0 1px 2px rgba(40,30,10,.06),0 4px 14px rgba(40,30,10,.06);
+    --radius:10px;
+    --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+    --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+    --display:'Oswald',system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#15181b;
+      --surface:#1d2226;
+      --surface-2:#252b31;
+      --surface-3:#2d343b;
+      --border:#3a4249;
+      --text:#e9e5db;
+      --text-muted:#9aa1a6;
+      --accent:#ff8a2e;
+      --accent-strong:#ffa35c;
+      --accent-ink:#171a1d;
+      --red:#ff6b64;
+      --blue:#5aa8ff;
+      --yellow:#ffd23f;
+      --tier-s:#ff8a2e;
+      --tier-a:#5fbf72;
+      --tier-b:#5aa8ff;
+      --tier-c:#9aa1a6;
+      --tier-d:#ff6b64;
+      --good:#5fbf72;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#15181b;
+    --surface:#1d2226;
+    --surface-2:#252b31;
+    --surface-3:#2d343b;
+    --border:#3a4249;
+    --text:#e9e5db;
+    --text-muted:#9aa1a6;
+    --accent:#ff8a2e;
+    --accent-strong:#ffa35c;
+    --accent-ink:#171a1d;
+    --red:#ff6b64;
+    --blue:#5aa8ff;
+    --yellow:#ffd23f;
+    --tier-s:#ff8a2e;
+    --tier-a:#5fbf72;
+    --tier-b:#5aa8ff;
+    --tier-c:#9aa1a6;
+    --tier-d:#ff6b64;
+    --good:#5fbf72;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);
+    font-size:15px;line-height:1.55;
+  }
+  h1,h2,h3,h4{font-family:var(--display);text-transform:uppercase;letter-spacing:.02em;text-wrap:balance;margin:0;}
+  a{color:var(--accent);}
+  code,.num{font-family:var(--mono);font-variant-numeric:tabular-nums;}
+
+  /* ---------- shell layout ---------- */
+  .shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh;}
+  .shell > *{min-width:0;}
+  .topbar{
+    grid-column:1/-1;position:sticky;top:0;z-index:40;
+    background:var(--surface);border-bottom:1px solid var(--border);
+    padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  }
+  .brand{display:flex;align-items:baseline;gap:10px;flex:0 0 auto;}
+  .brand .mark{
+    font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:.03em;
+    color:var(--text);
+  }
+  .brand .mark span{color:var(--accent);}
+  .badge{
+    font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;
+    background:var(--surface-2);border:1px solid var(--border);color:var(--text-muted);
+    padding:3px 8px;border-radius:100px;white-space:nowrap;
+  }
+  .search-wrap{margin-left:auto;flex:0 1 320px;min-width:180px;}
+  #search{
+    width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+    border-radius:8px;padding:9px 12px;font-family:var(--sans);font-size:14px;
+  }
+  #search:focus{outline:2px solid var(--accent);outline-offset:-1px;}
+  #search::placeholder{color:var(--text-muted);}
+
+  .sidenav{
+    grid-column:1;position:sticky;top:57px;align-self:start;
+    height:calc(100vh - 57px);overflow-y:auto;padding:18px 10px 40px;
+    border-right:1px solid var(--border);background:var(--surface);
+  }
+  .sidenav a{
+    display:block;color:var(--text-muted);text-decoration:none;font-size:13.5px;
+    padding:7px 12px;border-radius:7px;font-weight:500;
+  }
+  .sidenav a:hover{background:var(--surface-2);color:var(--text);}
+  .sidenav a.active{background:var(--surface-2);color:var(--accent);}
+  .sidenav .grp{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--text-muted);padding:16px 12px 4px;
+  }
+  .sidenav .grp:first-child{padding-top:2px;}
+
+  main{grid-column:2;padding:32px 40px 100px;max-width:1180px;}
+
+  section{margin-bottom:56px;scroll-margin-top:70px;}
+  section > h2{
+    font-size:15px;color:var(--accent);border-bottom:1px solid var(--border);
+    padding-bottom:10px;margin-bottom:6px;display:flex;align-items:baseline;gap:10px;
+  }
+  section > h2 .idx{font-family:var(--mono);color:var(--text-muted);font-size:12px;}
+  .lede{color:var(--text-muted);max-width:66ch;margin:10px 0 22px;font-size:14px;}
+  h3{font-size:13px;color:var(--text-muted);letter-spacing:.06em;margin:26px 0 12px;}
+  h3:first-of-type{margin-top:6px;}
+
+  .callout{
+    background:var(--surface-2);border:1px solid var(--border);border-left:3px solid var(--accent);
+    border-radius:8px;padding:14px 16px;font-size:13.5px;color:var(--text);margin:16px 0 24px;
+  }
+  .callout b{color:var(--accent-strong);}
+
+  /* ---------- attribute chips ---------- */
+  .chip{
+    display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:11px;
+    letter-spacing:.03em;text-transform:uppercase;padding:2px 8px;border-radius:5px;
+    border:1px solid transparent;font-weight:600;
+  }
+  .chip.red{background:color-mix(in srgb, var(--red) 15%, transparent);color:var(--red);border-color:color-mix(in srgb, var(--red) 35%, transparent);}
+  .chip.blue{background:color-mix(in srgb, var(--blue) 15%, transparent);color:var(--blue);border-color:color-mix(in srgb, var(--blue) 35%, transparent);}
+  .chip.yellow{background:color-mix(in srgb, var(--yellow) 18%, transparent);color:var(--yellow);border-color:color-mix(in srgb, var(--yellow) 35%, transparent);}
+  .chip.tag{background:var(--surface-3);color:var(--text-muted);border-color:var(--border);cursor:pointer;user-select:none;}
+  .chip.tag.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);}
+  .tier{
+    display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;
+    border-radius:6px;font-family:var(--display);font-weight:700;font-size:13px;flex:none;
+    color:var(--accent-ink);
+  }
+  .tier.S{background:var(--tier-s);} .tier.A{background:var(--tier-a);}
+  .tier.B{background:var(--tier-b);} .tier.C{background:var(--tier-c);}
+  .tier.D{background:var(--tier-d);}
+
+  /* ---------- filter bar ---------- */
+  .filterbar{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 20px;}
+
+  /* ---------- build cards ---------- */
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;}
+  .card{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    padding:16px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px;
+  }
+  .card .ch{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .card h4{font-size:15.5px;color:var(--text);letter-spacing:.01em;}
+  .card .role{font-family:var(--mono);font-size:10.5px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;}
+  .card .tags{display:flex;gap:5px;flex-wrap:wrap;}
+  .card dl{margin:4px 0 0;font-size:13px;}
+  .card dl div{display:flex;gap:8px;padding:4px 0;border-top:1px dashed var(--border);}
+  .card dl div:first-child{border-top:none;}
+  .card dt{flex:0 0 84px;color:var(--text-muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em;padding-top:1px;}
+  .card dd{margin:0;flex:1;}
+  .card .note{font-size:12.5px;color:var(--text-muted);font-style:italic;border-top:1px dashed var(--border);padding-top:8px;margin-top:2px;}
+  .card .bestfor{font-size:12.5px;color:var(--accent-strong);font-weight:600;}
+
+  /* ---------- tables ---------- */
+  .twrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:640px;}
+  thead th{
+    text-align:left;font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;
+    color:var(--text-muted);background:var(--surface-2);padding:10px 14px;border-bottom:1px solid var(--border);
+    position:sticky;top:0;
+  }
+  tbody td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:var(--surface-2);}
+  td.name{font-weight:600;white-space:nowrap;}
+  td.small{color:var(--text-muted);font-size:12.5px;}
+  .star{color:var(--accent);}
+  .legend{font-size:13px;color:var(--text-muted);margin:-10px 0 18px;}
+  .legend .star{margin-right:2px;}
+
+  /* ---------- process steps ---------- */
+  .steps{display:flex;flex-direction:column;gap:0;counter-reset:step;}
+  .step{display:grid;grid-template-columns:44px 1fr;gap:16px;padding:18px 0;border-top:1px solid var(--border);}
+  .step:first-child{border-top:none;padding-top:4px;}
+  .step .n{
+    font-family:var(--display);font-size:20px;color:var(--accent);font-weight:700;
+    display:flex;align-items:flex-start;justify-content:center;padding-top:2px;
+  }
+  .step h4{font-size:15px;margin-bottom:5px;}
+  .step p{margin:0;font-size:13.5px;color:var(--text-muted);max-width:70ch;}
+  .step .warn{
+    display:inline-block;margin-top:8px;font-size:12.5px;background:color-mix(in srgb, var(--red) 12%, transparent);
+    color:var(--red);border:1px solid color-mix(in srgb, var(--red) 30%, transparent);padding:6px 10px;border-radius:6px;
+  }
+
+  .attr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .attr-card{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);padding:16px 18px;}
+  .attr-card h4{font-size:14px;display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .attr-card ul{margin:8px 0 0;padding-left:18px;font-size:13px;color:var(--text-muted);}
+  .attr-card li{margin:3px 0;}
+  .attr-card .goal{font-size:12.5px;margin-top:10px;color:var(--text);}
+
+  /* ---------- community creators ---------- */
+  .creator-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+  .creator-card{
+    border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);
+    padding:16px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px;
+  }
+  .creator-card .num{
+    font-family:var(--mono);font-size:11px;color:var(--text-muted);letter-spacing:.05em;
+  }
+  .creator-card h4{font-size:16px;color:var(--text);letter-spacing:.01em;text-transform:none;font-family:var(--display);font-weight:600;}
+  .creator-card .contributed{font-size:13px;color:var(--text-muted);line-height:1.55;flex:1;}
+  .creator-card .contributed b{color:var(--text);font-weight:600;}
+  .creator-card a.visit{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.03em;color:var(--accent);
+    text-decoration:none;border-top:1px dashed var(--border);padding-top:10px;margin-top:2px;
+  }
+  .creator-card a.visit:hover{text-decoration:underline;}
+  .creator-note{font-size:13px;color:var(--text-muted);margin-top:16px;line-height:1.6;max-width:70ch;}
+
+  footer{
+    grid-column:2;border-top:1px solid var(--border);padding:26px 40px 60px;color:var(--text-muted);font-size:12.5px;max-width:1180px;
+  }
+  footer a{color:var(--text-muted);text-decoration:underline;text-underline-offset:2px;}
+
+  .hidden{display:none !important;}
+  .empty-msg{color:var(--text-muted);font-size:13px;padding:14px 0;}
+
+  .menu-btn{display:none;}
+
+  /* ---------- build matchmaker ---------- */
+  .mm-toggle{display:inline-flex;border:1px solid var(--border);border-radius:9px;overflow:hidden;margin-bottom:18px;}
+  .mm-toggle button{
+    padding:10px 20px;background:var(--surface);color:var(--text-muted);border:none;
+    font-family:var(--display);letter-spacing:.03em;text-transform:uppercase;font-size:12.5px;
+    cursor:pointer;font-weight:600;
+  }
+  .mm-toggle button + button{border-left:1px solid var(--border);}
+  .mm-toggle button.active{background:var(--accent);color:var(--accent-ink);}
+  .mm-search{
+    width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+    border-radius:8px;padding:8px 12px;font-family:var(--sans);font-size:13px;margin-bottom:12px;
+  }
+  .mm-search:focus{outline:2px solid var(--accent);outline-offset:-1px;}
+  .mm-layout{display:grid;grid-template-columns:1fr 1.35fr;gap:22px;align-items:start;}
+  .mm-picker{
+    display:flex;flex-wrap:wrap;gap:7px;align-content:flex-start;max-height:520px;overflow-y:auto;
+    padding-right:4px;
+  }
+  .mm-chip{
+    background:var(--surface);border:1px solid var(--border);color:var(--text);
+    padding:7px 12px;border-radius:8px;font-size:12.5px;cursor:pointer;font-family:var(--sans);
+    transition:background .12s,border-color .12s,color .12s;
+  }
+  .mm-chip:hover{border-color:var(--accent);color:var(--accent-strong);}
+  .mm-chip.active{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600;}
+  .mm-chip.mm-hide{display:none;}
+  .mm-panel{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    padding:22px 24px;box-shadow:var(--shadow);position:sticky;top:75px;min-height:220px;
+  }
+  .mm-fade{animation:mmIn .28s ease;}
+  @keyframes mmIn{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+  .mm-sub{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);}
+  .mm-panel h3{font-size:21px;color:var(--text);letter-spacing:.01em;margin:2px 0 14px;text-transform:none;font-family:var(--display);}
+  .mm-block{margin-top:16px;}
+  .mm-block .lbl{
+    font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--accent-strong);margin-bottom:8px;display:block;
+  }
+  .mm-reco{display:flex;flex-wrap:wrap;gap:7px;}
+  .mm-reco button{
+    background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+    padding:6px 11px;border-radius:7px;font-size:12.5px;cursor:pointer;font-family:var(--sans);
+  }
+  .mm-reco button:hover{border-color:var(--accent);color:var(--accent-strong);}
+  .mm-reco button[disabled]{cursor:default;}
+  .mm-reco button[disabled]:hover{border-color:var(--border);color:var(--text);}
+  .mm-why{font-size:13.5px;color:var(--text-muted);margin-top:16px;line-height:1.6;border-top:1px dashed var(--border);padding-top:12px;}
+  .mm-setcard{border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:8px;background:var(--surface-2);}
+  .mm-setcard button{background:none;border:none;padding:0;font-size:13.5px;font-weight:600;color:var(--text);cursor:pointer;font-family:var(--sans);text-align:left;}
+  .mm-setcard button:hover{color:var(--accent-strong);text-decoration:underline;}
+  .mm-setcard .t{font-size:12.5px;color:var(--text-muted);margin-top:5px;line-height:1.5;}
+  .mm-builds{display:flex;flex-direction:column;gap:6px;}
+  .mm-buildlink{
+    font-size:12.5px;color:var(--text);background:var(--surface-2);border:1px solid var(--border);
+    border-radius:7px;padding:7px 10px;cursor:pointer;text-align:left;font-family:var(--sans);
+  }
+  .mm-buildlink:hover{border-color:var(--accent);color:var(--accent-strong);}
+  .mm-empty{color:var(--text-muted);font-size:13px;line-height:1.6;}
+  .card.flash{animation:flashHi 1.4s ease;}
+  @keyframes flashHi{0%{box-shadow:0 0 0 3px var(--accent);}80%{box-shadow:0 0 0 3px var(--accent);}100%{box-shadow:var(--shadow);}}
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}
+  }
+
+  @media (max-width:900px){
+    .mm-layout{grid-template-columns:1fr;}
+    .mm-panel{position:static;}
+    .mm-picker{max-height:260px;}
+  }
+
+  @media (max-width:900px){
+    .shell{grid-template-columns:1fr;}
+    .sidenav{
+      position:sticky;top:53px;height:auto;grid-column:1;display:flex;overflow-x:auto;
+      padding:10px 12px;gap:2px;border-right:none;border-bottom:1px solid var(--border);
+      white-space:nowrap;
+    }
+    .sidenav .grp{display:none;}
+    .sidenav a{padding:7px 10px;}
+    main{grid-column:1;padding:22px 18px 80px;}
+    footer{grid-column:1;padding:22px 18px 50px;}
+    .attr-grid{grid-template-columns:1fr;}
+    .creator-grid{grid-template-columns:1fr;}
+  }
+</style>
+
+<div class="shell">
+  <div class="topbar">
+    <div class="brand"><span class="mark">SHD FIELD <span>MANUAL</span></span></div>
+    <span class="badge">Y8S3 · Red Horizon</span>
+    <span class="badge">Verified Sept 2026</span>
+    <div class="search-wrap">
+      <input id="search" type="text" placeholder="Search builds, gear sets, weapons…" autocomplete="off">
+    </div>
+  </div>
+
+  <nav class="sidenav" id="sidenav">
+    <div class="grp">Start Here</div>
+    <a href="#foundations">Foundations</a>
+    <a href="#matchmaker">Build Matchmaker</a>
+    <a href="#recombinant">Recombinant Modifiers</a>
+    <a href="#workflow">Recalibration &amp; Optimization</a>
+    <div class="grp">Builds</div>
+    <a href="#builds-pve">PvE Builds</a>
+    <a href="#builds-raid">Raid &amp; Legendary Roles</a>
+    <a href="#builds-pvp">PvP Builds</a>
+    <div class="grp">Gear Reference</div>
+    <a href="#weapons">Weapon Tier List</a>
+    <a href="#exotics">Exotics Directory</a>
+    <a href="#gearsets">Gear Sets</a>
+    <a href="#brandsets">Brand Sets</a>
+    <a href="#attributes">Attribute Cheat Sheet</a>
+    <a href="#glossary">Glossary</a>
+    <div class="grp">Community</div>
+    <a href="#creators">Creators</a>
+  </nav>
+
+  <main>
+
+    <section id="foundations">
+      <h2><span class="idx">01</span> Foundations</h2>
+      <p class="lede">The three core attributes and six specializations every build in this manual is built around. If you already know these, skip to the workflow or the builds.</p>
+
+      <div class="callout"><b>Red Horizon changes to track:</b> the <b>Determined</b> talent was reworked to behave like Perfect Determined — it no longer chains indefinitely off Headhunter, and endless body-shot-to-headshot conversion now lives on the <b>Iron Will</b> exotic chest instead. Brand Sets lost their Shock Resistance / Health / Incoming Repairs / Swap Speed bonuses in favor of <b>Protection from Elites</b>, and every weapon-type brand now grants a damage bonus at both 1 and 2 pieces. Red Horizon is also the <b>last season</b> planned to add new Brand Sets, so the roster below is close to final.</div>
+
+      <h3>Core Attributes</h3>
+      <div class="attr-grid">
+        <div class="attr-card">
+          <h4><span class="dot" style="background:var(--red)"></span>Red — Weapon Damage</h4>
+          <p style="margin:0;font-size:13px;color:var(--text-muted)">Everything that makes your gun hit harder.</p>
+          <ul><li>Critical Hit Chance / Damage</li><li>Headshot Damage</li><li>Weapon-archetype damage (AR, LMG, SMG…)</li></ul>
+          <div class="goal">Backbone of every DPS build. Chase Crit Chance to ~50–60% before stacking Crit Damage.</div>
+        </div>
+        <div class="attr-card">
+          <h4><span class="dot" style="background:var(--blue)"></span>Blue — Armor</h4>
+          <p style="margin:0;font-size:13px;color:var(--text-muted)">Everything that keeps you standing.</p>
+          <ul><li>Total Armor / Armor Regeneration</li><li>Incoming Repairs</li><li>Hazard, Explosive, Disrupt &amp; Shock Resistance</li></ul>
+          <div class="goal">Priority for tanks and frontline hybrids; a minimum floor on every build so you can survive Heroic/Legendary one-shots.</div>
+        </div>
+        <div class="attr-card">
+          <h4><span class="dot" style="background:var(--yellow)"></span>Yellow — Skill Tier</h4>
+          <p style="margin:0;font-size:13px;color:var(--text-muted)">Everything that powers your skills.</p>
+          <ul><li>Skill Tier itself (caps at 6, gates mod slots)</li><li>Skill Damage / Haste / Duration</li><li>Repair Skills, Skill Health, Skill Efficiency</li></ul>
+          <div class="goal">Backbone of skill and support builds. Lock Skill Tier 6 first, then split Haste/Damage/Duration by what your skills need.</div>
+        </div>
+      </div>
+
+      <h3>Specializations &amp; Signature Weapons</h3>
+      <div class="twrap">
+        <table>
+          <thead><tr><th>Specialization</th><th>Signature Weapon</th><th>Focus</th></tr></thead>
+          <tbody id="spec-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="matchmaker">
+      <h2><span class="idx">02</span> Build Matchmaker</h2>
+      <p class="lede">Pick a gear set to see its best weapons and skills, or pick a weapon to see which gear sets are built to run it. Every recommendation is clickable — follow the chain as far as you want.</p>
+
+      <div class="mm-toggle" id="mm-toggle">
+        <button data-mode="set" class="active">From a Gear Set</button>
+        <button data-mode="weapon">From a Weapon</button>
+      </div>
+
+      <div class="mm-layout">
+        <div>
+          <input class="mm-search" id="mm-filter" type="text" placeholder="Filter this list…" autocomplete="off">
+          <div class="mm-picker" id="mm-picker"></div>
+        </div>
+        <div class="mm-panel" id="mm-panel"></div>
+      </div>
+    </section>
+
+    <section id="recombinant">
+      <h2><span class="idx">03</span> Recombinant Modifiers</h2>
+      <p class="lede">Red Horizon's seasonal modifier system — a build-agnostic bonus layer that sits on top of whatever gear set or loadout you're already running. This is separate from Recalibration/Optimization below; you don't need a specific gear score or gear set to use it.</p>
+
+      <div class="callout"><b>Pressure Gauge:</b> the community calls this whole system <b>"Under Pressure"</b> — a meter that fills as you fight and pays out stronger bonuses at four thresholds as it climbs. Once it's full, it triggers your currently equipped <b>Active Modifier</b> — so Recombinant Modifiers reward sustained engagement in a fight rather than being an always-on passive bonus. Enemies can also apply <b>Hostile Modifiers</b> to you mid-fight, which stack extra debuffs on top of normal status effects; fire damage strips them off.</div>
+
+      <h3>Active Modifier Modules</h3>
+      <div class="attr-grid">
+        <div class="attr-card">
+          <h4><span class="dot" style="background:var(--red)"></span>Offense — Blackout Pulse</h4>
+          <p style="margin:0;font-size:13px;color:var(--text-muted)">Fills fastest from dealing damage; built for DPS loadouts that want a periodic offensive payoff.</p>
+          <div class="goal">Pair with Red-heavy PvE builds already tuned around burst windows.</div>
+        </div>
+        <div class="attr-card">
+          <h4><span class="dot" style="background:var(--blue)"></span>Defense — Cloud Armor</h4>
+          <p style="margin:0;font-size:13px;color:var(--text-muted)">Fills from taking and mitigating damage; built for tanks and frontline hybrids that need a survivability spike.</p>
+          <div class="goal">Pair with Blue-heavy builds or anything holding a chokepoint in Legendary/Raid content.</div>
+        </div>
+        <div class="attr-card">
+          <h4><span class="dot" style="background:var(--yellow)"></span>Utility — Optimize / Overload</h4>
+          <p style="margin:0;font-size:13px;color:var(--text-muted)">Fills from skill usage; built for skill and support builds that want more out of their Yellow investment.</p>
+          <div class="goal">Pair with skill-tier-6 support and hybrid builds — see the Build Matchmaker above.</div>
+        </div>
+      </div>
+
+      <div class="callout"><b>Unlocking &amp; slotting:</b> Recombinant Modifiers open up through the Season 3 Journey (from Mission 3 onward) and are purchased from the <b>Recombinant Vendor</b> at the Base of Operations using <b>BTSU Firmware</b>, a Red Horizon-specific currency. They're managed from a new tab in the character menu, between Specialization and SHD Watch. There are 20 Passive Modifiers to collect alongside the 3 Active ones above — and slot order matters, so check a modifier's placement before committing Firmware to it.</div>
+
+      <h3>Passive Modifier Picks</h3>
+      <div class="twrap">
+        <table>
+          <thead><tr><th style="width:190px">Passive</th><th>What it does</th><th>Pick it if…</th></tr></thead>
+          <tbody>
+            <tr class="searchable" data-text="vacuum seal"><td class="name">Vacuum Seal</td><td>Removes the Pressure Gauge's natural decay entirely, but halves how much it gains per action.</td><td>You can keep near-constant pressure on the gauge — sustained boss fights, packed farming lanes, group content where you're rarely out of combat.</td></tr>
+            <tr class="searchable" data-text="delayed venting"><td class="name">Delayed Venting</td><td>Lowers the gauge's four payout thresholds, so each tier of bonus triggers earlier.</td><td>Your fights are shorter or stop-and-start — solo missions, Legendary rooms with lulls between waves, anywhere you can't guarantee sustained uptime.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="workflow">
+      <h2><span class="idx">04</span> Recalibration &amp; Optimization Workflow</h2>
+      <p class="lede">This is a strict order of operations. Doing these steps out of order wastes materials or permanently locks a piece into a bad roll — work top to bottom on any item you intend to keep.</p>
+      <div class="steps" id="steps"></div>
+    </section>
+
+    <section id="builds-pve">
+      <h2><span class="idx">05</span> Best PvE Builds</h2>
+      <p class="lede">Full loadouts for open-world farming, Heroic missions, Countdown and general Legendary play. Filter by tag or search by gear set / weapon name.</p>
+      <div class="filterbar" id="filter-pve"></div>
+      <div class="cards" id="cards-pve"></div>
+    </section>
+
+    <section id="builds-raid">
+      <h2><span class="idx">06</span> Raid, Incursion &amp; Legendary Roles</h2>
+      <p class="lede">Group content punishes builds that don't commit to a role. Prototype attributes normalize inside raids and Augments are disabled entirely — a raid loadout has to work on its base rolls alone.</p>
+      <div class="twrap" style="margin-bottom:20px;">
+        <table>
+          <thead><tr><th>Role</th><th>Go-to build</th><th>Why</th></tr></thead>
+          <tbody id="roles-body"></tbody>
+        </table>
+      </div>
+      <div class="filterbar" id="filter-raid"></div>
+      <div class="cards" id="cards-raid"></div>
+    </section>
+
+    <section id="builds-pvp">
+      <h2><span class="idx">07</span> Best PvP Builds</h2>
+      <p class="lede">Dark Zone and Conflict loadouts. Conflict and Toxic DZ normalize a lot of PvE power, so brand-set consistency and talent uptime usually beat raw gear-set numbers there — Blackout DZ below is the exception.</p>
+
+      <div class="callout"><b>Toxic vs. Blackout Dark Zone:</b> Red Horizon split the DZ into two modes. <b>Toxic DZ</b> is the permanent, always-on zone — stats are normalized to a level-40 floor, so it's low-risk solo PvE farming for contaminated loot with only occasional PvP threat. <b>Blackout DZ</b> rotates weekly against the classic DZ and is the opposite: no normalization, so your full SHD Watch, Expertise and Prototype power carries in, Global PvP Balance still tunes weapons/gear/skills/Augments on top of that, and Black Tusk is the dominant hostile faction. Blackout also drops better loot and higher Exotic rates. If "endgame PvP" is the goal, build for Blackout weeks and expect real player threat; the builds below skew toward that full-power assumption.</div>
+
+      <div class="filterbar" id="filter-pvp"></div>
+      <div class="cards" id="cards-pvp"></div>
+    </section>
+
+    <section id="weapons">
+      <h2><span class="idx">08</span> Weapon Tier List</h2>
+      <p class="lede">Ranked by sustained value across current PvE content. A weapon's tier assumes a build built around it — see the build cards above for full loadouts.</p>
+      <div class="twrap">
+        <table>
+          <thead><tr><th style="width:60px">Tier</th><th>Weapon</th><th>Type</th><th>Why it's ranked here</th></tr></thead>
+          <tbody id="weapons-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="exotics">
+      <h2><span class="idx">09</span> Exotics Directory</h2>
+      <p class="lede">Every exotic weapon and armor piece with where to farm it. You can equip one exotic weapon and one exotic armor piece at a time, so cross-reference against the tier column before committing farm time.</p>
+      <h3>Exotic Weapons</h3>
+      <div class="twrap">
+        <table>
+          <thead><tr><th style="width:52px">Tier</th><th>Weapon</th><th>Slot</th><th>Acquisition</th></tr></thead>
+          <tbody id="exotic-weapons-body"></tbody>
+        </table>
+      </div>
+      <h3>Exotic Armor</h3>
+      <div class="twrap">
+        <table>
+          <thead><tr><th style="width:52px">Tier</th><th>Piece</th><th>Slot</th><th>Acquisition</th></tr></thead>
+          <tbody id="exotic-armor-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="gearsets">
+      <h2><span class="idx">10</span> Gear Sets</h2>
+      <p class="lede">Full 2/3/4-piece bonuses for every gear set.</p>
+      <p class="legend"><span class="star">★</span> — currently used in at least one build featured in the PvE, Raid or PvP sections above.</p>
+      <div class="twrap">
+        <table>
+          <thead><tr><th style="width:26px"></th><th>Set</th><th>2-piece</th><th>3-piece</th><th>4-piece</th></tr></thead>
+          <tbody id="gearsets-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="brandsets">
+      <h2><span class="idx">11</span> Brand Sets</h2>
+      <p class="lede">1/2/3-piece brand bonuses. These fill the slots your gear set doesn't cover — most hybrid and PvP builds are two brand pieces plus a gear set core.</p>
+      <p class="legend"><span class="star">★</span> — a current best-in-slot or most-recommended brand for its 1/2/3-piece bonuses, independent of any one build.</p>
+      <div class="twrap">
+        <table>
+          <thead><tr><th style="width:26px"></th><th>Brand</th><th>1-piece</th><th>2-piece</th><th>3-piece</th></tr></thead>
+          <tbody id="brandsets-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="attributes">
+      <h2><span class="idx">12</span> Attribute &amp; Mod Priority Cheat Sheet</h2>
+      <p class="lede">Quick stat priority by build archetype, for when you're choosing what to recalibrate or optimize toward.</p>
+      <div class="twrap">
+        <table>
+          <thead><tr><th>Archetype</th><th>Core split</th><th>Stat priority (roughly in order)</th></tr></thead>
+          <tbody id="priority-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="glossary">
+      <h2><span class="idx">13</span> Glossary</h2>
+      <p class="lede">Every bit of shorthand used in the build cards and tables above, decoded — what "Red-heavy" means, what a Crusader Shield actually does, what Skill Tier gates. Filter by category or use the search bar at the top.</p>
+      <div class="filterbar" id="filter-glossary"></div>
+      <div class="twrap">
+        <table>
+          <thead><tr><th style="width:190px">Term</th><th style="width:150px">Category</th><th>What it means</th></tr></thead>
+          <tbody id="glossary-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="creators">
+      <h2><span class="idx">14</span> Community Creators</h2>
+      <p class="lede">Channels worth watching for video breakdowns, patch reactions and build showcases that go deeper than a static reference guide ever can. This manual was written from text guides, not video transcripts, so treat the descriptions below as "what this channel is known for," not a citation of specific claims in this manual.</p>
+      <div class="creator-grid" id="creators-grid"></div>
+      <div class="creator-note">This list is a starting point, not a ranking — if there's another creator you follow for Division 2 content, say the name and it can get added here.</div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div>This manual aggregates community theorycrafting current as of Red Horizon (Y8S3, ~September 2026). The Division 2's balance shifts nearly every season — treat exact percentages, material costs and drop tables as directional and verify against in-game tooltips before farming.</div>
+  </footer>
+</div>
+
+<script>
+(function(){
+
+// ---------------- DATA ----------------
+
+const SPECS = [
+  ["Sharpshooter","TAC-50 C Bolt-Action Rifle","Long-range precision — bonus headshot damage and rifle/marksman-rifle handling. Best for players who hold sightlines and land headshots."],
+  ["Survivalist","Explosive Tipped Crossbow","Status effects and traps — buffs status application and skill survivability. Strong for control-oriented, support-leaning play."],
+  ["Demolitionist","M32A1 Multiple Grenade Launcher","Explosive disruption — amplifies explosive and skill damage against entrenched or grouped enemies."],
+  ["Gunner","M134 Minigun","Sustained fire and armor-on-kill — rewards holding a trigger down and tanking through continuous damage output."],
+  ["Technician","P-017 Seeker Launcher","Skill power — boosts skill damage/duration/haste and rewards weapon damage that scales off Skill Tier."],
+  ["Firewall","K8-JetStream Flamethrower","Close-range burn and shields — frontline aggression, shield-support hybrids and burn-focused status builds."]
+];
+
+const STEPS = [
+  ["Farm &amp; bank in the Recalibration Library","Before you deconstruct or sell any drop, check whether it rolled a best-in-slot attribute % or a talent you don't already have. Extract that single attribute or talent into your personal Recalibration Library — it's now available to apply to any future piece, permanently, for free re-use."],
+  ["Recalibrate the one bad roll","At the Recalibration Station, swap a single attribute or a single talent on a piece you're keeping for an entry from your Library. Use this to fix the one wrong stat on an otherwise great piece — don't waste it on a piece with two or three bad rolls, since each item only gets limited recalibrations."],
+  ["Optimize toward 100%","Once the piece has the correct talent and the correct core attribute, spend Optimization Station materials (SHD Tech, Field Recon Data and faction-specific components) to push each attribute closer to its true maximum roll. This is expensive — only optimize pieces that are staying in your build long-term."],
+  ["Convert to Prototype at the Protolab","Once a High-End, Gear Set or Named piece hits Expertise Level 30 <em>and</em> is already correctly recalibrated and optimized, spend a ProtoCore to convert it into Prototype quality. The old attribute maximum becomes the new minimum, rolls can reach up to 1.5x higher than before, and you gain a bonus Augment (Quantum, Echo, Atomize or Amalgam) to reroll.","warn:Conversion is permanent and immediately locks the item out of both the Recalibration and Optimization Stations. Never convert a piece that doesn't already have the exact talent, exact core attribute and near-perfect rolls — RNG on the upgrade is not kind to a weak base."],
+  ["Keep farming ProtoCores for your real BiS pieces only","ProtoCores come from Escalation mode (higher tiers drop more), from deconstructing Prototype gear, and from weekly Raid/Incursion caches (roughly 6 per character per week). Spend them only on the handful of pieces that are staying in your loadout for the season — Exotics currently can't be converted at all."]
+];
+
+const CARDS = [
+  // ---- PvE ----
+  {cat:"pve", tags:["DPS","AR","Farming","Boss"], name:"St. Elmo's Striker", gear:"Striker (4pc) + Memento backpack", weapons:"St. Elmo's Engine (primary) · GR9 LMG (secondary)", spec:"Gunner", cores:"Red-heavy", skills:"Crusader Shield · Reviver Hive", mods:"Crit Chance, Crit Damage", note:"Sustained AR damage off a simple stacking loop — Striker's Gamble stacks and St. Elmo's shock ammo keep uptime easy. Overdog gloves are the current best-in-slot exotic pairing if you have them.", best:"Heroic missions, raids, sustained boss damage"},
+  {cat:"pve", tags:["DPS","LMG","Sustained","Buffed"], name:"Pakhan Striker", gear:"Striker (4pc) + Grupo Sombra chest (Obliterate)", weapons:"Pakhan LMG (primary) · GR9 LMG or St. Elmo's Engine (secondary)", spec:"Gunner", cores:"Red-heavy", skills:"Crusader Shield · Reviver Hive", mods:"Crit Chance, Crit Damage", note:"Obliterate stacks +1% weapon damage per crit for 5s (up to 25 stacks) on top of Striker's Gamble's own stack — Pakhan's big magazine and steady rate of fire keep both piles topped up through a whole encounter, even though Pakhan alone ranks below Bluescreen/Iron Lung/Pestilence on raw weapon power.", best:"Legendary bosses, raid ability phases, long sustained fights"},
+  {cat:"pve", tags:["Hybrid","Farming","Solo"], name:"Core Strength Memento", gear:"Core Strength (4pc) + Memento backpack", weapons:"Capacitor or St. Elmo's Engine (primary) · Scorpio (secondary)", spec:"Technician", cores:"Red / Blue / Yellow mix", skills:"Crusader Shield · Striker Drone", mods:"Crit Chance, Crit Damage", note:"Core Exercise converts a slice of your off-core bonuses, giving balanced damage, armor, Skill Tier and recovery from one set.", best:"Solo farming, open world, flexible content"},
+  {cat:"pve", tags:["Sniper","Farming","Legendary"], name:"Iron Will Hotshot", gear:"Hotshot (4pc) + Iron Will chest", weapons:"Prima Donna MMR (primary) · Model 700 or SR-1 (secondary)", spec:"Sharpshooter", cores:"Red", skills:"Decoy · Reviver Hive", mods:"Headshot Damage only", note:"Iron Will's Resolved talent converts your next body shot into a headshot every two seconds — inherits the endless-conversion role Determined used to fill.", best:"Farming, Legendary missions, solo sniping"},
+  {cat:"pve", tags:["Sniper","Rifle","Farming","Buffed"], name:"Aces & Eights Iron Will", gear:"Aces &amp; Eights (3pc) + Iron Will chest", weapons:"Merciless or Diamondback (primary) · Regulus or Doctor Home (secondary)", spec:"Sharpshooter", cores:"Red", skills:"Decoy · Reviver Hive", mods:"Headshot Damage, Crit Damage", note:"Red Horizon buffed Dead Man's Hand hard — reveal a five-card hand while landing MMR/Rifle shots and your next shot gets a 75% damage amp (100% with the set's own No Limit chest talent, traded away here for Iron Will). Headshots flip extra cards, so Iron Will's free headshot conversions speed the whole loop up.", best:"Farming, Legendary missions, precision rifle DPS"},
+  {cat:"pve", tags:["SMG","Close-range","Farming"], name:"Hunter's Fury Ouroboros", gear:"Hunter's Fury (4pc) + Memento or Sokolov backpack", weapons:"Ouroboros SMG (primary) · Scorpio or M870 (secondary)", spec:"Gunner", cores:"Red / Blue mix", skills:"Crusader Shield · Banshee Pulse", mods:"Crit Chance, Crit Damage", note:"Apex Predator debuffs nearby enemies while armor-on-kill keeps you topped up brawling at close range.", best:"Control Points, Summit floors, Heroic farming"},
+  {cat:"pve", tags:["Skill","Legendary","Solo"], name:"Refactor Force Multiplier", gear:"Refactor (4pc) + Force Multiplier backpack", weapons:"Capacitor (primary) · Harmony (secondary)", spec:"Technician", cores:"Yellow / Red mix", skills:"Striker Drone · Assault Turret", mods:"Skill Haste or Skill Duration", note:"Return to Sender turns skill damage back into armor, so you can play skills aggressively from a distance without dying.", best:"Legendary missions, solo content needing distance"},
+  {cat:"pve", tags:["Status","Burn","New"], name:"Ember Engine Fafnir", gear:"Ember Engine (4pc) + Vile mask", weapons:"Fafnir exotic shotgun (primary) · Scorpio or Pyromaniac (secondary)", spec:"Firewall", cores:"Yellow / Red mix", skills:"Firestarter Chem Launcher · Incinerator Turret", mods:"Skill Haste, Status Effects", note:"Spontaneous Combustion converts any status effect into a burn chance; Fafnir's Dragon's Breath shells stack right on top. Vile and Overdog gloves are the two exotics getting cited most for this build right now — grab whichever drops first.", best:"Packed enemy waves, status-heavy content"},
+  {cat:"pve", tags:["Support","Healer","Raid"], name:"Future Initiative Healer", gear:"Future Initiative (4pc) + Alps Summit backpack", weapons:"Scorpio or Designated Hitter (primary) · Lefty (secondary)", spec:"Survivalist", cores:"Yellow / Blue mix", skills:"Restorer Hive · Reinforcer Chem Launcher", mods:"Repair Skills", note:"Ground Control converts your armor into a group damage buff while teammates stay topped up — the most reliable group healer in the game.", best:"Raids, Incursions, group support"},
+  {cat:"pve", tags:["DPS","LMG","Legendary"], name:"Negotiator's Dilemma", gear:"Negotiator's Dilemma (4pc)", weapons:"Pestilence LMG (primary) · high-RPM AR (secondary)", spec:"Gunner", cores:"Red", skills:"Decoy · Reviver Hive", mods:"Crit Chance, Crit Damage", note:"Hostile Negotiations marks targets on crit and redistributes damage between them — note Pestilence's plague damage doesn't crit or transfer through marks.", best:"Legendary missions, multi-target pressure"},
+  {cat:"pve", tags:["DPS","LMG","Boss"], name:"Tipping Scales LMG", gear:"Tipping Scales (4pc)", weapons:"Big Alejandro (primary) · GR9 with Steady Handed (secondary)", spec:"Gunner", cores:"Red", skills:"Decoy · Reviver Hive", mods:"Crit Chance, Crit Damage", note:"Throttle Control ramps up to 100% bonus weapon damage the longer you fire from cover — built for stationary boss DPS windows.", best:"Boss encounters, Legendary missions"},
+  {cat:"pve", tags:["Skill","Crowd-control","Support"], name:"Eclipse Protocol Foam", gear:"Eclipse Protocol (4pc)", weapons:"Scorpio (primary) · Test Subject (secondary)", spec:"Firewall", cores:"Yellow / Blue mix", skills:"Riot Foam Chem Launcher · Stinger Hive", mods:"Skill Haste", note:"Indirect Transmission spreads status effects to nearby enemies when a carrier dies — locks down packed rooms almost for free.", best:"Farming packed waves, support role"},
+  {cat:"pve", tags:["Support","Bleed","Team"], name:"Ongoing Directive Support", gear:"Ongoing Directive (4pc)", weapons:"Carnage or GR9 LMG (primary) · Scorpio (secondary)", spec:"Survivalist", cores:"Red / Yellow mix", skills:"Stinger Hive · Riot Foam", mods:"Crit Chance, Crit Damage", note:"Rules of Engagement hands the whole group Hollow-Point Ammo, amplifying teammates' weapon damage by up to 40%.", best:"Group farming, weapon-focused teams"},
+  {cat:"pve", tags:["DPS","AR","Group"], name:"Heartbreaker PvE", gear:"Heartbreaker (4pc) + a defensive brand chest", weapons:"Carbine 7 / Police M4 / FAMAS with Flatline (primary) · ACS-12 shotgun (secondary)", spec:"Technician", cores:"Red / Blue mix", skills:"Crusader Shield · Reviver Hive", mods:"Crit Chance, Crit Damage", note:"Flatline primes targets; shooting a pulsed enemy stacks bonus damage and armor together.", best:"Heroic missions, group content"},
+  {cat:"pve", tags:["Sniper","Farming","Full-red"], name:"Model 700 Headhunter (Full Red)", gear:"Hotshot (4pc) + Chainkiller chest", weapons:"Model 700 with Determined (primary) · Nemesis or SR-1 (secondary)", spec:"Sharpshooter", cores:"All Red", skills:"Decoy · Reviver Hive", mods:"Headshot Damage only", note:"Since the Determined rework, this build needs real headshot kills before the conversion window opens — no more infinite chains.", best:"Heroic farming (rewards accuracy)"},
+  {cat:"pve", tags:["Sniper","Farming","Hybrid"], name:"Model 700 Headhunter (Hybrid)", gear:"Hotshot (4pc) + Chainkiller chest + Palisade backpack", weapons:"Model 700 with Determined (primary) · Nemesis (secondary)", spec:"Sharpshooter", cores:"3 Blue + Red", skills:"Decoy · Reviver Hive", mods:"Headshot Damage", note:"Same core loop as the full-red version, traded for enough Blue to survive Heroic directives comfortably.", best:"Heroic farming with harsh directives"},
+  {cat:"pve", tags:["Sniper","Mid-range","Hybrid"], name:"Hunter's Fury Determined", gear:"Hunter's Fury (4pc) + Chainkiller chest + Memento backpack", weapons:"1886 Rifle with Determined (primary) · Nemesis (secondary)", spec:"Sharpshooter", cores:"Red / Blue mix", skills:"Crusader Shield · Reviver Hive", mods:"Headshot Damage", note:"Works at mid-to-close range instead of long sightlines, using Apex Predator's armor recovery to stay alive near enemies.", best:"Heroic farming at closer engagement distances"},
+
+  // ---- Raid / Legendary ----
+  {cat:"raid", tags:["Tank","Raid","Shield"], name:"Foundry Bulwark Tank", gear:"Foundry Bulwark (4pc)", weapons:"Any reliable AR or shotgun for utility damage", spec:"Any (defensive)", cores:"Blue-heavy", skills:"Shield-focused loadout", mods:"Total Armor, Armor Regen", note:"Makeshift Repairs converts incoming damage on your shield into repairs — the standard raid tank set for holding aggro through mechanics.", best:"Raid and Incursion tank role"},
+  {cat:"raid", tags:["Healer","Status","Legendary"], name:"Ortiz: Reficere Healer", gear:"Ortiz: Reficere (4pc) + Nurse's Kneepads", weapons:"Caduceus (primary) · Scorpio (secondary)", spec:"Survivalist", cores:"Yellow / Blue mix", skills:"Restorer Hive · Reinforcer Chem Launcher", mods:"Repair Skills", note:"Burst healing that grants temporary Hazard Protection against Burn, Bleed and Shock — the pick for status-heavy Legendary rooms.", best:"Legendary missions with heavy status damage"},
+  {cat:"raid", tags:["DPS","Legendary","Marked"], name:"Negotiator's Dilemma (Focused)", gear:"Negotiator's Dilemma (4pc) + Pristine Example chest + Contractor's Gloves", weapons:"Police M4 / FAMAS / Carbine 7 with 8x scope and Flatline (primary) · rifle with 8x (secondary)", spec:"Gunner or Sharpshooter", cores:"Red", skills:"Decoy · Reviver Hive", mods:"Crit Chance (target ~60%), Crit Damage", note:"Perfect Focus rewards sustained scoping; marks distribute crit damage across the group's targets.", best:"Legendary ranged encounters"},
+  {cat:"raid", tags:["Control","Legendary","Support"], name:"Eclipse Protocol Foam (Legendary)", gear:"Eclipse Protocol (4pc) + Electrique backpack with Creeping Death + Golan Gear holster", weapons:"Scorpio (primary) · Lefty (secondary)", spec:"Survivalist", cores:"Yellow / Blue mix", skills:"Riot Foam · Jammer Pulse", mods:"Skill Haste", note:"Foam locks enemies down while Creeping Death spreads the effect further — built for the hardest crowd-control rooms.", best:"Legendary crowd control"},
+  {cat:"raid", tags:["DPS","Multi-target","Raid"], name:"Negotiator's Dilemma (Raid)", gear:"Negotiator's Dilemma (4pc)", weapons:"Pestilence LMG (primary) · high-RPM AR (secondary)", spec:"Gunner", cores:"Red", skills:"Decoy · Reviver Hive", mods:"Crit Chance, Crit Damage", note:"Same loadout as the open-world version — one of the two go-to support-damage sets alongside Ongoing Directive for ability phases.", best:"Raid ability-phase support damage"},
+
+  // ---- PvP ----
+  {cat:"pvp", tags:["AR","No-set","Consistent"], name:"High-End AR Crit", gear:"High-End mix: Ceska, Grupo, Contractor's Gloves, Fox's Prayer", weapons:"Lexington / FAMAS / Police M4 with a PvP talent (primary) · Ouroboros, Vector or M870 (secondary)", spec:"Firewall", cores:"3–4 Blue + Red", skills:"Jammer Pulse · Decoy", mods:"Crit Chance, Crit Damage", note:"No gear-set requirement — brand bonuses alone give steady, consistent weapon damage without a build-defining talent to counter-play around.", best:"Dark Zone, Conflict"},
+  {cat:"pvp", tags:["Skill","Hybrid","Dark Zone"], name:"Capacitor NinjaBike", gear:"NinjaBike Messenger Bag + Unit Alloys, Ceska, Fenris, Picaro's Holster, Grupo", weapons:"Capacitor (primary) · shotgun or high-RPM SMG (secondary)", spec:"Technician", cores:"Red / Blue / Yellow mix", skills:"Jammer Pulse · Stinger Hive", mods:"Crit Chance, Crit Damage", note:"Capacitor's weapon damage scales off your Skill Tier, so this loadout stacks brand bonuses instead of committing to one gear set.", best:"Dark Zone PvP"},
+  {cat:"pvp", tags:["Skill","Hybrid","Flexible"], name:"Core Strength Capacitor", gear:"Core Strength (4pc) + NinjaBike backpack + Picaro's Holster", weapons:"Capacitor (primary) · shotgun or SMG (secondary)", spec:"Technician", cores:"Red / Blue / Yellow mix", skills:"Jammer Pulse · Stinger Hive", mods:"Crit Chance, Crit Damage", note:"Core Exercise's cross-core conversion smooths out the same Capacitor scaling with less brand-juggling than the NinjaBike version.", best:"Flexible PvP loadouts"},
+  {cat:"pvp", tags:["AR","Scoped","Duel"], name:"Striker Bighorn", gear:"Striker (4pc) + Matador backpack + Fox's Prayer", weapons:"The Bighorn with a scope (primary) · Vector or an SMG (secondary)", spec:"Firewall", cores:"Red / Blue mix", skills:"Striker Shield · Jammer Pulse", mods:"Crit Damage or Headshot Damage", note:"Bighorn's automatic unscoped mode covers close range while Striker's stacks pile on damage the longer a fight runs.", best:"Mid-range PvP duels"},
+  {cat:"pvp", tags:["LMG","Burn","Pressure"], name:"Iron Lung LMG", gear:"Catharsis, Walker/Gila, Fenris/Golan/Belstone, Contractor's Gloves, Belstone Armory, Emperor's Guard", weapons:"Iron Lung LMG (primary) · Dark Winter or an SMG (secondary)", spec:"Gunner", cores:"Blue / Red mix", skills:"Defender Drone · Jammer Pulse", mods:"Crit Chance, Crit Damage", note:"Heat buildup applies Burn over a sustained fight, and the suppression disrupts enemy movement while you hold a lane.", best:"LMG PvP pressure"},
+  {cat:"pvp", tags:["Rifle","Primer","Mid-range"], name:"Ravenous Rifle", gear:"Catharsis, Walker, Ceska/Grupo, Contractor's Gloves, Picaro's Holster, Fox's Prayer", weapons:"The Ravenous (primary) · FAMAS, FAL or an SMG (secondary)", spec:"Firewall or Survivalist", cores:"Blue / Red mix", skills:"Decoy · Jammer Pulse", mods:"Crit Chance, Crit Damage", note:"Alternating shots apply offensive and defensive primers; detonating them delivers a controlled burst instead of raw sustained DPS.", best:"Controlled mid-range PvP"},
+  {cat:"pvp", tags:["SMG","Close-range","Group-fight"], name:"Chatterbox Striker", gear:"Striker (4pc) + Sokolov chest + Grupo/Fox's Prayer", weapons:"The Chatterbox SMG (primary) · Vector or MPX (secondary)", spec:"Firewall", cores:"Red / Blue mix", skills:"Striker Shield · Jammer Pulse", mods:"Crit Chance, Crit Damage", note:"Chatterbox's rate of fire climbs after reloading near an enemy, layering on top of Striker's own stacking damage.", best:"Group-fight SMG pressure"},
+  {cat:"pvp", tags:["AR","Pulsed","Trade"], name:"Heartbreaker PvP", gear:"Heartbreaker (4pc) + Fox's Prayer", weapons:"Police M4 / Carbine 7 / FAMAS with Flatline (primary) · ACS-12 shotgun (secondary)", spec:"Technician with Linked Laser Pointer", cores:"Blue / Red mix", skills:"Jammer Pulse · Decoy", mods:"Crit Chance, Crit Damage", note:"Flatline triggers off pulsed targets specifically — pair it with a pulse skill and stacking damage + armor snowballs in trades.", best:"Mid-range PvP trades"},
+  {cat:"pvp", tags:["SMG","Aggressive","Close-range"], name:"Hunter's Fury SMG PvP", gear:"Hunter's Fury (4pc) + Ceska/Grupo/Sokolov backpack with Adrenaline Rush + chest with Unbreakable", weapons:"Ouroboros or Vector (primary) · M870 or an SMG (secondary)", spec:"Firewall", cores:"Red / Blue mix", skills:"Striker Shield · Jammer Pulse", mods:"Crit Chance, Crit Damage", note:"Extra damage against nearby enemies plus armor recovery on kills — built to dive fights and keep diving.", best:"Close-range PvP fights"},
+];
+
+// Gear-set ↔ weapon ↔ skill synergy map that powers the Build Matchmaker.
+// weapons/skills arrays are the canonical source of truth — the reverse
+// (weapon → gear sets) is derived from this at render time.
+const SYNERGY = [
+  {set:"Striker's Battlegear", why:"Striker's Gamble stacks weapon damage the longer you fire without reloading, so it wants a big magazine or a weapon that locks enemies down so the stack never breaks.", weapons:["St. Elmo's Engine","Chatterbox","The Bighorn","GR9 LMG","Chameleon","Eagle Bearer","Pakhan"], skills:["Crusader Shield","Striker Shield","Reviver Hive","Banshee Pulse"]},
+  {set:"Heartbreaker", why:"Heartstopper needs a pulsed target to headshot — pair it with Flatline on an AR/LMG and a pulse skill to keep priming targets.", weapons:["Carbine 7","Police M4","FAMAS","ACS-12"], skills:["Crusader Shield","Reviver Hive","Jammer Pulse","Recon Pulse"]},
+  {set:"Umbra Initiative", why:"The cover / out-of-cover dual buff rewards aggressive peek-shooting, so it favors high-burst weapons that reward exposing yourself for one big hit.", weapons:["Chameleon","Merciless","Diamondback","ACS-12"], skills:["Decoy","Firefly"]},
+  {set:"Hunter's Fury", why:"Apex Predator debuffs and heals at close range, so it wants weapons that thrive in an enemy's face.", weapons:["Ouroboros","Chatterbox","Scorpio","M870","Backfire","Lady Death"], skills:["Crusader Shield","Banshee Pulse","Striker Shield"]},
+  {set:"Negotiator's Dilemma", why:"Hostile Negotiations marks targets on crit and shares damage between them — best on high-crit, high-RPM weapons that land a lot of hits.", weapons:["Pestilence","Police M4","FAMAS","Carbine 7","Regulus"], skills:["Decoy","Reviver Hive"]},
+  {set:"Hotshot", why:"Headache rewards consecutive headshots, so it's built entirely around Marksman Rifles.", weapons:["Prima Donna","Model 700","Nemesis","Mantis","Shroud","Dread Edict"], skills:["Decoy","Reviver Hive"]},
+  {set:"Rigger", why:"Tend and Befriend pays off skill-to-skill interactions, so it wants a weapon that doesn't need babysitting while two or more skills are doing the work.", weapons:["Capacitor","Harmony"], skills:["Striker Drone","Assault Turret","Firefly"]},
+  {set:"Eclipse Protocol", why:"Indirect Transmission spreads status effects on kill, so it wants a weapon that applies status in the first place.", weapons:["Scorpio","Test Subject"], skills:["Riot Foam Chem Launcher","Stinger Hive","Jammer Pulse"]},
+  {set:"Future Initiative", why:"Ground Control turns your armor into a team damage buff, so weapon choice barely matters — bring whatever you're comfortable holding while you heal.", weapons:["Scorpio","Designated Hitter","Lefty"], skills:["Restorer Hive","Reinforcer Chem Launcher"]},
+  {set:"Foundry Bulwark", why:"Makeshift Repairs turns incoming shield damage into repairs, so any reliable weapon works — the set is doing the surviving for you.", weapons:["St. Elmo's Engine","ACS-12","GR9 LMG"], skills:["Crusader Shield","Reviver Hive"]},
+  {set:"Hard Wired", why:"Feedback Loop shaves cooldowns off your skills, so it rewards weapons that scale with Skill Tier instead of raw gun stats.", weapons:["Capacitor","Harmony"], skills:["Assault Turret","Striker Drone","Reinforcer Chem Launcher"]},
+  {set:"Ongoing Directive", why:"Rules of Engagement hands the whole group Hollow-Point Ammo, so it's happiest on a high-uptime AR or LMG that fires often enough to matter.", weapons:["Carnage","GR9 LMG","Scorpio"], skills:["Stinger Hive","Riot Foam Chem Launcher"]},
+  {set:"True Patriot", why:"Red, White and Blue triple-debuffs a marked target — best on a weapon that can keep shooting that one target while the debuffs ramp.", weapons:["GR9 LMG","Carbine 7","Liberty"], skills:["Banshee Pulse","Assault Turret"]},
+  {set:"Aces and Eights", why:"Dead Man's Hand sequences through five shot types, so it wants a precise semi-auto rifle rather than full-auto spray.", weapons:["Merciless","Diamondback","Regulus","Doctor Home"], skills:["Decoy","Reviver Hive"]},
+  {set:"Tip of the Spear", why:"Aggressive Recon only cares about your signature weapon, so the 'best weapon' is whichever specialization's signature you're built around.", weapons:["TAC-50 C","M32A1","M134 Minigun","P-017 Seeker Launcher","K8-JetStream","Explosive Tipped Crossbow","Liberty"], skills:["Match your specialization's own kit"]},
+  {set:"System Corruption", why:"Hackstep Protocol replaces your armor kit instantly — pairs with consistent AR damage since you'll rarely need to disengage to heal.", weapons:["St. Elmo's Engine","FAMAS","Chameleon"], skills:["Decoy","Jammer Pulse"]},
+  {set:"Cavalier", why:"Charging/Charged reduces damage while you're in cover, so it favors weapons you can fire safely from behind hard cover.", weapons:["ACS-12","Scorpio","GR9 LMG"], skills:["Crusader Shield","Reinforcer Chem Launcher"]},
+  {set:"Ortiz: Exuro", why:"Incinerator Turret Prototype is the whole build — bring a weapon that also applies Burn so the turret isn't working alone.", weapons:["Fafnir","Iron Lung"], skills:["Firestarter Chem Launcher","Incinerator Turret"]},
+  {set:"Aegis", why:"Stoic reduces damage from enemies focusing you, which is most valuable while you're standing still shooting — any dependable AR or shotgun works.", weapons:["ACS-12","GR9 LMG","St. Elmo's Engine"], skills:["Crusader Shield","Reviver Hive"]},
+  {set:"Breaking Point", why:"On Point stacks off rifle shots specifically, so it's built for semi-auto and burst rifles rather than full-auto weapons.", weapons:["Merciless","Diamondback","The Ravenous","Steel & Sons ACR"], skills:["Decoy","Reviver Hive"]},
+  {set:"Virtuoso", why:"Symphony swaps its bonus by engagement range, so the set wants two very different weapons in your loadout — one close, one long.", weapons:["Scorpio","M870","Model 700","Nemesis"], skills:["Decoy","Firefly"]},
+  {set:"Refactor", why:"Return to Sender turns skill damage into armor, so it wants a weapon that can hold a lane while your skills do the killing at range.", weapons:["Capacitor","Harmony"], skills:["Striker Drone","Assault Turret"]},
+  {set:"Measured Assembly", why:"Huddle rewards staying near allies with Skill Tier bonuses — this is a support slot, so weapon choice is about personal comfort more than synergy.", weapons:["Scorpio","Lefty","Designated Hitter"], skills:["Restorer Hive","Reinforcer Chem Launcher","Stinger Hive"]},
+  {set:"Tipping Scales", why:"Throttle Control ramps up to 100% bonus weapon damage the longer you fire from cover, which is tailor-made for LMGs.", weapons:["Big Alejandro","GR9 LMG","Bluescreen","Bullet King","Pakhan","Iron Lung"], skills:["Decoy","Reviver Hive"]},
+  {set:"Concentrated Company", why:"Camaraderie pays out on marked-enemy kills, so it wants a weapon that can finish off a marked target quickly.", weapons:["Police M4","FAMAS","Regulus"], skills:["Recon Pulse","Assault Turret"]},
+  {set:"Core Strength", why:"Core Exercise converts a slice of your off-core bonuses back to you, so it's happiest with a weapon that itself scales off more than one attribute.", weapons:["Capacitor","St. Elmo's Engine","Scorpio"], skills:["Crusader Shield","Striker Drone"]},
+  {set:"Ortiz: Reficere", why:"Rapid Application Nanite Prototype is a burst-healing skill build — bring a comfortable support weapon, not a damage-maximizing one.", weapons:["Caduceus","Scorpio"], skills:["Restorer Hive","Reinforcer Chem Launcher"]},
+  {set:"Ember Engine", why:"Spontaneous Combustion converts any status effect into a Burn chance, so it wants a weapon that already applies status on its own.", weapons:["Fafnir","Scorpio","Pyromaniac","Iron Lung"], skills:["Firestarter Chem Launcher","Incinerator Turret"]},
+];
+const SYNERGY_ALIAS = {"Striker's Battlegear":"Striker"};
+function synShort(name){return SYNERGY_ALIAS[name] || name;}
+const WEAPON_LIST = [...new Set(SYNERGY.flatMap(s=>s.weapons))].sort((a,b)=>a.localeCompare(b));
+
+const ROLES = [
+  ["DPS","St. Elmo's Striker","Reliable, easy-uptime boss damage with a stacking loop that doesn't require positioning tricks."],
+  ["Healing","Future Initiative","The steadiest group repair-and-buff loop in the game — Ground Control rewards keeping the team topped."],
+  ["Tank","Foundry Bulwark","Shield-based aggro holding with damage-to-repair conversion built in."],
+  ["Support / ability phases","Negotiator's Dilemma or Ongoing Directive","Mark-and-share crit damage, or group-wide Hollow-Point Ammo — pick based on the phase's target count."],
+  ["Situational — control","Eclipse Protocol","Foam lockdown for rooms that punish uncontrolled adds."],
+  ["Situational — status rooms","Ortiz: Reficere","Burst healing with temporary hazard immunity against Burn/Bleed/Shock phases."],
+  ["DPS — precision/ranged","Aces & Eights Iron Will","Red Horizon's buff turned Dead Man's Hand into a genuine burst-damage loop for MMR/Rifle positions — a real alternative to St. Elmo's Striker on bosses that punish standing still."],
+];
+
+const WEAPONS = [
+  ["S","Chameleon","Assault Rifle","30 headshots grants +20% crit chance and +50% crit damage — snowballs hard in sustained close-range fights."],
+  ["S","Capacitor","Assault Rifle","Weapon damage scales directly off Skill Tier, making it the backbone of every hybrid skill/weapon build."],
+  ["S","St. Elmo's Engine","Assault Rifle","Builds to a shock-ammo effect that locks enemies down — reliable crowd control and damage in one weapon."],
+  ["S","Scorpio","Shotgun","Applies stacking Venom debuffs — damage, control and team support from a single exotic."],
+  ["S","Regulus","Pistol / Revolver","Headshot kills detonate for massive area damage — best-in-slot burst finisher."],
+  ["A","Bluescreen","LMG","Strong sustained LMG damage with reliable talent uptime."],
+  ["A","Iron Lung","LMG","Heat-based Burn application; core of the PvP LMG pressure build."],
+  ["A","Pestilence","LMG","Plague damage ticks independently of crit — excellent against grouped enemies."],
+  ["A","Mantis","Marksman Rifle","Consistent marksman-rifle scaling for Sharpshooter loadouts."],
+  ["A","Nemesis","Marksman Rifle","Reliable secondary for headshot-focused sniper builds."],
+  ["A","Ouroboros","SMG","Close-range armor recovery and crowd disruption — the core of Hunter's Fury SMG builds."],
+  ["A","Liberty","Pistol","Strong sidearm damage that holds up as a primary in the right build."],
+  ["A","Big Alejandro","LMG","High burst LMG damage; pairs with Tipping Scales' cover-stacking bonus."],
+  ["A","The Sheriff","Shotgun","Solid close-range shotgun option outside the Scorpio slot."],
+  ["A","Shroud","Marksman Rifle","Top-tier stealth-synergy sniper for solo Legendary play."],
+  ["B","Bighorn","Assault Rifle","Scoped semi-auto with an automatic unscoped mode — strong in Striker PvP duels."],
+  ["B","Strega","Assault Rifle","Viable AR with situational value outside the S-tier picks."],
+  ["B","Eagle Bearer","Assault Rifle","Raid-locked AR that still performs, though it's been passed by newer exotics."],
+  ["B","Pakhan","LMG","Outclassed by Bluescreen/Iron Lung/Pestilence on raw damage, but its magazine size makes it the pick for the Pakhan Striker build's Obliterate/Striker's Gamble stacking — see PvE Builds."],
+  ["B","Merciless / Ruthless","Rifle","Solid rifle option, less consistent than top-tier picks."],
+  ["B","Ravenous","Rifle","Primer-based burst damage — core of the PvP Ravenous build."],
+  ["B","Dread Edict","Rifle","Viable, situational rifle."],
+  ["B","Sweet Dreams / Lullaby","Shotgun","Usable but overshadowed by Scorpio in most content."],
+  ["B","Overlord","Shotgun","Niche shotgun pick."],
+  ["B","Backfire","SMG","Good SMG option for aggressive builds."],
+  ["B","Chatterbox","SMG","Reload-triggered rate-of-fire ramp — strong specifically in the PvP Striker build."],
+  ["B","Lady Death","SMG","Solid SMG choice with situational strengths."],
+  ["C","Bullet King","LMG","Niche application only."],
+  ["C","Doctor Home","Rifle","Limited use outside specific setups."],
+  ["C","Bittersweet","Rifle","Situational at best."],
+  ["C","Tempest","Pistol","Niche sidearm."],
+  ["D","Mosquito","Pistol","Weak talent design, rarely worth building around."],
+  ["D","Sacrum Imperium","Marksman Rifle","Underwhelming compared to other exotic snipers."],
+  ["D","Vindicator","Rifle","Poor talent uptime."],
+  ["D","Diamondback","Assault Rifle","Outclassed across the board."],
+];
+
+const EXO_WEAPONS = [
+  ["S","St Elmo's Engine","Assault Rifle","Countdown (AR loot)"],
+  ["S","Capacitor","Assault Rifle","Summit challenges, then Countdown"],
+  ["S","Ouroboros","SMG","Paradise Lost Incursion (weekly)"],
+  ["S","Pestilence","LMG","Countdown (LMG loot)"],
+  ["S","Scorpio","Shotgun","Countdown (Shotgun loot)"],
+  ["S","Shroud","Marksman Rifle","Countdown (MMR loot)"],
+  ["S","Prima Donna","Marksman Rifle","Paradise Lost Incursion (weekly)"],
+  ["S","Regulus","Pistol","Iron Horse raid (weekly)"],
+  ["A","Strega","Assault Rifle","Countdown (AR loot)"],
+  ["A","Eagle Bearer","Assault Rifle","Dark Hours raid (weekly)"],
+  ["A","Chameleon","Assault Rifle","Countdown (AR loot)"],
+  ["A","The Bighorn","Assault Rifle","Summit legendary bosses"],
+  ["A","Caduceus","Assault Rifle","Countdown (AR loot)"],
+  ["A","Lady Death","SMG","Countdown (SMG loot)"],
+  ["A","Backfire","SMG","Countdown (SMG loot)"],
+  ["A","The Chatterbox","SMG","Exotic quest, then Countdown"],
+  ["A","Bluescreen","LMG","Captain Lewis Manhunt blueprint, then Countdown"],
+  ["A","Iron Lung","LMG","Countdown (LMG loot)"],
+  ["A","Big Alejandro","LMG","Countdown (LMG loot)"],
+  ["A","The Ravenous","Rifle","Iron Horse raid (weekly)"],
+  ["A","Diamondback","Rifle","Countdown (Rifle loot)"],
+  ["A","The Sheriff","Shotgun","Y7 Season 3 manhunt climax"],
+  ["A","Mantis","Marksman Rifle","Countdown (MMR loot)"],
+  ["A","Nemesis","Marksman Rifle","Exotic quest, then Countdown"],
+  ["A","Liberty","Pistol","Exotic quest, then Countdown"],
+  ["B","Agitator","Assault Rifle","Countdown (AR loot)"],
+  ["B","Oxpecker","SMG","Countdown (SMG loot)"],
+  ["B","Underboss","SMG","Y8 Season 2 manhunt climax"],
+  ["B","Bullet King","LMG","Countdown (LMG loot)"],
+  ["B","Pakhan","LMG","Countdown (LMG loot)"],
+  ["B","Doctor Home","Rifle","General Anderson Manhunt blueprint, then Countdown"],
+  ["B","Steel & Sons ACR","Rifle","Broken Rain Incursion (weekly)"],
+  ["B","Overlord","Shotgun","Countdown (Shotgun loot)"],
+  ["B","Dread Edict","Marksman Rifle","Countdown (MMR loot)"],
+  ["B","Sacrum Imperium","Marksman Rifle","Countdown (MMR loot)"],
+  ["B","Busy Little Bee","Pistol","Countdown (Pistol loot)"],
+  ["B","Tempest","Pistol","Y7 Season 2 manhunt climax"],
+  ["C","Vindicator","Rifle","Descent vendor (350 NSA Credits)"],
+  ["C","Merciless","Rifle","Countdown (Rifle loot)"],
+  ["C","Bittersweet","Rifle","Countdown (Rifle loot)"],
+  ["C","Sweet Dreams","Shotgun","Countdown (Shotgun loot)"],
+  ["C","Mosquito","Pistol","Countdown (Pistol loot)"],
+  ["C","Whiplash","Pistol","Y8 Season 1 manhunt climax"],
+  ["?","Fafnir","Shotgun","Y8 Season 3 track reward — Ember Engine's status/burn partner"],
+];
+
+const EXO_ARMOR = [
+  ["S","Memento","Backpack","Countdown (Backpack loot) — best-in-slot general-purpose exotic armor"],
+  ["S","NinjaBike Messenger Bag","Backpack","Countdown (Backpack loot)"],
+  ["S","Coyote's Mask","Mask","Countdown (Mask loot)"],
+  ["S","Catharsis","Mask","Countdown (Mask loot)"],
+  ["S","Tinkerer","Mask","Y7 Season 1 manhunt climax"],
+  ["S","Tardigrade","Chest","Countdown (Body Armor loot)"],
+  ["S","Overdogs","Gloves","Countdown (Gloves loot)"],
+  ["A","Vile","Mask","Countdown (Mask loot)"],
+  ["A","The Catalyst","Mask","Battle for Brooklyn final mission"],
+  ["A","Investor","Mask","Countdown (Mask loot)"],
+  ["A","Ridgeway's Pride","Chest","Exotic quest, then Countdown"],
+  ["A","Beacon","Chest","Countdown (Body Armor loot)"],
+  ["A","Exodus","Gloves","Countdown (Gloves loot)"],
+  ["A","BTSU Datagloves","Gloves","Countdown (Gloves loot)"],
+  ["A","Nurse's Kneepads","Kneepads","Countdown (Kneepads loot)"],
+  ["A","Dodge City Gunslinger's Holster","Holster","Exotic quest, then Countdown"],
+  ["A","Centurion's Scabbard","Holster","Countdown (Holster loot)"],
+  ["A","Waveform","Holster","Countdown (Holster loot)"],
+  ["B","Birdie's Quick Fix","Backpack","Y6 Season 3 manhunt climax"],
+  ["B","Harrier Pride","Backpack","Countdown (Backpack loot)"],
+  ["B","Provocator","Chest","Y6 Season 2 manhunt climax"],
+  ["B","Rugged Gauntlets","Gloves","Countdown (Gloves loot)"],
+  ["B","Acosta's Kneepads","Kneepads","Countdown (Kneepads loot)"],
+  ["B","Sawyer's Kneepads","Kneepads","Countdown (Kneepads loot)"],
+  ["B","Shocker Punch","Holster","Countdown (Holster loot)"],
+  ["B","Nimble","Holster","Countdown (Holster loot)"],
+  ["C","Acosta's Go-Bag","Backpack","Countdown (Backpack loot)"],
+  ["C","Collector","Chest","Countdown (Body Armor loot)"],
+  ["C","Bloody Knuckles","Gloves","Countdown (Gloves loot)"],
+  ["C","NinjaBike Messenger Kneepads","Kneepads","Countdown (Kneepads loot)"],
+  ["C","Blacklisters","Kneepads","Y7 Season 2 manhunt climax"],
+  ["C","Imperial Dynasty","Holster","Countdown (Holster loot)"],
+  ["?","Iron Will","Chest","Y8 Season 3 track reward — pairs with Hotshot for sniper builds"],
+  ["?","Loaded for Bear","Gloves","Y8 Season 3 manhunt climax — Afterburn reload payoff"],
+];
+
+const GEARSETS = [
+  [1,"Striker's Battlegear","+15% Weapon Handling","+15% Rate of Fire","Striker's Gamble — stacking weapon damage on hit"],
+  [1,"Heartbreaker","+15% AR / +15% LMG Damage","+15% Weapon Handling","Heartstopper — headshot pulse application and payoff"],
+  [0,"Umbra Initiative","+15% Crit Hit Chance","+30% Reload Speed","Dual cover-based / out-of-cover damage buffs"],
+  [1,"Hunter's Fury","+15% Shotgun / +15% SMG Damage","+20% Armor on Kill, +50% Health on Kill","Apex Predator — enemy debuff plus weapon damage amp"],
+  [1,"Negotiator's Dilemma","+15% Crit Hit Chance","+20% Crit Hit Damage","Hostile Negotiations — mark targets, share crit damage"],
+  [1,"Hotshot","+30% Marksman Rifle Damage","+30% Headshot Damage, +30% Handling","Headache — first-headshot bonus quadrupled to 80% in Red Horizon, consecutive headshots add more on top"],
+  [0,"Rigger","+15% Skill Haste","+15% Skill Duration","Tend and Befriend — skill-interaction damage buff"],
+  [1,"Eclipse Protocol","+15% Status Effects","+15% Skill Haste, +30% Hazard Protection","Indirect Transmission — status spreads to nearby on kill"],
+  [1,"Future Initiative","+30% Repair Skills","+15% Skill Haste, +30% Skill Duration","Ground Control — armor-based team damage boost"],
+  [1,"Foundry Bulwark","+10% Total Armor","+1% Armor Regen, +50% Shield Health","Makeshift Repairs — damage-to-repair conversion"],
+  [0,"Hard Wired","+15% Skill Haste","+15% Skill Damage, +30% Repair Skills","Feedback Loop — skill cooldown reduction mechanics"],
+  [1,"Ongoing Directive","+15% Status Effects","+30% Reload Speed","Rules of Engagement — group-wide Hollow-Point Ammo, amp doubled to 40% in Red Horizon"],
+  [0,"True Patriot","+15% Weapon Handling","+30% Magazine Size","Red, White and Blue — triple debuff on marked enemies"],
+  [1,"Aces and Eights","+30% MMR / +30% Rifle Damage","+30% Headshot Damage, +30% Handling","Dead Man's Hand — reveal a 5-card hand on MMR/Rifle hits for a 75% amp on your next shot (100% with the No Limit chest talent); headshots flip extra cards. Red Horizon roughly doubled this set's numbers across the board."],
+  [0,"Tip of the Spear","+20% Signature Weapon Damage","+10% Weapon Damage","Aggressive Recon — signature weapon kill bonuses"],
+  [0,"System Corruption","+15% Armor on Kill","+40% Disrupt Resist, +40% Pulse Resist","Hackstep Protocol — instant armor kit replacement"],
+  [0,"Cavalier","+30% Hazard Protection","+40% Repair Skills","Charging/Charged — cover-based damage reduction"],
+  [0,"Ortiz: Exuro","+20% Burn Duration, +15% Skill Health","+40% Burn Damage","Incinerator Turret Prototype — 360° rotation"],
+  [0,"Aegis","+70% Health","+15% Total Armor","Stoic — reduces damage from enemies targeting you"],
+  [0,"Breaking Point","+30% MMR / +30% Rifle Damage","+30% Headshot Damage, +30% Handling","On Point — rifle shot stacking mechanics"],
+  [0,"Virtuoso","+15% Handling, +15% Magazine Size","+15% Weapon Damage","Symphony — range-based weapon damage switching"],
+  [1,"Refactor","+15% Status Effects","+25% Skill Damage","Return to Sender — skill damage converts to armor"],
+  [0,"Measured Assembly","+15% Skill Haste","+60% Repair Skills, +40% Explosive Resist","Huddle — ally-proximity Skill Tier bonuses"],
+  [1,"Tipping Scales","+30% Magazine Size","+30% LMG Damage","Throttle Control — cover-time stacking damage, up to 100%"],
+  [0,"Concentrated Company","+10% Weapon Damage","+30% Weapon Handling","Camaraderie — marked-enemy kill bonuses"],
+  [1,"Core Strength","+10% Weapon Handling","+5% Weapon Damage / 5% Armor / 5% Skill Efficiency","Core Exercise — converts a share of off-core bonuses"],
+  [1,"Ortiz: Reficere","+8% Skill Efficiency","+60% Repair Skills","Rapid Application Nanite Prototype — burst healing"],
+  [1,"Ember Engine","+8% Skill Efficiency","+30% Status Effects","Spontaneous Combustion — status effects convert to Burn"],
+];
+
+const BRANDSETS = [
+  [1,"Providence Defense","+13% Headshot Damage","+8% Crit Hit Chance","+13% Crit Hit Damage"],
+  [0,"Uzina Getica","+5% Total Armor","+10% Armor on Kill","+30% Hazard Protection"],
+  [1,"Empress International","+10% Skill Health","+13% Skill Damage","+8% Skill Efficiency"],
+  [1,"Wyvern Wear","+8% Skill Damage","+20% Status Effects","+45% Skill Duration"],
+  [1,"Belstone Armory","+1% Armor Regen","+100% Increased Threat","+36% Protection from Elites"],
+  [1,"Alps Summit","+18% Repair Skills","+30% Skill Duration","+30% Skill Haste"],
+  [1,"China Light","+15% Explosive Damage","+20% Status Effects","+30% Skill Haste"],
+  [1,"Palisade Steelworks","+10% Armor on Kill","+24% Protection from Elites","+1 Skill Tier"],
+  [1,"Brazos de Arcabuz","+10% Skill Haste","+1 Skill Tier","+50% Magazine Size"],
+  [1,"Gila Guard","+5% Total Armor","+20% Hazard Protection","+2% Armor Regen"],
+  [1,"Fenris Group","+12% Assault Rifle Damage","+32% Magazine Size","+50% Stability"],
+  [1,"Petrov Defense Group","+12% LMG Damage","+15% Weapon Handling","+50% Ammo Capacity"],
+  [1,"Overlord Armaments","+12% Rifle Damage","+30% Accuracy","+30% Weapon Handling"],
+  [1,"Walker, Harris & Co","+6% Weapon Damage","+5% Damage to Armor","+10% Damage to Health"],
+  [0,"Yaahl Gear","+10% Hazard Protection","+12% Weapon Damage","+40% Pulse Resistance"],
+  [0,"Electrique","+10% Status Effects","+20% Hazard Protection","+8% Skill Efficiency"],
+  [0,"Hana-U","+10% Skill Haste","+13% Skill Damage","+18% Weapon Damage"],
+  [0,"Murakami Industries","+15% Skill Duration","+35% Repair Skills","+18% Skill Damage"],
+  [0,"Richter & Kaiser","+10% Skill Haste","+40% Explosive Resistance","+52% Repair Skills"],
+  [0,"5.11 Tactical","+12% Protection from Elites","+100% Increased Threat","+30% Hazard Protection"],
+  [0,"Badger Tuff","+12% Shotgun Damage","+10% Armor on Kill","+15% Total Armor"],
+  [0,"Golan Gear","+20% Explosive Resistance","+1.5% Armor Regen","+150% Increased Threat"],
+  [0,"Habsburg Guard","+13% Headshot Damage","+24% Marksman Rifle Damage","+25% Status Effects"],
+  [0,"Lengmo","+15% Reload Speed","+24% LMG Damage","+30% Weapon Handling"],
+  [0,"Ceska Vyroba","+8% Crit Hit Chance","+24% Shotgun Damage","+30% Hazard Protection"],
+  [0,"Douglas & Harding","+24% Pistol Damage","+20% Skill Health","+50% Accuracy"],
+  [0,"Grupo Sombra","+13% Crit Hit Damage","+20% Explosives Damage","+39% Headshot Damage"],
+  [0,"Airaldi","+12% Marksman Rifle Damage","+26% Headshot Damage","+5% Damage to Armor"],
+  [0,"Sokolov","+12% SMG Damage","+13% Crit Hit Damage","+8% Crit Hit Chance"],
+  [0,"Zwiadowka","+15% Magazine Size","+24% Rifle Damage","+30% Weapon Handling"],
+  [0,"Legatus","+15% Magazine Size","+24% SMG Damage","+105% Optimal Range"],
+  [0,"Shiny Monkey Gear","+15% Skill Duration","+5% Skill Efficiency","+52% Repair Skills"],
+  [0,"Imminence Armaments","+6% Weapon Damage","+48% Pistol Damage","+30% Skill Health"],
+  [0,"Urban Lookout","+5% Weapon Handling","+24% Marksman Rifle Damage","+45% Skill Duration"],
+  [1,"Unit Alloys","+5% Rate of Fire","+24% Assault Rifle Damage","+50% Magazine Size"],
+  [0,"Royal Works","+5% Weapon Handling","+24% LMG Damage","+50% Accuracy"],
+  [0,"Edelweiss GPz","+18% Repair Skills","+20% Skill Haste","+8% Skill Efficiency"],
+];
+
+const PRIORITY = [
+  ["Weapon DPS", "5–6 Red", "Crit Chance → ~50–60%, then Crit Damage, then Headshot Damage (sniper) or weapon-archetype damage, then Weapon Handling / Reload for uptime."],
+  ["Tank / Frontline", "5–6 Blue", "Total Armor, then Armor Regeneration, then Incoming Repairs, then Hazard/Explosive/Disrupt Resistance to cover the damage types hitting you."],
+  ["Skill build", "5–6 Yellow", "Skill Tier to 6 first (unlocks mod slots), then Skill Damage, then Skill Haste or Skill Duration depending on which skill is your damage source."],
+  ["Support / Healer", "4–5 Yellow + 1–2 Blue", "Repair Skills first, then Skill Duration, then Skill Haste, then enough Armor/Regen to not die while standing still healing."],
+  ["Hybrid (Core Strength style)", "2/2/2 Red-Blue-Yellow", "Even split across all three cores, since the set converts a share of your off-core bonuses back — prioritize whichever core the gear-set talent scales off."],
+  ["PvP", "3–4 Blue + 2–3 Red", "Total Armor and Disrupt/Pulse Resistance first for survivability, then Crit Chance/Damage for trade potential — Skill Tier only if your loadout leans on a skill."],
+];
+
+const GLOSSARY = [
+  // ---- Core split shorthand ----
+  ["Red-heavy / All Red", "Core Split", "Most or all of your 6 gear pieces (mask, chest, backpack, gloves, holster, kneepads) have Red set as their core attribute — maximizes weapon damage at the cost of survivability and skill power."],
+  ["Blue-heavy", "Core Split", "Most pieces are set to the Blue core — maximizes Total Armor and survivability, the default for tanks and frontline builds."],
+  ["Yellow-heavy", "Core Split", "Most pieces are set to the Yellow core — maximizes Skill Tier and skill power, the default for skill and support builds."],
+  ["Red / Blue mix", "Core Split", "Roughly half your pieces are Red, half Blue — a damage/survivability hybrid used by most Heroic-farming builds."],
+  ["Red / Yellow mix", "Core Split", "Split between weapon damage and skill power — used by hybrid weapon-skill loadouts like Capacitor builds, where your gun scales off Skill Tier."],
+  ["Yellow / Blue mix", "Core Split", "Split between skill power and survivability — the standard split for healer and support builds that need to stay alive while channeling skills."],
+  ["3 Blue + Red (or similar)", "Core Split", "An explicit piece count instead of a general 'mix' — here, 3 of your 6 pieces are on Blue core and the rest on Red, used when a build needs a guaranteed survivability floor."],
+  ["2/2/2 Red-Blue-Yellow", "Core Split", "An even split, two pieces on each core — used by cross-core sets like Core Strength that convert a share of your off-core bonuses back to you."],
+  // ---- Skills ----
+  ["Shield (family)", "Skill", "A deployable riot shield you carry that blocks incoming fire from the front."],
+  ["Crusader Shield", "Skill", "The mobile ballistic shield skill — you carry it and can fire your weapon around or over it while it blocks damage."],
+  ["Striker Shield / Bulwark Shield", "Skill", "Shield variants (mod/skin choices) tuned toward stacking bonus damage the longer it's up, or toward holding aggro and soaking damage."],
+  ["Hive (family)", "Skill", "A deployable support drone that hovers near you or an ally and applies an ongoing effect."],
+  ["Reviver Hive", "Skill", "Automatically revives and heals downed allies (or yourself) who are within its range."],
+  ["Restorer Hive", "Skill", "Pulses armor repair to you and nearby allies over time — the core skill of most healer builds."],
+  ["Stinger Hive", "Skill", "Launches a swarm of small attack drones at nearby enemies instead of healing."],
+  ["Pulse (family)", "Skill", "A radar-style burst that reveals and debuffs enemies in range, including through walls."],
+  ["Recon Pulse", "Skill", "Marks enemies through walls and grants bonus critical hit chance against marked targets."],
+  ["Banshee Pulse", "Skill", "A sonic burst that disorients and damages nearby enemies instead of just revealing them."],
+  ["Jammer Pulse", "Skill", "Disables enemy skills, cameras and turrets caught in its blast radius — the go-to answer to enemy skill spam in PvP."],
+  ["Turret (family)", "Skill", "A deployable, stationary gun that tracks and fires at enemies on its own."],
+  ["Assault Turret", "Skill", "A mounted machine gun turret with strong sustained single-target damage."],
+  ["Incinerator Turret", "Skill", "A turret variant that sprays fire in an arc instead of firing bullets — built for status/burn builds."],
+  ["Drone (family)", "Skill", "A flying combat drone that either attacks on its own or protects you."],
+  ["Striker Drone", "Skill", "Aggressively chases down and attacks the nearest enemy without your input."],
+  ["Defender Drone", "Skill", "Hovers near you or an ally and intercepts incoming damage."],
+  ["Chem Launcher (family)", "Skill", "A grenade launcher that fires chemical rounds instead of explosives."],
+  ["Reinforcer Chem Launcher", "Skill", "Coats an area in a cloud that repairs the armor of anyone standing in it."],
+  ["Riot Foam Chem Launcher", "Skill", "Fires an expanding foam that traps and immobilizes enemies caught in it — the core of every crowd-control build."],
+  ["Firestarter Chem Launcher", "Skill", "Fires an incendiary round that ignites enemies and the ground beneath them."],
+  ["Decoy", "Skill", "A standalone gadget that throws a holographic decoy to distract enemies and pull their aggro."],
+  ["Firefly", "Skill", "A small utility drone that seeks out a target enemy and detonates or applies an effect on arrival."],
+  // ---- Attribute / mod terms ----
+  ["Core attribute", "Attribute & Mod", "One of the three colors (Red, Blue, Yellow) that a gear piece's largest attribute slot is locked to — see the Foundations section above."],
+  ["Skill Tier", "Attribute & Mod", "A 0–6 scale built almost entirely from Yellow-core attributes; each tier unlocks a stronger tier of skill mods, so most skill builds chase Skill Tier 6 before anything else."],
+  ["Crit Chance / Crit Damage", "Attribute & Mod", "Your chance to land a critical hit, and how much bonus damage that critical hit does when it lands."],
+  ["Hazard Protection", "Attribute & Mod", "Reduces incoming damage from environmental and status sources — gas, fire, radiation and similar hazards."],
+  ["Disrupt Resistance / Pulse Resistance", "Attribute & Mod", "Reduces the duration or effect of enemy disabling skills, like being pulsed, jammed or disrupted."],
+  ["Armor on Kill / Health on Kill", "Attribute & Mod", "Instantly restores a chunk of armor or health whenever you get a kill — a common sustain tool for aggressive close-range builds."],
+  // ---- Activities & difficulty ----
+  ["Heroic", "Activity & Difficulty", "The hardest standard mission difficulty below Legendary — needs a reasonably optimized build to clear comfortably."],
+  ["Legendary", "Activity & Difficulty", "The top mission difficulty, tuned around a full 4-person group running near-max gear."],
+  ["Countdown", "Activity & Difficulty", "The current endgame activity and the main source of most current-season exotic weapons and armor."],
+  ["Summit", "Activity & Difficulty", "A tower-climb endgame mode with escalating floors and stacking modifiers."],
+  ["Dark Zone", "Activity & Difficulty", "The hybrid PvE/PvP zone where other real players can attack you and steal your loot. Since Red Horizon it's split into normalized Toxic DZ (permanent, solo-safe) and full-power Blackout DZ (rotates weekly, uncapped stats) — see the PvP Builds section."],
+  ["Conflict", "Activity & Difficulty", "The dedicated, structured competitive PvP mode."],
+  ["Incursion", "Activity & Difficulty", "A small-group, high-difficulty scripted encounter — shorter and smaller than a raid, but built the same way."],
+  ["Raid", "Activity & Difficulty", "The largest scripted endgame encounter, built for 8 players running defined roles like tank, healer and DPS."],
+  ["Directive", "Activity & Difficulty", "An optional modifier you can toggle on a mission for bonus rewards in exchange for extra difficulty."],
+  // ---- Progression ----
+  ["Gear Score", "Progression", "The older power-level number stamped on a piece of gear, capped at 515 — see the Recalibration &amp; Optimization Workflow section."],
+  ["SHD Level", "Progression", "The endgame progression system that takes over once you've hit the Gear Score cap, unlocking perks instead of raw power."],
+  ["Expertise Level", "Progression", "A per-item mastery track (caps at 30) that unlocks extra perks on that specific piece and is required before it can be converted to Prototype."],
+  ["ProtoCore", "Progression", "The currency spent at the Protolab to convert an eligible piece of gear into Prototype quality."],
+  ["Prototype", "Progression", "The highest gear quality tier — raises a piece's attribute ceiling and adds a bonus Augment slot, but locks it out of further Recalibration or Optimization."],
+  ["Augment", "Progression", "A bonus perk (Quantum, Echo, Atomize or Amalgam) that only appears on Prototype-converted gear."],
+  // ---- Combat mechanics ----
+  ["Stacking", "Mechanic", "A talent effect that gets stronger the longer a condition keeps being met — like Striker's Gamble growing while you fire without reloading — usually up to a cap."],
+  ["Uptime", "Mechanic", "How much of an actual fight a talent's bonus is active for. A talent that's amazing on paper but hard to keep active has poor uptime."],
+  ["Proc", "Mechanic", "Community slang for a talent effect triggering — 'it procs when you land a headshot' means the effect fires on headshot hits."],
+  ["Primer / Detonator", "Mechanic", "A status effect (like Trap, Blind or Disorient) that 'primes' a target, which a separate skill or weapon talent can then 'detonate' for bonus damage."],
+  ["Pulsed target", "Mechanic", "An enemy currently revealed or tagged by a Pulse skill — several talents (like Flatline) only trigger against pulsed targets."],
+  ["Marked target", "Mechanic", "An enemy tagged by a skill or talent, such as Hostile Negotiations, for bonus or shared damage."],
+  ["Status effect", "Mechanic", "A damage-over-time or debuff effect applied to an enemy — Bleed, Burn, Blind, Disorient and Trap are the main ones."],
+];
+
+const CREATORS = [
+  {name:"TuxedoBandido", page:"youtube.com/@TuxedoBandido", url:"https://www.youtube.com/@TuxedoBandido", gave:"Known in the community simply as <b>Bandito</b> — build breakdowns and loadout showcases, often first out the gate reacting to a new season's meta shifts."},
+  {name:"RogueGold", page:"youtube.com/@RogueGold", url:"https://www.youtube.com/@RogueGold", gave:"Build guides and gearing walkthroughs, including step-by-step farming routes for the gear sets and exotics featured in this manual."},
+  {name:"NothingButSkillz", page:"youtube.com/@NothingButSkillz", url:"https://www.youtube.com/@NothingButSkillz", gave:"True to the name — skill-focused loadouts (Hive, Turret, Drone, Chem Launcher builds) that go deeper on skill-tier optimization than most gun-first guides."},
+];
+
+// ---------------- RENDER ----------------
+
+function el(tag, cls, html){const e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e;}
+function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");}
+
+document.getElementById("spec-body").innerHTML = SPECS.map(s=>
+  `<tr class="searchable"><td class="name">${s[0]}</td><td>${s[1]}</td><td class="small">${s[2]}</td></tr>`
+).join("");
+
+document.getElementById("steps").innerHTML = STEPS.map((s,i)=>{
+  let body = s[0], text = s[1];
+  let warn = "";
+  const parts = text.split("warn:");
+  const p = parts[0];
+  if(parts[1]) warn = `<div class="warn">⚠ ${parts[1]}</div>`;
+  return `<div class="step"><div class="n">${i+1}</div><div><h4>${body}</h4><p>${p}</p>${warn}</div></div>`;
+}).join("");
+
+function cardHtml(c){
+  const tagChips = c.tags.map(t=>`<span class="chip tag" data-tag="${t}">${t}</span>`).join("");
+  return `<div class="card searchable" id="card-${slug(c.name)}" data-tags="${c.tags.join('|')}" data-text="${(c.name+' '+c.gear+' '+c.weapons).toLowerCase()}">
+    <div class="ch"><h4>${c.name}</h4></div>
+    <div class="tags">${tagChips}</div>
+    <dl>
+      <div><dt>Gear</dt><dd>${c.gear}</dd></div>
+      <div><dt>Weapons</dt><dd>${c.weapons}</dd></div>
+      <div><dt>Spec</dt><dd>${c.spec}</dd></div>
+      <div><dt>Cores</dt><dd>${c.cores}</dd></div>
+      <div><dt>Skills</dt><dd>${c.skills}</dd></div>
+      <div><dt>Mods</dt><dd>${c.mods}</dd></div>
+    </dl>
+    <div class="note">${c.note}</div>
+    <div class="bestfor">Best for: ${c.best}</div>
+  </div>`;
+}
+
+function renderCat(cat, cardsId, filterId){
+  const items = CARDS.filter(c=>c.cat===cat);
+  document.getElementById(cardsId).innerHTML = items.map(cardHtml).join("");
+  const tagSet = [...new Set(items.flatMap(c=>c.tags))];
+  const fb = document.getElementById(filterId);
+  fb.innerHTML = tagSet.map(t=>`<span class="chip tag" data-filter="${t}">${t}</span>`).join("");
+  fb.addEventListener("click", e=>{
+    const chip = e.target.closest(".chip.tag");
+    if(!chip) return;
+    chip.classList.toggle("on");
+    const active = [...fb.querySelectorAll(".chip.tag.on")].map(c=>c.dataset.filter);
+    document.querySelectorAll(`#${cardsId} .card`).forEach(card=>{
+      const tags = card.dataset.tags.split("|");
+      const show = active.length===0 || active.some(a=>tags.includes(a));
+      card.classList.toggle("hidden", !show);
+    });
+  });
+}
+renderCat("pve","cards-pve","filter-pve");
+renderCat("raid","cards-raid","filter-raid");
+renderCat("pvp","cards-pvp","filter-pvp");
+
+// ---------------- BUILD MATCHMAKER ----------------
+(function(){
+  const toggle = document.getElementById("mm-toggle");
+  const pickerEl = document.getElementById("mm-picker");
+  const panelEl = document.getElementById("mm-panel");
+  const filterEl = document.getElementById("mm-filter");
+
+  let mmMode = "set";
+  let mmSel = SYNERGY[0].set;
+
+  function setsForWeapon(w){ return SYNERGY.filter(s=>s.weapons.includes(w)); }
+  function skillsForWeapon(w){ return [...new Set(setsForWeapon(w).flatMap(s=>s.skills))]; }
+  function buildsForSet(setName){
+    const key = synShort(setName);
+    return CARDS.filter(c=>c.gear.includes(key));
+  }
+  function buildsForWeapon(w){
+    return CARDS.filter(c=>c.weapons.toLowerCase().includes(w.toLowerCase()));
+  }
+
+  function buildLinksHtml(builds){
+    if(!builds.length) return "";
+    return `<div class="mm-block"><span class="lbl">Full builds using this</span><div class="mm-builds">
+      ${builds.map(b=>`<button class="mm-buildlink" data-goto="${b.name}">${b.name} →</button>`).join("")}
+    </div></div>`;
+  }
+
+  function renderPicker(){
+    const list = mmMode==="set" ? SYNERGY.map(s=>s.set) : WEAPON_LIST;
+    pickerEl.innerHTML = list.map(name=>
+      `<button class="mm-chip ${name===mmSel?'active':''}" data-name="${name}">${name}</button>`
+    ).join("");
+    filterEl.value = "";
+    filterEl.placeholder = mmMode==="set" ? "Filter gear sets…" : "Filter weapons…";
+  }
+
+  function renderDetail(){
+    let inner = "";
+    if(mmMode==="set"){
+      const s = SYNERGY.find(x=>x.set===mmSel);
+      if(!s){ panelEl.innerHTML = ""; return; }
+      const builds = buildsForSet(s.set);
+      inner = `
+        <span class="mm-sub">Gear Set</span>
+        <h3>${s.set}</h3>
+        <div class="mm-block"><span class="lbl">Best weapons</span><div class="mm-reco">
+          ${s.weapons.map(w=>`<button data-goto-weapon="${w}">${w}</button>`).join("")}
+        </div></div>
+        <div class="mm-block"><span class="lbl">Best skills</span><div class="mm-reco">
+          ${s.skills.map(sk=>`<button disabled>${sk}</button>`).join("")}
+        </div></div>
+        <div class="mm-why">${s.why}</div>
+        ${buildLinksHtml(builds)}
+      `;
+    } else {
+      const w = mmSel;
+      const sets = setsForWeapon(w);
+      const skills = skillsForWeapon(w);
+      const builds = buildsForWeapon(w);
+      inner = `
+        <span class="mm-sub">Weapon</span>
+        <h3>${w}</h3>
+        <div class="mm-block"><span class="lbl">Best gear sets</span>
+          ${sets.length ? sets.map(s=>`<div class="mm-setcard"><button data-goto-set="${s.set}">${s.set}</button><div class="t">${s.why}</div></div>`).join("")
+            : '<div class="mm-empty">No dedicated gear-set pairing — this weapon leans on raw stats and shines in brand-set hybrid loadouts (Core Strength, System Corruption, or a High-End PvP mix) instead of a 4-piece talent.</div>'}
+        </div>
+        ${skills.length ? `<div class="mm-block"><span class="lbl">Best skills</span><div class="mm-reco">${skills.map(sk=>`<button disabled>${sk}</button>`).join("")}</div></div>` : ""}
+        ${buildLinksHtml(builds)}
+      `;
+    }
+    panelEl.innerHTML = `<div class="mm-fade">${inner}</div>`;
+  }
+
+  function revealCard(name){
+    const card = document.getElementById("card-"+slug(name));
+    if(!card) return;
+    document.getElementById("search").value = "";
+    document.querySelectorAll(".searchable").forEach(n=>n.classList.remove("hidden"));
+    document.querySelectorAll(".filterbar .chip.tag.on").forEach(c=>c.classList.remove("on"));
+    card.scrollIntoView({behavior:"smooth", block:"center"});
+    card.classList.remove("flash");
+    void card.offsetWidth;
+    card.classList.add("flash");
+  }
+
+  toggle.addEventListener("click", e=>{
+    const btn = e.target.closest("button[data-mode]");
+    if(!btn) return;
+    mmMode = btn.dataset.mode;
+    mmSel = mmMode==="set" ? SYNERGY[0].set : WEAPON_LIST[0];
+    [...toggle.children].forEach(b=>b.classList.toggle("active", b===btn));
+    renderPicker();
+    renderDetail();
+  });
+
+  pickerEl.addEventListener("click", e=>{
+    const chip = e.target.closest(".mm-chip");
+    if(!chip) return;
+    mmSel = chip.dataset.name;
+    renderPicker();
+    renderDetail();
+  });
+
+  panelEl.addEventListener("click", e=>{
+    const wBtn = e.target.closest("[data-goto-weapon]");
+    const sBtn = e.target.closest("[data-goto-set]");
+    const buildBtn = e.target.closest("[data-goto]");
+    if(wBtn){
+      mmMode = "weapon"; mmSel = wBtn.dataset.gotoWeapon;
+      [...toggle.children].forEach(b=>b.classList.toggle("active", b.dataset.mode==="weapon"));
+      renderPicker(); renderDetail();
+    } else if(sBtn){
+      mmMode = "set"; mmSel = sBtn.dataset.gotoSet;
+      [...toggle.children].forEach(b=>b.classList.toggle("active", b.dataset.mode==="set"));
+      renderPicker(); renderDetail();
+    } else if(buildBtn){
+      revealCard(buildBtn.dataset.goto);
+    }
+  });
+
+  filterEl.addEventListener("input", ()=>{
+    const q = filterEl.value.trim().toLowerCase();
+    pickerEl.querySelectorAll(".mm-chip").forEach(chip=>{
+      chip.classList.toggle("mm-hide", q && !chip.textContent.toLowerCase().includes(q));
+    });
+  });
+
+  renderPicker();
+  renderDetail();
+})();
+
+document.getElementById("roles-body").innerHTML = ROLES.map(r=>
+  `<tr class="searchable"><td class="name">${r[0]}</td><td>${r[1]}</td><td class="small">${r[2]}</td></tr>`
+).join("");
+
+document.getElementById("weapons-body").innerHTML = WEAPONS.map(w=>
+  `<tr class="searchable" data-text="${w[1].toLowerCase()}"><td><span class="tier ${w[0]}">${w[0]}</span></td><td class="name">${w[1]}</td><td class="small">${w[2]}</td><td class="small">${w[3]}</td></tr>`
+).join("");
+
+document.getElementById("exotic-weapons-body").innerHTML = EXO_WEAPONS.map(w=>
+  `<tr class="searchable" data-text="${w[1].toLowerCase()}"><td>${w[0]==="?"?'<span class="chip tag" style="cursor:default">NEW</span>':`<span class="tier ${w[0]}">${w[0]}</span>`}</td><td class="name">${w[1]}</td><td class="small">${w[2]}</td><td class="small">${w[3]}</td></tr>`
+).join("");
+
+document.getElementById("exotic-armor-body").innerHTML = EXO_ARMOR.map(a=>
+  `<tr class="searchable" data-text="${a[1].toLowerCase()}"><td>${a[0]==="?"?'<span class="chip tag" style="cursor:default">NEW</span>':`<span class="tier ${a[0]}">${a[0]}</span>`}</td><td class="name">${a[1]}</td><td class="small">${a[2]}</td><td class="small">${a[3]}</td></tr>`
+).join("");
+
+document.getElementById("gearsets-body").innerHTML = GEARSETS.map(g=>
+  `<tr class="searchable" data-text="${g[1].toLowerCase()}"><td>${g[0]?'<span class="star">★</span>':''}</td><td class="name">${g[1]}</td><td>${g[2]}</td><td>${g[3]}</td><td class="small">${g[4]}</td></tr>`
+).join("");
+
+document.getElementById("brandsets-body").innerHTML = BRANDSETS.map(b=>
+  `<tr class="searchable" data-text="${b[1].toLowerCase()}"><td>${b[0]?'<span class="star">★</span>':''}</td><td class="name">${b[1]}</td><td>${b[2]}</td><td>${b[3]}</td><td>${b[4]}</td></tr>`
+).join("");
+
+document.getElementById("priority-body").innerHTML = PRIORITY.map(p=>
+  `<tr class="searchable"><td class="name">${p[0]}</td><td>${p[1]}</td><td class="small">${p[2]}</td></tr>`
+).join("");
+
+document.getElementById("glossary-body").innerHTML = GLOSSARY.map(g=>
+  `<tr class="searchable" data-cat="${g[1]}" data-text="${(g[0]+' '+g[2]).toLowerCase()}"><td class="name">${g[0]}</td><td><span class="chip tag" style="cursor:default">${g[1]}</span></td><td class="small">${g[2]}</td></tr>`
+).join("");
+(function(){
+  const fb = document.getElementById("filter-glossary");
+  const catSet = [...new Set(GLOSSARY.map(g=>g[1]))];
+  fb.innerHTML = catSet.map(c=>`<span class="chip tag" data-filter="${c}">${c}</span>`).join("");
+  fb.addEventListener("click", e=>{
+    const chip = e.target.closest(".chip.tag");
+    if(!chip) return;
+    chip.classList.toggle("on");
+    const active = [...fb.querySelectorAll(".chip.tag.on")].map(c=>c.dataset.filter);
+    document.querySelectorAll("#glossary-body tr").forEach(row=>{
+      const show = active.length===0 || active.includes(row.dataset.cat);
+      row.classList.toggle("hidden", !show);
+    });
+  });
+})();
+
+document.getElementById("creators-grid").innerHTML = CREATORS.map((c,i)=>`
+  <div class="creator-card">
+    <span class="num">${String(i+1).padStart(2,"0")}</span>
+    <h4>${c.name}</h4>
+    <div class="contributed">${c.gave}</div>
+    <a class="visit" href="${c.url}" target="_blank" rel="noopener">${c.page} →</a>
+  </div>
+`).join("");
+
+// ---------------- SEARCH ----------------
+const search = document.getElementById("search");
+search.addEventListener("input", ()=>{
+  const q = search.value.trim().toLowerCase();
+  document.querySelectorAll(".searchable").forEach(node=>{
+    if(!q){ node.classList.remove("hidden"); return; }
+    const text = (node.dataset.text || node.textContent).toLowerCase();
+    node.classList.toggle("hidden", !text.includes(q));
+  });
+});
+
+// ---------------- NAV ACTIVE STATE ----------------
+const navLinks = [...document.querySelectorAll(".sidenav a")];
+const sections = navLinks.map(a=>document.querySelector(a.getAttribute("href")));
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const id = "#"+entry.target.id;
+      navLinks.forEach(a=>a.classList.toggle("active", a.getAttribute("href")===id));
+    }
+  });
+},{rootMargin:"-15% 0px -70% 0px"});
+sections.forEach(s=>{ if(s) io.observe(s); });
+
+})();
+</script>
