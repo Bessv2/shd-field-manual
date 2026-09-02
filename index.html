@@ -204,6 +204,8 @@
   .legend{font-size:13px;color:var(--text-muted);margin:-10px 0 18px;}
   .legend .star{margin-right:2px;}
   .hint{color:var(--text-muted);font-style:italic;}
+  .ex-badge{color:var(--accent);font-weight:700;font-size:.85em;margin-left:3px;white-space:nowrap;}
+  .bc-warn{background:color-mix(in srgb, var(--red) 12%, transparent);border:1px solid color-mix(in srgb, var(--red) 40%, transparent);color:var(--red);padding:8px 12px;border-radius:8px;font-size:.9em;margin-bottom:10px;}
 
   /* ---------- talent tooltip ---------- */
   .has-talent{cursor:help;border-bottom:1px dotted var(--accent-strong);}
@@ -565,6 +567,21 @@
           <tbody id="exotic-armor-body"></tbody>
         </table>
       </div>
+
+      <h3>Named Weapons &amp; Armor</h3>
+      <p class="lede">Named items are a step below Exotics: High-End-quality gear with a permanently locked talent that can't be rerolled, but without an exotic's unique mechanic. The game has roughly 150 of these — the tables below are a representative sample, not the full list. <span class="hint">Red Horizon (Y8S3) added several more, including weapons Teapot and Steamer and gear pieces Trick Shot, Rushdown, Melon Baller and Keeper — check in-game for their exact slot/archetype as they're still fresh.</span></p>
+      <div class="twrap">
+        <table>
+          <thead><tr><th>Weapon</th><th style="width:140px">Type</th><th>Notes</th></tr></thead>
+          <tbody id="named-weapons-body"></tbody>
+        </table>
+      </div>
+      <div class="twrap" style="margin-top:14px">
+        <table>
+          <thead><tr><th>Piece</th><th style="width:110px">Slot</th><th>Notes</th></tr></thead>
+          <tbody id="named-armor-body"></tbody>
+        </table>
+      </div>
     </section>
 
     <section id="gearsets">
@@ -616,7 +633,7 @@
 
     <section id="build-creator">
       <h2><span class="idx">14</span> Build Creator</h2>
-      <p class="lede">Assemble your own loadout from every weapon, gear set, brand and skill in this manual, then save it to this browser or copy a shareable link. <span class="hint">Weapon names in the generated card still show their talent on hover/tap.</span></p>
+      <p class="lede">Assemble your own loadout from every weapon, gear set, brand and skill in this manual, then save it to this browser or copy a shareable link. Items marked <strong class="ex-badge">(Ex)</strong> are Exotics — you can only equip one exotic weapon (primary or secondary, not both) and one exotic armor piece at once, so the rest of a real loadout has to come from a gear set, named armor, or regular brand-set gear. <span class="hint">Weapon and armor names in the generated card still show their talent on hover/tap where one's on file. This tool doesn't track per-item numeric stat rolls (those vary by Gear Score, World Tier and RNG) — it's for planning the loadout shape, not exact attribute numbers.</span></p>
 
       <div class="bc-form" id="bc-form">
         <div class="bc-field">
@@ -638,6 +655,14 @@
         <div class="bc-field">
           <label for="bc-secondary">Secondary weapon</label>
           <select id="bc-secondary"></select>
+        </div>
+        <div class="bc-field">
+          <label for="bc-exoarmor">Exotic armor piece</label>
+          <select id="bc-exoarmor"></select>
+        </div>
+        <div class="bc-field">
+          <label for="bc-namedarmor">Named armor piece</label>
+          <select id="bc-namedarmor"></select>
         </div>
         <div class="bc-field">
           <label for="bc-gearset">Gear set (4pc core)</label>
@@ -832,17 +857,17 @@ const WEAPONS = [
   ["A","Big Alejandro","LMG","High burst LMG damage; pairs with Tipping Scales' cover-stacking bonus."],
   ["A","The Sheriff","Shotgun","Solid close-range shotgun option outside the Scorpio slot."],
   ["A","Shroud","Marksman Rifle","Top-tier stealth-synergy sniper for solo Legendary play."],
-  ["B","Bighorn","Assault Rifle","Scoped semi-auto with an automatic unscoped mode — strong in Striker PvP duels."],
+  ["B","The Bighorn","Assault Rifle","Scoped semi-auto with an automatic unscoped mode — strong in Striker PvP duels."],
   ["B","Strega","Assault Rifle","Viable AR with situational value outside the S-tier picks."],
   ["B","Eagle Bearer","Assault Rifle","Raid-locked AR that still performs, though it's been passed by newer exotics."],
   ["B","Pakhan","LMG","Outclassed by Bluescreen/Iron Lung/Pestilence on raw damage, but its magazine size makes it the pick for the Pakhan Striker build's Obliterate/Striker's Gamble stacking — see PvE Builds."],
-  ["B","Merciless / Ruthless","Rifle","Solid rifle option, less consistent than top-tier picks."],
-  ["B","Ravenous","Rifle","Primer-based burst damage — core of the PvP Ravenous build."],
+  ["B","Merciless / Ruthless","Rifle","Solid rifle option, less consistent than top-tier picks. Ruthless is the same weapon and talent under an edition-exclusive skin, not a separate item."],
+  ["B","The Ravenous","Rifle","Primer-based burst damage — core of the PvP Ravenous build."],
   ["B","Dread Edict","Rifle","Viable, situational rifle."],
-  ["B","Sweet Dreams / Lullaby","Shotgun","Usable but overshadowed by Scorpio in most content."],
+  ["B","Sweet Dreams / Lullaby","Shotgun","Usable but overshadowed by Scorpio in most content. Lullaby is the same weapon and talent under an edition-exclusive skin, not a separate item."],
   ["B","Overlord","Shotgun","Niche shotgun pick."],
   ["B","Backfire","SMG","Good SMG option for aggressive builds."],
-  ["B","Chatterbox","SMG","Reload-triggered rate-of-fire ramp — strong specifically in the PvP Striker build."],
+  ["B","The Chatterbox","SMG","Reload-triggered rate-of-fire ramp — strong specifically in the PvP Striker build."],
   ["B","Lady Death","SMG","Solid SMG choice with situational strengths."],
   ["C","Bullet King","LMG","Niche application only."],
   ["C","Doctor Home","Rifle","Limited use outside specific setups."],
@@ -855,7 +880,7 @@ const WEAPONS = [
 ];
 
 const EXO_WEAPONS = [
-  ["S","St Elmo's Engine","Assault Rifle","Countdown (AR loot)"],
+  ["S","St. Elmo's Engine","Assault Rifle","Countdown (AR loot)"],
   ["S","Capacitor","Assault Rifle","Summit challenges, then Countdown"],
   ["S","Ouroboros","SMG","Paradise Lost Incursion (weekly)"],
   ["S","Pestilence","LMG","Countdown (LMG loot)"],
@@ -893,9 +918,9 @@ const EXO_WEAPONS = [
   ["B","Busy Little Bee","Pistol","Countdown (Pistol loot)"],
   ["B","Tempest","Pistol","Y7 Season 2 manhunt climax"],
   ["C","Vindicator","Rifle","Descent vendor (350 NSA Credits)"],
-  ["C","Merciless","Rifle","Countdown (Rifle loot)"],
+  ["C","Merciless","Rifle","Countdown (Rifle loot) — reconfigures into its edition-exclusive skin variant \"Ruthless\" (identical talent) at a Crafting Station"],
   ["C","Bittersweet","Rifle","Countdown (Rifle loot)"],
-  ["C","Sweet Dreams","Shotgun","Countdown (Shotgun loot)"],
+  ["C","Sweet Dreams","Shotgun","Countdown (Shotgun loot) — reconfigures into its edition-exclusive skin variant \"Lullaby\" (identical talent) at a Crafting Station"],
   ["C","Mosquito","Pistol","Countdown (Pistol loot)"],
   ["C","Whiplash","Pistol","Y8 Season 1 manhunt climax"],
   ["?","Fafnir","Shotgun","Y8 Season 3 track reward — Ember Engine's status/burn partner"],
@@ -936,6 +961,36 @@ const EXO_ARMOR = [
   ["C","Imperial Dynasty","Holster","Countdown (Holster loot)"],
   ["?","Iron Will","Chest","Y8 Season 3 track reward — pairs with Hotshot for sniper builds"],
   ["?","Loaded for Bear","Gloves","Y8 Season 3 manhunt climax — Afterburn reload payoff"],
+];
+
+// Named items are a separate rarity from Exotics: High-End-quality gear and weapons with a
+// permanently locked (non-rerollable) talent, but no unique exotic-only mechanic. The game has
+// roughly 150 of these across weapons and armor; this is a representative sample, not the full
+// list — treat exact talent wording/numbers as "verify in-game," not confirmed fact.
+const NAMED_WEAPONS = [
+  ["Hand Basket","Marksman Rifle","Locked-talent SVD-chassis MMR."],
+  ["White Death","Marksman Rifle","Locked-talent MMR, a common budget sniper pick."],
+  ["Commando","Marksman Rifle","Locked-talent SVD-chassis MMR."],
+  ["Brutus","Marksman Rifle","Locked-talent M700-chassis MMR."],
+  ["Dark Winter","SMG","Locked-talent SMG."],
+  ["Whisper","Assault Rifle","Locked-talent M16-chassis AR."],
+  ["Mechanical Animal","Assault Rifle","Locked-talent AR."],
+  ["Rock n' Roll","Shotgun","Locked-talent shotgun."],
+  ["ACS Lefty","Shotgun","Locked-talent shotgun."],
+  ["Virginia","Rifle","Locked-talent rifle."],
+  ["Traitor","Rifle","Locked-talent rifle."],
+];
+
+const NAMED_ARMOR = [
+  ["Chill Out","Mask","Locked-talent Heligard-brand mask."],
+  ["Nightwatcher","Mask","Locked-talent Gila Guard-brand mask."],
+  ["Chainkiller","Chest","Locked-talent chest piece."],
+  ["Henri","Chest","Locked-talent chest piece."],
+  ["Picaro's Holster","Holster","Locked-talent holster."],
+  ["Spot-On","Holster","Locked-talent holster."],
+  ["Contractor's Gloves","Gloves","Locked-talent glove piece."],
+  ["Fox's Prayer","Kneepads","Locked-talent kneepad piece."],
+  ["Matador","Backpack","Locked-talent Walker, Harris &amp; Co.-brand backpack."],
 ];
 
 const GEARSETS = [
@@ -1378,7 +1433,7 @@ renderCat("pvp","cards-pvp","filter-pvp");
 
 // ---------------- BUILD CREATOR ----------------
 (function(){
-  const formIds = ["bc-name","bc-spec","bc-primary","bc-secondary","bc-gearset","bc-brand1","bc-brand2","bc-cores","bc-skill1","bc-skill2","bc-mods","bc-notes"];
+  const formIds = ["bc-name","bc-spec","bc-primary","bc-secondary","bc-exoarmor","bc-namedarmor","bc-gearset","bc-brand1","bc-brand2","bc-cores","bc-skill1","bc-skill2","bc-mods","bc-notes"];
   const el = {};
   formIds.forEach(id => el[id] = document.getElementById(id));
   const previewEl = document.getElementById("bc-preview");
@@ -1387,7 +1442,19 @@ renderCat("pvp","cards-pvp","filter-pvp");
   const toastEl = document.getElementById("bc-toast");
   if(!el["bc-name"] || !previewEl || !savedEl) return;
 
-  const ALL_WEAPONS = [...new Set([...WEAPONS.map(w=>w[1]), ...EXO_WEAPONS.map(w=>w[1])])].sort((a,b)=>a.localeCompare(b));
+  // Every weapon in WEAPONS/EXO_WEAPONS is an Exotic (the tier list only ranks exotics);
+  // NAMED_WEAPONS/NAMED_ARMOR are the non-exotic, locked-talent tier, so the two pools together
+  // let the equip-one-exotic constraint below mean something instead of every option being exotic.
+  // isExoticWeapon also checks the WEAPONS tier list so a build saved with its combined
+  // "X / Y" edition-variant display name (e.g. "Merciless / Ruthless") still flags correctly,
+  // but the picker itself is built from EXO_WEAPONS (the canonical single-name directory) so
+  // that combined display name never shows up as a redundant, separate dropdown option.
+  const EXOTIC_WEAPON_NAMES = new Set([...WEAPONS.map(w=>w[1]), ...EXO_WEAPONS.map(w=>w[1])]);
+  const EXOTIC_ARMOR_NAMES = new Set(EXO_ARMOR.map(a=>a[1]));
+  const isExoticWeapon = name => EXOTIC_WEAPON_NAMES.has(name);
+  const ALL_WEAPONS = [...new Set([...EXO_WEAPONS.map(w=>w[1]), ...NAMED_WEAPONS.map(w=>w[0])])].sort((a,b)=>a.localeCompare(b));
+  const EXO_ARMOR_LIST = EXO_ARMOR.map(a=>a[1]).sort((a,b)=>a.localeCompare(b));
+  const NAMED_ARMOR_LIST = NAMED_ARMOR.map(a=>a[0]).sort((a,b)=>a.localeCompare(b));
   const SKILL_LIST = [...new Set(SYNERGY.flatMap(s=>s.skills))].filter(s=>s!=="Match your specialization's own kit").sort((a,b)=>a.localeCompare(b));
   const GEARSET_NAMES = GEARSETS.map(g=>g[1]);
   const BRAND_NAMES = BRANDSETS.map(b=>b[1]);
@@ -1395,13 +1462,18 @@ renderCat("pvp","cards-pvp","filter-pvp");
   const CORE_SPLITS = ["Red-heavy","Blue-heavy","Yellow-heavy","Red / Blue mix","Red / Yellow mix","Yellow / Blue mix","2/2/2 Red-Blue-Yellow","3 Blue + Red","3 Red + Blue"];
 
   function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+  function exBadge(name){ return isExoticWeapon(name) || EXOTIC_ARMOR_NAMES.has(name) ? ' <span class="ex-badge">(Ex)</span>' : ""; }
 
-  function fillSelect(sel, options, placeholder){
-    sel.innerHTML = `<option value="">${placeholder}</option>` + options.map(o=>`<option value="${esc(o)}">${o}</option>`).join("");
+  function fillSelect(sel, options, placeholder, labelFn){
+    sel.innerHTML = `<option value="">${placeholder}</option>` + options.map(o=>`<option value="${esc(o)}">${esc(labelFn?labelFn(o):o)}</option>`).join("");
   }
+  const weaponLabel = name => isExoticWeapon(name) ? `${name} (Ex)` : name;
+  const armorLabel = name => EXOTIC_ARMOR_NAMES.has(name) ? `${name} (Ex)` : name;
   fillSelect(el["bc-spec"], SPEC_NAMES, "Choose…");
-  fillSelect(el["bc-primary"], ALL_WEAPONS, "Choose…");
-  fillSelect(el["bc-secondary"], ALL_WEAPONS, "Choose…");
+  fillSelect(el["bc-primary"], ALL_WEAPONS, "Choose…", weaponLabel);
+  fillSelect(el["bc-secondary"], ALL_WEAPONS, "Choose…", weaponLabel);
+  fillSelect(el["bc-exoarmor"], EXO_ARMOR_LIST, "None", armorLabel);
+  fillSelect(el["bc-namedarmor"], NAMED_ARMOR_LIST, "None");
   fillSelect(el["bc-gearset"], GEARSET_NAMES, "None / mixed brands");
   fillSelect(el["bc-brand1"], BRAND_NAMES, "None");
   fillSelect(el["bc-brand2"], BRAND_NAMES, "None");
@@ -1417,6 +1489,8 @@ renderCat("pvp","cards-pvp","filter-pvp");
       spec: el["bc-spec"].value,
       primary: el["bc-primary"].value,
       secondary: el["bc-secondary"].value,
+      exoarmor: el["bc-exoarmor"].value,
+      namedarmor: el["bc-namedarmor"].value,
       gearset: el["bc-gearset"].value,
       brand1: el["bc-brand1"].value,
       brand2: el["bc-brand2"].value,
@@ -1433,6 +1507,8 @@ renderCat("pvp","cards-pvp","filter-pvp");
     el["bc-spec"].value = b.spec || "";
     el["bc-primary"].value = b.primary || "";
     el["bc-secondary"].value = b.secondary || "";
+    el["bc-exoarmor"].value = b.exoarmor || "";
+    el["bc-namedarmor"].value = b.namedarmor || "";
     el["bc-gearset"].value = b.gearset || "";
     el["bc-brand1"].value = b.brand1 || "";
     el["bc-brand2"].value = b.brand2 || "";
@@ -1443,22 +1519,29 @@ renderCat("pvp","cards-pvp","filter-pvp");
     el["bc-notes"].value = b.notes || "";
   }
 
+  function exoticWeaponConflict(b){
+    return b.primary && b.secondary && isExoticWeapon(b.primary) && isExoticWeapon(b.secondary);
+  }
+
   function gearLine(b){
     const parts = [];
-    if(b.gearset) parts.push(`${b.gearset} (4pc)`);
+    if(b.exoarmor) parts.push(`${b.exoarmor} (Ex)`);
+    if(b.namedarmor) parts.push(`${parts.length?"+ ":""}${b.namedarmor}`);
+    if(b.gearset) parts.push(`${parts.length?"+ ":""}${b.gearset} (4pc)`);
     if(b.brand1) parts.push(`${parts.length?"+ ":""}${b.brand1}`);
     if(b.brand2) parts.push(`${parts.length?"+ ":""}${b.brand2}`);
     return parts.length ? parts.join(" ") : "—";
   }
   function weaponsHtml(b){
-    const p = b.primary ? talentSpan(b.primary) : "";
-    const s = b.secondary ? talentSpan(b.secondary) : "";
+    const p = b.primary ? talentSpan(b.primary) + exBadge(b.primary) : "";
+    const s = b.secondary ? talentSpan(b.secondary) + exBadge(b.secondary) : "";
     if(p && s) return `${p} (primary) · ${s} (secondary)`;
     return p || s || "—";
   }
 
   function cardBodyHtml(b){
     return `<div class="ch"><h4>${esc(b.name)}</h4></div>
+      ${exoticWeaponConflict(b) ? `<div class="bc-warn">⚠ Both weapons are Exotic (${esc(b.primary)} + ${esc(b.secondary)}) — only one exotic weapon can actually be equipped at a time. Swap one for a named or regular weapon.</div>` : ""}
       <dl>
         <div><dt>Gear</dt><dd>${esc(gearLine(b))}</dd></div>
         <div><dt>Weapons</dt><dd>${weaponsHtml(b)}</dd></div>
@@ -1538,7 +1621,9 @@ renderCat("pvp","cards-pvp","filter-pvp");
   }
 
   document.getElementById("bc-generate").addEventListener("click", ()=>{
-    previewEl.innerHTML = previewHtml(readForm());
+    const b = readForm();
+    previewEl.innerHTML = previewHtml(b);
+    if(exoticWeaponConflict(b)) showToast("⚠ Only one exotic weapon can be equipped at a time");
   });
 
   document.getElementById("bc-save").addEventListener("click", ()=>{
@@ -1556,7 +1641,7 @@ renderCat("pvp","cards-pvp","filter-pvp");
     persistSaved(list);
     renderSaved();
     previewEl.innerHTML = previewHtml(b);
-    showToast("Saved to My Builds");
+    showToast(exoticWeaponConflict(b) ? "Saved — but only one exotic weapon can be equipped at once" : "Saved to My Builds");
   });
 
   document.getElementById("bc-copytext").addEventListener("click", async ()=>{
@@ -1564,7 +1649,7 @@ renderCat("pvp","cards-pvp","filter-pvp");
     const lines = [
       b.name,
       `Gear: ${gearLine(b)}`,
-      `Weapons: ${[b.primary,b.secondary].filter(Boolean).join(" / ") || "—"}`,
+      `Weapons: ${[b.primary,b.secondary].filter(Boolean).join(" / ") || "—"}${exoticWeaponConflict(b) ? "  (⚠ only one of these can actually be equipped)" : ""}`,
       `Spec: ${b.spec || "—"}`,
       `Cores: ${b.cores || "—"}`,
       `Skills: ${[b.skill1,b.skill2].filter(Boolean).join(" · ") || "—"}`,
@@ -1641,6 +1726,14 @@ document.getElementById("exotic-weapons-body").innerHTML = EXO_WEAPONS.map(w=>
 
 document.getElementById("exotic-armor-body").innerHTML = EXO_ARMOR.map(a=>
   `<tr class="searchable" data-text="${a[1].toLowerCase()}"><td>${a[0]==="?"?'<span class="chip tag" style="cursor:default">NEW</span>':`<span class="tier ${a[0]}">${a[0]}</span>`}</td><td class="name">${talentSpan(a[1])}</td><td class="small">${a[2]}</td><td class="small">${a[3]}</td></tr>`
+).join("");
+
+document.getElementById("named-weapons-body").innerHTML = NAMED_WEAPONS.map(w=>
+  `<tr class="searchable" data-text="${w[0].toLowerCase()}"><td class="name">${w[0]}</td><td class="small">${w[1]}</td><td class="small">${w[2]}</td></tr>`
+).join("");
+
+document.getElementById("named-armor-body").innerHTML = NAMED_ARMOR.map(a=>
+  `<tr class="searchable" data-text="${a[0].toLowerCase()}"><td class="name">${a[0]}</td><td class="small">${a[1]}</td><td class="small">${a[2]}</td></tr>`
 ).join("");
 
 document.getElementById("gearsets-body").innerHTML = GEARSETS.map(g=>
