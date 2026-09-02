@@ -203,6 +203,22 @@
   .star{color:var(--accent);}
   .legend{font-size:13px;color:var(--text-muted);margin:-10px 0 18px;}
   .legend .star{margin-right:2px;}
+  .hint{color:var(--text-muted);font-style:italic;}
+
+  /* ---------- talent tooltip ---------- */
+  .has-talent{cursor:help;border-bottom:1px dotted var(--accent-strong);}
+  .has-talent:hover, .has-talent.tt-active{color:var(--accent-strong);}
+  .talent-tip{
+    position:fixed;max-width:320px;z-index:200;background:var(--surface);border:1px solid var(--border);
+    border-radius:8px;padding:10px 12px;box-shadow:var(--shadow);font-size:12.5px;line-height:1.5;
+    color:var(--text);pointer-events:none;opacity:0;transform:translateY(4px);
+    transition:opacity .12s ease,transform .12s ease;
+  }
+  .talent-tip.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+  .talent-tip .tt-lbl{
+    display:block;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;
+    color:var(--accent-strong);margin-bottom:4px;
+  }
 
   /* ---------- process steps ---------- */
   .steps{display:flex;flex-direction:column;gap:0;counter-reset:step;}
@@ -298,6 +314,36 @@
   .mm-buildlink:hover{border-color:var(--accent);color:var(--accent-strong);}
   .mm-empty{color:var(--text-muted);font-size:13px;line-height:1.6;}
   .card.flash{animation:flashHi 1.4s ease;}
+  /* ---------- build creator ---------- */
+  .bc-form{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px;}
+  .bc-field{display:flex;flex-direction:column;gap:5px;}
+  .bc-field.bc-wide{grid-column:1 / -1;}
+  .bc-field label{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-muted);}
+  .bc-field select, .bc-field input, .bc-field textarea{
+    width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+    border-radius:8px;padding:9px 11px;font:inherit;font-size:13.5px;
+  }
+  .bc-field select:focus, .bc-field input:focus, .bc-field textarea:focus{outline:2px solid var(--accent);outline-offset:-1px;}
+  .bc-field textarea{resize:vertical;}
+  .bc-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:24px;}
+  .bc-btn{
+    padding:10px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface);
+    color:var(--text);font:inherit;font-size:13px;cursor:pointer;font-weight:600;
+  }
+  .bc-btn:hover{border-color:var(--accent);color:var(--accent-strong);}
+  .bc-btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);}
+  .bc-btn.primary:hover{color:var(--accent-ink);opacity:.9;}
+  .bc-btn.ghost{color:var(--text-muted);}
+  .bc-toast{font-size:12.5px;color:var(--accent-strong);opacity:0;transition:opacity .25s;}
+  .bc-toast.show{opacity:1;}
+  .bc-preview-wrap{margin-bottom:26px;}
+  .card.bc-card .bc-del, .card.bc-card .bc-load{
+    background:none;border:1px solid var(--border);color:var(--text-muted);border-radius:6px;
+    padding:4px 9px;font-size:11px;cursor:pointer;font-family:inherit;
+  }
+  .card.bc-card .bc-del:hover, .card.bc-card .bc-load:hover{border-color:var(--accent);color:var(--accent-strong);}
+  .bc-card-actions{display:flex;gap:8px;margin-top:10px;}
+
   @keyframes flashHi{0%{box-shadow:0 0 0 3px var(--accent);}80%{box-shadow:0 0 0 3px var(--accent);}100%{box-shadow:var(--shadow);}}
 
   @media (prefers-reduced-motion: reduce){
@@ -308,6 +354,10 @@
     .mm-layout{grid-template-columns:1fr;}
     .mm-panel{position:static;}
     .mm-picker{max-height:260px;}
+  }
+
+  @media (max-width:900px){
+    .bc-form{grid-template-columns:1fr;}
   }
 
   @media (max-width:900px){
@@ -352,6 +402,7 @@
     <a href="#brandsets">Brand Sets</a>
     <a href="#attributes">Attribute Cheat Sheet</a>
     <a href="#glossary">Glossary</a>
+    <a href="#build-creator">Build Creator</a>
   </nav>
 
   <main>
@@ -488,7 +539,7 @@
 
     <section id="weapons">
       <h2><span class="idx">08</span> Weapon Tier List</h2>
-      <p class="lede">Ranked by sustained value across current PvE content. A weapon's tier assumes a build built around it — see the build cards above for full loadouts.</p>
+      <p class="lede">Ranked by sustained value across current PvE content. A weapon's tier assumes a build built around it — see the build cards above for full loadouts. <span class="hint">Hover or tap a weapon name for its talent.</span></p>
       <div class="twrap">
         <table>
           <thead><tr><th style="width:60px">Tier</th><th>Weapon</th><th>Type</th><th>Why it's ranked here</th></tr></thead>
@@ -499,7 +550,7 @@
 
     <section id="exotics">
       <h2><span class="idx">09</span> Exotics Directory</h2>
-      <p class="lede">Every exotic weapon and armor piece with where to farm it. You can equip one exotic weapon and one exotic armor piece at a time, so cross-reference against the tier column before committing farm time.</p>
+      <p class="lede">Every exotic weapon and armor piece with where to farm it. You can equip one exotic weapon and one exotic armor piece at a time, so cross-reference against the tier column before committing farm time. <span class="hint">Hover or tap a name for its talent — exotic and named-item talents are fixed and don't change like gear-set bonuses do.</span></p>
       <h3>Exotic Weapons</h3>
       <div class="twrap">
         <table>
@@ -561,6 +612,78 @@
           <tbody id="glossary-body"></tbody>
         </table>
       </div>
+    </section>
+
+    <section id="build-creator">
+      <h2><span class="idx">14</span> Build Creator</h2>
+      <p class="lede">Assemble your own loadout from every weapon, gear set, brand and skill in this manual, then save it to this browser or copy a shareable link. <span class="hint">Weapon names in the generated card still show their talent on hover/tap.</span></p>
+
+      <div class="bc-form" id="bc-form">
+        <div class="bc-field">
+          <label for="bc-name">Build name</label>
+          <input type="text" id="bc-name" placeholder="e.g. My Farming AR" autocomplete="off">
+        </div>
+        <div class="bc-field">
+          <label for="bc-spec">Specialization</label>
+          <select id="bc-spec"></select>
+        </div>
+        <div class="bc-field">
+          <label for="bc-cores">Core attribute split</label>
+          <select id="bc-cores"></select>
+        </div>
+        <div class="bc-field">
+          <label for="bc-primary">Primary weapon</label>
+          <select id="bc-primary"></select>
+        </div>
+        <div class="bc-field">
+          <label for="bc-secondary">Secondary weapon</label>
+          <select id="bc-secondary"></select>
+        </div>
+        <div class="bc-field">
+          <label for="bc-gearset">Gear set (4pc core)</label>
+          <select id="bc-gearset"></select>
+        </div>
+        <div class="bc-field">
+          <label for="bc-brand1">Brand — piece 1</label>
+          <select id="bc-brand1"></select>
+        </div>
+        <div class="bc-field">
+          <label for="bc-brand2">Brand — piece 2</label>
+          <select id="bc-brand2"></select>
+        </div>
+        <div class="bc-field">
+          <label for="bc-skill1">Skill 1</label>
+          <select id="bc-skill1"></select>
+        </div>
+        <div class="bc-field">
+          <label for="bc-skill2">Skill 2</label>
+          <select id="bc-skill2"></select>
+        </div>
+        <div class="bc-field bc-wide">
+          <label for="bc-mods">Mod / attribute priority</label>
+          <input type="text" id="bc-mods" placeholder="e.g. Crit Chance, Crit Damage" autocomplete="off">
+        </div>
+        <div class="bc-field bc-wide">
+          <label for="bc-notes">Notes</label>
+          <textarea id="bc-notes" rows="2" placeholder="Why this build works, what it's best for…"></textarea>
+        </div>
+      </div>
+
+      <div class="bc-actions">
+        <button class="bc-btn primary" id="bc-generate">Generate Preview</button>
+        <button class="bc-btn" id="bc-save">Save to My Builds</button>
+        <button class="bc-btn" id="bc-copytext">Copy as Text</button>
+        <button class="bc-btn" id="bc-copylink">Copy Shareable Link</button>
+        <button class="bc-btn ghost" id="bc-clear">Clear Form</button>
+        <span class="bc-toast" id="bc-toast"></span>
+      </div>
+
+      <div id="bc-preview"></div>
+
+      <h3>My Builds</h3>
+      <p class="lede" style="margin-top:-6px">Saved to this browser only — nothing leaves your device unless you copy a link.</p>
+      <div class="cards" id="bc-saved"></div>
+      <div class="empty-msg" id="bc-empty" style="display:none">No saved builds yet. Fill out the form above and hit Save to My Builds.</div>
     </section>
 
   </main>
@@ -963,6 +1086,106 @@ const GLOSSARY = [
   ["Status effect", "Mechanic", "A damage-over-time or debuff effect applied to an enemy — Bleed, Burn, Blind, Disorient and Trap are the main ones."],
 ];
 
+// Named/exotic item talents — fixed, non-scaling effects (unlike gear-set bonuses,
+// these don't change with piece count, so they're looked up once per item name).
+// Matching is name-based via talentKey() so aliases (e.g. "The Bighorn" vs "Bighorn")
+// resolve to the same entry without duplicating data.
+const TALENT_DATA = [
+  ["Chameleon", "Landing 30 headshots (career-tracked, not per-magazine) triggers a buff granting +20% Critical Hit Chance and +50% Critical Hit Damage — once earned, it's easy to keep re-triggering in sustained fights."],
+  ["Capacitor", "Weapon damage scales directly off your current Skill Tier instead of a fixed proc — the higher you build Skill Tier, the harder this AR hits, making it the backbone of hybrid skill/weapon builds."],
+  ["St. Elmo's Engine", "Landing consecutive hits charges a shock-ammo effect; once charged, shots apply an electric burst that damages and briefly disables the target — reliable crowd control baked into an AR's normal fire."],
+  ["Scorpio", "Each pellet that hits applies a stacking Venom debuff; enough stacks detonate for area poison damage that also weakens affected enemies — one gun doing damage, control and team support at once."],
+  ["Regulus", "Every headshot kill causes the target to detonate, dealing heavy area damage to anything standing nearby — a burst finisher built specifically to punish grouped enemies."],
+  ["Bluescreen", "Landing hits charges a stacking damage buff that holds steady as long as you keep the trigger down, rewarding sustained fire over short bursts."],
+  ["Iron Lung", "Sustained fire builds heat; once hot enough, shots start applying Burn — a slow-charging LMG whose real value shows up in fights that run long enough to fully spin up."],
+  ["Pestilence", "Hits apply a stacking Plague debuff that ticks damage over time independently of your crit rolls — it keeps working even against enemies you're not critting, which is why it shines against grouped adds."],
+  ["Mantis", "Landing a shot without missing keeps a stacking accuracy/damage bonus alive; missing resets it — rewards a clean, patient trigger finger over spray-and-hope sniping."],
+  ["Nemesis", "Fully-charged scoped shots fire an airburst round that detonates near the target for bonus explosive damage, even on a near-miss — forgiving for headshot-focused sniping."],
+  ["Ouroboros", "Close-range hits siphon a portion of damage dealt back into your own armor, and sustained fire disrupts nearby enemies — the core of every Hunter's Fury SMG build's brawl-and-sustain loop."],
+  ["Liberty", "Every so many shots, the weapon silently repeats your last shot for free — extra effective damage with no extra ammo spent, letting it hold up as more than just a backup sidearm."],
+  ["Big Alejandro", "Firing from cover builds a stacking damage bonus that carries a large burst payoff once it's capped — pairs naturally with any build (like Tipping Scales) that already rewards holding a covered position."],
+  ["The Sheriff", "Landing a shot on a target grants bonus handling and reload speed for a few seconds — keeps a shotgun's normally-slow reload from breaking your close-range rhythm."],
+  ["Shroud", "Staying out of combat and undetected builds a stealth-style damage bonus on your next shot — rewards the patient, out-of-sightline sniping that solo Legendary play demands."],
+  ["Bighorn", "Toggles between a scoped semi-auto mode with bonus damage per shot and an unscoped fully-automatic mode for close range — the fire-mode flexibility is what makes it a PvP duel favorite."],
+  ["Strega", "Grants bonus weapon handling and stability that scales with your current magazine — stays controllable even as the mag empties, though it doesn't bring a flashy damage proc like the S-tier ARs."],
+  ["Eagle Bearer", "Missing a shot guarantees your next shot is a critical hit — effectively erases whiffed shots, though newer exotics have since matched or passed its overall damage output."],
+  ["Pakhan", "Kills grant a stacking, short-duration weapon damage buff that resets on a miss — a large magazine keeps that stack from breaking, which is exactly why it slots into Obliterate/Striker's Gamble stacking builds despite lower raw numbers than Bluescreen or Pestilence."],
+  ["Merciless", "Landing hits on the same target stacks bonus damage against them, resetting if you swap targets — rewards focusing one enemy down completely rather than spreading fire."],
+  ["Ravenous", "Applies a debuff (a 'Primer') on hit that a follow-up shot detonates for bonus burst damage — the two-shot primer-then-detonate rhythm is the core of the PvP Ravenous build."],
+  ["Dread Edict", "Kills refund a portion of the magazine instantly — keeps sustained fights going without a mid-fight reload, though its overall damage sits below the top rifle picks."],
+  ["Sweet Dreams", "Stacks a Bleed debuff with every pellet that hits, and enough stacks trigger a bonus detonation — solid DoT shotgun pressure that's simply outclassed by Scorpio's extra utility."],
+  ["Overlord", "Charges a bonus-damage shot the longer you go without firing — a patient, single-big-shot playstyle that most players skip in favor of Scorpio's sustained pressure."],
+  ["Backfire", "Kills trigger a brief, large rate-of-fire and reload-speed buff — built to snowball a kill streak once you get the first one, favoring aggressive close-range play."],
+  ["Chatterbox", "Reloading increases the weapon's rate of fire, and it keeps climbing with every subsequent reload up to a cap — the ramping fire rate is exactly what the PvP Chatterbox/Striker build is built around."],
+  ["Lady Death", "Grants bonus critical hit chance that increases the lower the target's health drops — a finisher SMG that gets more reliable the closer you are to a kill."],
+  ["Bullet King", "Reloading with an empty magazine has a chance to not consume reserve ammo — nice sustain, but its baseline damage keeps it a niche pick outside a couple of gimmick loops (like Tipping Scales cover-stacking)."],
+  ["Doctor Home", "On a headshot kill, gain bonus armor and a temporary damage buff — situationally strong, but its damage window is too short to reliably outperform the top rifle picks."],
+  ["Bittersweet", "Alternates between a damage-focused mode and a healing mode that repairs your armor on hit — flexible, but splitting its identity between offense and sustain keeps it below dedicated damage rifles."],
+  ["Tempest", "Every kill grants a very brief invulnerability window — a panic-button pistol talent that's rarely worth building a whole loadout around."],
+  ["Mosquito", "Applies a minor, short debuff to shot targets — a weak, low-impact talent that doesn't scale meaningfully even in a build built to abuse it."],
+  ["Sacrum Imperium", "Grants bonus headshot damage that decays the longer since your last headshot — punishes missed shots hard enough that it underperforms compared to more forgiving exotic snipers."],
+  ["Vindicator", "Fires an extra 'echo' round periodically that costs no ammo — a neat gimmick that doesn't proc often enough to keep pace with more consistent rifle talents."],
+  ["Diamondback", "Grants bonus accuracy and stability the longer you hold down the trigger — a slow-scaling talent that's been passed by nearly every other exotic AR on this list."],
+  ["Prima Donna", "Charges a shot while scoped in; releasing it detonates on impact for bonus explosive area damage — doesn't need a crit to pay off, which makes it strong against armored or grouped targets."],
+  ["Caduceus", "A portion of the damage you deal with it is returned as a heal to you and nearby allies — turns aggressive AR uptime into passive team sustain, which is why it shows up on support loadouts like Ortiz: Reficere."],
+  ["Agitator", "Sustained fire on a single target stacks a debuff that increases the damage they take — rewards holding your sights on one enemy instead of spraying across a room."],
+  ["Oxpecker", "Reloading grants a brief damage-reduction shield along with a small heal — built for players who want to reload aggressively at close range instead of ducking behind cover."],
+  ["Underboss", "Kills refund a chunk of the magazine instantly, letting a hot streak chain into the next kill without pausing to reload."],
+  ["Steel & Sons ACR", "Holding your sights on a target builds stacking accuracy and stability — rewards tracking a single target smoothly instead of snapping between multiple enemies."],
+  ["Busy Little Bee", "Fires a burst that marks the target; follow-up hits on a marked enemy deal bonus damage — a mark-and-punish sidearm that pairs naturally with mark-focused gear sets like Negotiator's Dilemma or Concentrated Company."],
+  ["Whiplash", "Damage ramps up the longer you hold the trigger down without releasing — a rapid-fire pistol that rewards committing to a full trigger pull instead of tapping."],
+  ["Fafnir", "Fires Dragon's Breath shells that ignite on impact and spread fire in a cone in front of you — the shotgun half of the Ember Engine burn loop, built to apply and spread status rather than raw crit damage."],
+  ["Memento", "Swapping weapons grants a stacking bonus-damage buff on your next few shots with the new weapon — turns regular weapon-swapping into free extra damage, which is why it's the default 'good with anything' exotic backpack."],
+  ["NinjaBike Messenger Bag", "Sprinting gradually refills a portion of your ammo reserves and grenade charge — rewards constant repositioning instead of camping a single spot."],
+  ["Coyote's Mask", "Critical Hit Chance increases the lower your current health drops — a high-risk, high-reward mask that pays off hardest for players willing to fight from low health instead of playing safe."],
+  ["Catharsis", "Killing an enemy currently affected by a status effect (Burn, Bleed, Poison, Shock) restores a burst of armor — pairs naturally with any build that already applies status, turning kills into free sustain."],
+  ["Tinkerer", "Interacting with your own skill (or an ally's) instantly refunds a portion of its cooldown — lets skill-heavy loadouts cycle their kit faster than cooldown stats alone would allow."],
+  ["Tardigrade", "When your armor fully breaks, briefly deploy a personal safe zone that blocks incoming damage and heals you — a built-in panic button for solo play against burst damage."],
+  ["Overdogs", "Weapon damage scales up the more dangerous the enemy you're fighting is, hitting hardest against Elites and Named enemies — makes any weapon punch above its normal numbers against the toughest targets in a fight."],
+  ["Vile", "Kills spread a stacking debuff to nearby enemies that increases the status damage they take — a force-multiplier for any Burn/Bleed/Poison build, since one kill weakens the whole group around it."],
+  ["The Catalyst", "Explosive kills grant a temporary weapon and skill damage buff — rewards leaning on grenades or explosive skills as a setup for the gunfight that follows."],
+  ["Investor", "Picking up loot grants a stacking, temporary damage buff — rewards looting mid-fight instead of waiting until an area is fully cleared."],
+  ["Ridgeway's Pride", "Using a skill marks nearby enemies; landing shots on a marked target chips in bonus true damage on top of your normal weapon damage."],
+  ["Beacon", "Reviving an ally also grants them a temporary weapon damage buff and briefly reveals nearby enemy positions to the squad — turns a revive into a small tactical reset, not just a body getting back up."],
+  ["Exodus", "Skill kills grant a temporary weapon damage buff — a bridge piece for hybrid loadouts that want their skills to set up their gunplay."],
+  ["BTSU Datagloves", "Skill damage scales up with how much Skill Haste you have equipped — the more you commit to a haste-focused build, the harder your skills hit on top of just cycling faster."],
+  ["Nurse's Kneepads", "Increases the potency of your repair and healing skills, and activating one grants you a small personal heal — a straightforward power boost for any healer loadout."],
+  ["Dodge City Gunslinger's Holster", "Pistol kills have a chance to not consume ammo and instantly reload — turns a sidearm into a near-infinite finishing weapon once kills start chaining."],
+  ["Centurion's Scabbard", "Melee kills grant a temporary weapon damage buff to your entire squad, not just you — a support-flavored payoff for players willing to get in close."],
+  ["Waveform", "Skill kills send out a pulse that briefly reveals nearby enemies — free intel every time a skill finishes off a target."],
+  ["Birdie's Quick Fix", "Reviving or healing an ally also grants them a temporary bonus to their armor — makes support actions worth more than just topping up health bars."],
+  ["Harrier Pride", "Sprinting converts a portion of your movement into temporary bonus armor — rewards staying mobile and repositioning aggressively instead of holding one spot."],
+  ["Provocator", "Actively taunts nearby enemies to focus their fire on you, in exchange for a large temporary armor bonus — a dedicated tanking piece for players who want to be the target."],
+  ["Rugged Gauntlets", "Grants bonus armor for as long as one of your skills is active and deployed on the field — rewards keeping a Hive, Turret or Shield up rather than saving it for later."],
+  ["Acosta's Kneepads", "Sliding grants bonus movement speed and a short window of damage resistance — a mobility piece for players who reposition through cover with slides instead of walking."],
+  ["Sawyer's Kneepads", "Skill Haste increases with the number of nearby enemies — scales up automatically in the packed, chaotic fights where faster skill cooldowns matter most."],
+  ["Shocker Punch", "Melee hits apply Disrupt to the target, shutting down their skills for a few seconds — an answer to enemy skill spam that doesn't cost a skill slot of your own."],
+  ["Nimble", "Increases weapon swap speed and grants a brief damage buff immediately after swapping — rewards actively cycling between your primary and secondary instead of sticking to one gun."],
+  ["Acosta's Go-Bag", "Grants bonus grenade capacity and faster grenade cooldowns — a straightforward pickup for any loadout built around throwables."],
+  ["Collector", "Slightly increases loot quality from kills and grants bonus crafting materials from drops — a farming-quality-of-life piece rather than a combat one."],
+  ["Bloody Knuckles", "Melee kills instantly restore a chunk of your armor — turns finishing a downed or weak enemy in melee into free sustain."],
+  ["NinjaBike Messenger Kneepads", "Grants bonus movement speed while any of your skills are on cooldown — keeps you mobile in the downtime between skill uses."],
+  ["Blacklisters", "Grants bonus Critical Hit Chance while you're out of cover — built for an aggressive, exposed playstyle rather than peek-and-hide."],
+  ["Imperial Dynasty", "Grants bonus XP from kills and a small chance at bonus loot from Elites — another farming-utility piece rather than a combat-focused one."],
+  ["Iron Will", "Resolved converts your next body shot into a headshot automatically on a short cooldown — a free, repeating headshot conversion that keeps Headache-style consecutive-headshot bonuses climbing even if your aim isn't perfect."],
+  ["Loaded for Bear", "Killing an enemy that's still actively burning triggers an instant, silent reload — the missing reload half of any Afterburn or burn-stacking loop, so the fire never has to pause for you to reload."],
+];
+function talentKey(raw){
+  return raw.split("/")[0].split("·")[0]
+    .toLowerCase()
+    .replace(/^\s*the\s+/,"")
+    .replace(/['’".,]/g,"")
+    .replace(/\s+/g," ")
+    .trim();
+}
+const TALENTS = {};
+TALENT_DATA.forEach(([n,t])=>{ TALENTS[talentKey(n)] = t; });
+function talentSpan(name){
+  const key = talentKey(name);
+  if(TALENTS[key]) return `<span class="has-talent" data-talent-key="${key}">${name}</span>`;
+  return name;
+}
+
 
 // ---------------- RENDER ----------------
 
@@ -1153,20 +1376,271 @@ renderCat("pvp","cards-pvp","filter-pvp");
   renderDetail();
 })();
 
+// ---------------- BUILD CREATOR ----------------
+(function(){
+  const formIds = ["bc-name","bc-spec","bc-primary","bc-secondary","bc-gearset","bc-brand1","bc-brand2","bc-cores","bc-skill1","bc-skill2","bc-mods","bc-notes"];
+  const el = {};
+  formIds.forEach(id => el[id] = document.getElementById(id));
+  const previewEl = document.getElementById("bc-preview");
+  const savedEl = document.getElementById("bc-saved");
+  const emptyEl = document.getElementById("bc-empty");
+  const toastEl = document.getElementById("bc-toast");
+  if(!el["bc-name"] || !previewEl || !savedEl) return;
+
+  const ALL_WEAPONS = [...new Set([...WEAPONS.map(w=>w[1]), ...EXO_WEAPONS.map(w=>w[1])])].sort((a,b)=>a.localeCompare(b));
+  const SKILL_LIST = [...new Set(SYNERGY.flatMap(s=>s.skills))].filter(s=>s!=="Match your specialization's own kit").sort((a,b)=>a.localeCompare(b));
+  const GEARSET_NAMES = GEARSETS.map(g=>g[1]);
+  const BRAND_NAMES = BRANDSETS.map(b=>b[1]);
+  const SPEC_NAMES = SPECS.map(s=>s[0]);
+  const CORE_SPLITS = ["Red-heavy","Blue-heavy","Yellow-heavy","Red / Blue mix","Red / Yellow mix","Yellow / Blue mix","2/2/2 Red-Blue-Yellow","3 Blue + Red","3 Red + Blue"];
+
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+  function fillSelect(sel, options, placeholder){
+    sel.innerHTML = `<option value="">${placeholder}</option>` + options.map(o=>`<option value="${esc(o)}">${o}</option>`).join("");
+  }
+  fillSelect(el["bc-spec"], SPEC_NAMES, "Choose…");
+  fillSelect(el["bc-primary"], ALL_WEAPONS, "Choose…");
+  fillSelect(el["bc-secondary"], ALL_WEAPONS, "Choose…");
+  fillSelect(el["bc-gearset"], GEARSET_NAMES, "None / mixed brands");
+  fillSelect(el["bc-brand1"], BRAND_NAMES, "None");
+  fillSelect(el["bc-brand2"], BRAND_NAMES, "None");
+  fillSelect(el["bc-cores"], CORE_SPLITS, "Choose…");
+  fillSelect(el["bc-skill1"], SKILL_LIST, "Choose…");
+  fillSelect(el["bc-skill2"], SKILL_LIST, "Choose…");
+
+  let editingId = null;
+
+  function readForm(){
+    return {
+      name: el["bc-name"].value.trim() || "Untitled Build",
+      spec: el["bc-spec"].value,
+      primary: el["bc-primary"].value,
+      secondary: el["bc-secondary"].value,
+      gearset: el["bc-gearset"].value,
+      brand1: el["bc-brand1"].value,
+      brand2: el["bc-brand2"].value,
+      cores: el["bc-cores"].value,
+      skill1: el["bc-skill1"].value,
+      skill2: el["bc-skill2"].value,
+      mods: el["bc-mods"].value.trim(),
+      notes: el["bc-notes"].value.trim(),
+    };
+  }
+
+  function fillForm(b){
+    el["bc-name"].value = (b.name && b.name!=="Untitled Build") ? b.name : "";
+    el["bc-spec"].value = b.spec || "";
+    el["bc-primary"].value = b.primary || "";
+    el["bc-secondary"].value = b.secondary || "";
+    el["bc-gearset"].value = b.gearset || "";
+    el["bc-brand1"].value = b.brand1 || "";
+    el["bc-brand2"].value = b.brand2 || "";
+    el["bc-cores"].value = b.cores || "";
+    el["bc-skill1"].value = b.skill1 || "";
+    el["bc-skill2"].value = b.skill2 || "";
+    el["bc-mods"].value = b.mods || "";
+    el["bc-notes"].value = b.notes || "";
+  }
+
+  function gearLine(b){
+    const parts = [];
+    if(b.gearset) parts.push(`${b.gearset} (4pc)`);
+    if(b.brand1) parts.push(`${parts.length?"+ ":""}${b.brand1}`);
+    if(b.brand2) parts.push(`${parts.length?"+ ":""}${b.brand2}`);
+    return parts.length ? parts.join(" ") : "—";
+  }
+  function weaponsHtml(b){
+    const p = b.primary ? talentSpan(b.primary) : "";
+    const s = b.secondary ? talentSpan(b.secondary) : "";
+    if(p && s) return `${p} (primary) · ${s} (secondary)`;
+    return p || s || "—";
+  }
+
+  function cardBodyHtml(b){
+    return `<div class="ch"><h4>${esc(b.name)}</h4></div>
+      <dl>
+        <div><dt>Gear</dt><dd>${esc(gearLine(b))}</dd></div>
+        <div><dt>Weapons</dt><dd>${weaponsHtml(b)}</dd></div>
+        <div><dt>Spec</dt><dd>${esc(b.spec || "—")}</dd></div>
+        <div><dt>Cores</dt><dd>${esc(b.cores || "—")}</dd></div>
+        <div><dt>Skills</dt><dd>${esc([b.skill1,b.skill2].filter(Boolean).join(" · ") || "—")}</dd></div>
+        <div><dt>Mods</dt><dd>${esc(b.mods || "—")}</dd></div>
+      </dl>
+      ${b.notes ? `<div class="note">${esc(b.notes)}</div>` : ""}`;
+  }
+
+  function previewHtml(b){
+    return `<div class="cards bc-preview-wrap"><div class="card bc-card">${cardBodyHtml(b)}</div></div>`;
+  }
+  function savedCardHtml(b){
+    return `<div class="card bc-card" data-id="${esc(b.id)}">${cardBodyHtml(b)}
+      <div class="bc-card-actions">
+        <button class="bc-load" data-load="${esc(b.id)}">Load into form</button>
+        <button class="bc-del" data-del="${esc(b.id)}">Delete</button>
+      </div>
+    </div>`;
+  }
+
+  function showToast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(()=>toastEl.classList.remove("show"), 2200);
+  }
+
+  function loadSaved(){
+    try{ return JSON.parse(localStorage.getItem("shdCustomBuilds") || "[]"); }
+    catch(e){ return []; }
+  }
+  function persistSaved(list){
+    try{ localStorage.setItem("shdCustomBuilds", JSON.stringify(list)); }
+    catch(e){}
+  }
+
+  function renderSaved(){
+    const list = loadSaved();
+    if(!list.length){
+      savedEl.innerHTML = "";
+      if(emptyEl) emptyEl.style.display = "block";
+      return;
+    }
+    if(emptyEl) emptyEl.style.display = "none";
+    savedEl.innerHTML = list.map(savedCardHtml).join("");
+  }
+
+  function encodeBuild(b){
+    try{ return btoa(encodeURIComponent(JSON.stringify(b))); }
+    catch(e){ return ""; }
+  }
+  function decodeBuild(s){
+    try{ return JSON.parse(decodeURIComponent(atob(s))); }
+    catch(e){ return null; }
+  }
+
+  async function copyText(text){
+    try{
+      await navigator.clipboard.writeText(text);
+      return true;
+    }catch(e){
+      try{
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        return true;
+      }catch(e2){ return false; }
+    }
+  }
+
+  document.getElementById("bc-generate").addEventListener("click", ()=>{
+    previewEl.innerHTML = previewHtml(readForm());
+  });
+
+  document.getElementById("bc-save").addEventListener("click", ()=>{
+    const b = readForm();
+    const list = loadSaved();
+    if(editingId){
+      const idx = list.findIndex(x=>x.id===editingId);
+      b.id = editingId;
+      if(idx>-1) list[idx] = b; else list.push(b);
+    } else {
+      b.id = "b"+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+      list.push(b);
+      editingId = b.id;
+    }
+    persistSaved(list);
+    renderSaved();
+    previewEl.innerHTML = previewHtml(b);
+    showToast("Saved to My Builds");
+  });
+
+  document.getElementById("bc-copytext").addEventListener("click", async ()=>{
+    const b = readForm();
+    const lines = [
+      b.name,
+      `Gear: ${gearLine(b)}`,
+      `Weapons: ${[b.primary,b.secondary].filter(Boolean).join(" / ") || "—"}`,
+      `Spec: ${b.spec || "—"}`,
+      `Cores: ${b.cores || "—"}`,
+      `Skills: ${[b.skill1,b.skill2].filter(Boolean).join(" · ") || "—"}`,
+      `Mods: ${b.mods || "—"}`,
+      b.notes ? `Notes: ${b.notes}` : "",
+    ].filter(Boolean).join("\n");
+    const ok = await copyText(lines);
+    showToast(ok ? "Copied build as text" : "Copy failed — select & copy manually");
+  });
+
+  document.getElementById("bc-copylink").addEventListener("click", async ()=>{
+    const b = readForm();
+    const encoded = encodeBuild(b);
+    if(!encoded){ showToast("Couldn't build a link"); return; }
+    const url = `${location.origin}${location.pathname}?build=${encoded}#build-creator`;
+    const ok = await copyText(url);
+    showToast(ok ? "Link copied" : "Copy failed — select & copy manually");
+  });
+
+  document.getElementById("bc-clear").addEventListener("click", ()=>{
+    formIds.forEach(id=>{ el[id].value=""; });
+    editingId = null;
+    previewEl.innerHTML = "";
+    showToast("Form cleared");
+  });
+
+  savedEl.addEventListener("click", e=>{
+    const loadBtn = e.target.closest("[data-load]");
+    const delBtn = e.target.closest("[data-del]");
+    if(loadBtn){
+      const list = loadSaved();
+      const b = list.find(x=>x.id===loadBtn.dataset.load);
+      if(b){
+        fillForm(b);
+        editingId = b.id;
+        previewEl.innerHTML = previewHtml(b);
+        document.getElementById("build-creator").scrollIntoView({behavior:"smooth", block:"start"});
+        showToast("Loaded into form");
+      }
+    } else if(delBtn){
+      const list = loadSaved().filter(x=>x.id!==delBtn.dataset.del);
+      persistSaved(list);
+      if(editingId===delBtn.dataset.del) editingId = null;
+      renderSaved();
+      showToast("Deleted");
+    }
+  });
+
+  try{
+    const params = new URLSearchParams(location.search);
+    if(params.has("build")){
+      const b = decodeBuild(params.get("build"));
+      if(b){
+        fillForm(b);
+        previewEl.innerHTML = previewHtml(b);
+      }
+    }
+  }catch(e){}
+
+  renderSaved();
+})();
+
 document.getElementById("roles-body").innerHTML = ROLES.map(r=>
   `<tr class="searchable"><td class="name">${r[0]}</td><td>${r[1]}</td><td class="small">${r[2]}</td></tr>`
 ).join("");
 
 document.getElementById("weapons-body").innerHTML = WEAPONS.map(w=>
-  `<tr class="searchable" data-text="${w[1].toLowerCase()}"><td><span class="tier ${w[0]}">${w[0]}</span></td><td class="name">${w[1]}</td><td class="small">${w[2]}</td><td class="small">${w[3]}</td></tr>`
+  `<tr class="searchable" data-text="${w[1].toLowerCase()}"><td><span class="tier ${w[0]}">${w[0]}</span></td><td class="name">${talentSpan(w[1])}</td><td class="small">${w[2]}</td><td class="small">${w[3]}</td></tr>`
 ).join("");
 
 document.getElementById("exotic-weapons-body").innerHTML = EXO_WEAPONS.map(w=>
-  `<tr class="searchable" data-text="${w[1].toLowerCase()}"><td>${w[0]==="?"?'<span class="chip tag" style="cursor:default">NEW</span>':`<span class="tier ${w[0]}">${w[0]}</span>`}</td><td class="name">${w[1]}</td><td class="small">${w[2]}</td><td class="small">${w[3]}</td></tr>`
+  `<tr class="searchable" data-text="${w[1].toLowerCase()}"><td>${w[0]==="?"?'<span class="chip tag" style="cursor:default">NEW</span>':`<span class="tier ${w[0]}">${w[0]}</span>`}</td><td class="name">${talentSpan(w[1])}</td><td class="small">${w[2]}</td><td class="small">${w[3]}</td></tr>`
 ).join("");
 
 document.getElementById("exotic-armor-body").innerHTML = EXO_ARMOR.map(a=>
-  `<tr class="searchable" data-text="${a[1].toLowerCase()}"><td>${a[0]==="?"?'<span class="chip tag" style="cursor:default">NEW</span>':`<span class="tier ${a[0]}">${a[0]}</span>`}</td><td class="name">${a[1]}</td><td class="small">${a[2]}</td><td class="small">${a[3]}</td></tr>`
+  `<tr class="searchable" data-text="${a[1].toLowerCase()}"><td>${a[0]==="?"?'<span class="chip tag" style="cursor:default">NEW</span>':`<span class="tier ${a[0]}">${a[0]}</span>`}</td><td class="name">${talentSpan(a[1])}</td><td class="small">${a[2]}</td><td class="small">${a[3]}</td></tr>`
 ).join("");
 
 document.getElementById("gearsets-body").innerHTML = GEARSETS.map(g=>
@@ -1198,6 +1672,76 @@ document.getElementById("glossary-body").innerHTML = GLOSSARY.map(g=>
       row.classList.toggle("hidden", !show);
     });
   });
+})();
+
+// ---------------- TALENT TOOLTIPS ----------------
+(function(){
+  const tip = document.createElement("div");
+  tip.className = "talent-tip";
+  tip.setAttribute("role", "tooltip");
+  document.body.appendChild(tip);
+  let pinned = false;
+  let currentEl = null;
+
+  function place(target){
+    const r = target.getBoundingClientRect();
+    const tw = tip.offsetWidth, th = tip.offsetHeight;
+    let left = r.left;
+    let top = r.bottom + 8;
+    if(top + th > window.innerHeight - 10) top = r.top - th - 8;
+    if(top < 10) top = 10;
+    if(left + tw > window.innerWidth - 10) left = window.innerWidth - tw - 10;
+    if(left < 10) left = 10;
+    tip.style.left = left + "px";
+    tip.style.top = top + "px";
+  }
+
+  function showFor(target){
+    const text = TALENTS[target.dataset.talentKey];
+    if(!text) return;
+    tip.innerHTML = `<span class="tt-lbl">Talent — ${target.textContent.trim()}</span>${text}`;
+    tip.classList.add("show");
+    currentEl = target;
+    place(target);
+  }
+  function hide(){
+    if(pinned) return;
+    tip.classList.remove("show");
+    currentEl = null;
+  }
+  function unpin(){
+    pinned = false;
+    hide();
+    document.querySelectorAll(".has-talent.tt-active").forEach(n=>n.classList.remove("tt-active"));
+  }
+
+  document.addEventListener("mouseover", e=>{
+    if(pinned) return;
+    const t = e.target.closest(".has-talent");
+    if(t) showFor(t);
+  });
+  document.addEventListener("mouseout", e=>{
+    if(pinned) return;
+    const t = e.target.closest(".has-talent");
+    if(t) hide();
+  });
+  document.addEventListener("click", e=>{
+    const t = e.target.closest(".has-talent");
+    if(t){
+      e.stopPropagation();
+      if(pinned && currentEl===t){ unpin(); return; }
+      document.querySelectorAll(".has-talent.tt-active").forEach(n=>n.classList.remove("tt-active"));
+      pinned = true;
+      t.classList.add("tt-active");
+      showFor(t);
+    } else if(pinned){
+      unpin();
+    }
+  });
+  document.addEventListener("keydown", e=>{
+    if(e.key==="Escape" && pinned) unpin();
+  });
+  window.addEventListener("scroll", ()=>{ if(!pinned) hide(); }, true);
 })();
 
 // ---------------- SEARCH ----------------
