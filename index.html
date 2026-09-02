@@ -227,25 +227,6 @@
   .attr-card li{margin:3px 0;}
   .attr-card .goal{font-size:12.5px;margin-top:10px;color:var(--text);}
 
-  /* ---------- community creators ---------- */
-  .creator-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
-  .creator-card{
-    border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);
-    padding:16px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px;
-  }
-  .creator-card .num{
-    font-family:var(--mono);font-size:11px;color:var(--text-muted);letter-spacing:.05em;
-  }
-  .creator-card h4{font-size:16px;color:var(--text);letter-spacing:.01em;text-transform:none;font-family:var(--display);font-weight:600;}
-  .creator-card .contributed{font-size:13px;color:var(--text-muted);line-height:1.55;flex:1;}
-  .creator-card .contributed b{color:var(--text);font-weight:600;}
-  .creator-card a.visit{
-    font-family:var(--mono);font-size:11.5px;letter-spacing:.03em;color:var(--accent);
-    text-decoration:none;border-top:1px dashed var(--border);padding-top:10px;margin-top:2px;
-  }
-  .creator-card a.visit:hover{text-decoration:underline;}
-  .creator-note{font-size:13px;color:var(--text-muted);margin-top:16px;line-height:1.6;max-width:70ch;}
-
   footer{
     grid-column:2;border-top:1px solid var(--border);padding:26px 40px 60px;color:var(--text-muted);font-size:12.5px;max-width:1180px;
   }
@@ -341,7 +322,6 @@
     main{grid-column:1;padding:22px 18px 80px;}
     footer{grid-column:1;padding:22px 18px 50px;}
     .attr-grid{grid-template-columns:1fr;}
-    .creator-grid{grid-template-columns:1fr;}
   }
 </style>
 
@@ -372,8 +352,6 @@
     <a href="#brandsets">Brand Sets</a>
     <a href="#attributes">Attribute Cheat Sheet</a>
     <a href="#glossary">Glossary</a>
-    <div class="grp">Community</div>
-    <a href="#creators">Creators</a>
   </nav>
 
   <main>
@@ -585,13 +563,6 @@
       </div>
     </section>
 
-    <section id="creators">
-      <h2><span class="idx">14</span> Community Creators</h2>
-      <p class="lede">Channels worth watching for video breakdowns, patch reactions and build showcases that go deeper than a static reference guide ever can. This manual was written from text guides, not video transcripts, so treat the descriptions below as "what this channel is known for," not a citation of specific claims in this manual.</p>
-      <div class="creator-grid" id="creators-grid"></div>
-      <div class="creator-note">This list is a starting point, not a ranking — if there's another creator you follow for Division 2 content, say the name and it can get added here.</div>
-    </section>
-
   </main>
 
   <footer>
@@ -623,17 +594,17 @@ const STEPS = [
 
 const CARDS = [
   // ---- PvE ----
-  {cat:"pve", tags:["DPS","AR","Farming","Boss"], name:"St. Elmo's Striker", gear:"Striker (4pc) + Memento backpack", weapons:"St. Elmo's Engine (primary) · GR9 LMG (secondary)", spec:"Gunner", cores:"Red-heavy", skills:"Crusader Shield · Reviver Hive", mods:"Crit Chance, Crit Damage", note:"Sustained AR damage off a simple stacking loop — Striker's Gamble stacks and St. Elmo's shock ammo keep uptime easy. Overdog gloves are the current best-in-slot exotic pairing if you have them.", best:"Heroic missions, raids, sustained boss damage"},
+  {cat:"pve", tags:["DPS","AR","Farming","Boss"], name:"St. Elmo's Striker", gear:"Striker (4pc) + Memento backpack", weapons:"St. Elmo's Engine or Eagle Bearer (primary) · GR9 LMG (secondary)", spec:"Gunner", cores:"Red-heavy", skills:"Crusader Shield · Reviver Hive", mods:"Crit Chance, Crit Damage", note:"Sustained AR damage off a simple stacking loop — Striker's Gamble stacks and St. Elmo's shock ammo keep uptime easy. Eagle Bearer's guaranteed-crit-after-miss is a strong exotic swap-in, and Overdog gloves are the current best-in-slot exotic pairing if you have them.", best:"Heroic missions, raids, sustained boss damage"},
   {cat:"pve", tags:["DPS","LMG","Sustained","Buffed"], name:"Pakhan Striker", gear:"Striker (4pc) + Grupo Sombra chest (Obliterate)", weapons:"Pakhan LMG (primary) · GR9 LMG or St. Elmo's Engine (secondary)", spec:"Gunner", cores:"Red-heavy", skills:"Crusader Shield · Reviver Hive", mods:"Crit Chance, Crit Damage", note:"Obliterate stacks +1% weapon damage per crit for 5s (up to 25 stacks) on top of Striker's Gamble's own stack — Pakhan's big magazine and steady rate of fire keep both piles topped up through a whole encounter, even though Pakhan alone ranks below Bluescreen/Iron Lung/Pestilence on raw weapon power.", best:"Legendary bosses, raid ability phases, long sustained fights"},
   {cat:"pve", tags:["Hybrid","Farming","Solo"], name:"Core Strength Memento", gear:"Core Strength (4pc) + Memento backpack", weapons:"Capacitor or St. Elmo's Engine (primary) · Scorpio (secondary)", spec:"Technician", cores:"Red / Blue / Yellow mix", skills:"Crusader Shield · Striker Drone", mods:"Crit Chance, Crit Damage", note:"Core Exercise converts a slice of your off-core bonuses, giving balanced damage, armor, Skill Tier and recovery from one set.", best:"Solo farming, open world, flexible content"},
-  {cat:"pve", tags:["Sniper","Farming","Legendary"], name:"Iron Will Hotshot", gear:"Hotshot (4pc) + Iron Will chest", weapons:"Prima Donna MMR (primary) · Model 700 or SR-1 (secondary)", spec:"Sharpshooter", cores:"Red", skills:"Decoy · Reviver Hive", mods:"Headshot Damage only", note:"Iron Will's Resolved talent converts your next body shot into a headshot every two seconds — inherits the endless-conversion role Determined used to fill.", best:"Farming, Legendary missions, solo sniping"},
+  {cat:"pve", tags:["Sniper","Farming","Legendary"], name:"Iron Will Hotshot", gear:"Hotshot (4pc) + Iron Will chest", weapons:"Prima Donna MMR, Dread Edict or Mantis (primary) · Model 700, SR-1 or Shroud (secondary)", spec:"Sharpshooter", cores:"Red", skills:"Decoy · Reviver Hive", mods:"Headshot Damage only", note:"Iron Will's Resolved talent converts your next body shot into a headshot every two seconds — inherits the endless-conversion role Determined used to fill. Any Marksman Rifle keeps Headache's consecutive-headshot bonus climbing, so lean on whichever exotic or high-end MMR you actually have.", best:"Farming, Legendary missions, solo sniping"},
   {cat:"pve", tags:["Sniper","Rifle","Farming","Buffed"], name:"Aces & Eights Iron Will", gear:"Aces &amp; Eights (3pc) + Iron Will chest", weapons:"Merciless or Diamondback (primary) · Regulus or Doctor Home (secondary)", spec:"Sharpshooter", cores:"Red", skills:"Decoy · Reviver Hive", mods:"Headshot Damage, Crit Damage", note:"Red Horizon buffed Dead Man's Hand hard — reveal a five-card hand while landing MMR/Rifle shots and your next shot gets a 75% damage amp (100% with the set's own No Limit chest talent, traded away here for Iron Will). Headshots flip extra cards, so Iron Will's free headshot conversions speed the whole loop up.", best:"Farming, Legendary missions, precision rifle DPS"},
-  {cat:"pve", tags:["SMG","Close-range","Farming"], name:"Hunter's Fury Ouroboros", gear:"Hunter's Fury (4pc) + Memento or Sokolov backpack", weapons:"Ouroboros SMG (primary) · Scorpio or M870 (secondary)", spec:"Gunner", cores:"Red / Blue mix", skills:"Crusader Shield · Banshee Pulse", mods:"Crit Chance, Crit Damage", note:"Apex Predator debuffs nearby enemies while armor-on-kill keeps you topped up brawling at close range.", best:"Control Points, Summit floors, Heroic farming"},
+  {cat:"pve", tags:["SMG","Close-range","Farming"], name:"Hunter's Fury Ouroboros", gear:"Hunter's Fury (4pc) + Memento or Sokolov backpack", weapons:"Ouroboros SMG or Backfire (primary) · Scorpio, M870 or Lady Death (secondary)", spec:"Gunner", cores:"Red / Blue mix", skills:"Crusader Shield · Banshee Pulse", mods:"Crit Chance, Crit Damage", note:"Apex Predator debuffs nearby enemies while armor-on-kill keeps you topped up brawling at close range.", best:"Control Points, Summit floors, Heroic farming"},
   {cat:"pve", tags:["Skill","Legendary","Solo"], name:"Refactor Force Multiplier", gear:"Refactor (4pc) + Force Multiplier backpack", weapons:"Capacitor (primary) · Harmony (secondary)", spec:"Technician", cores:"Yellow / Red mix", skills:"Striker Drone · Assault Turret", mods:"Skill Haste or Skill Duration", note:"Return to Sender turns skill damage back into armor, so you can play skills aggressively from a distance without dying.", best:"Legendary missions, solo content needing distance"},
   {cat:"pve", tags:["Status","Burn","New"], name:"Ember Engine Fafnir", gear:"Ember Engine (4pc) + Vile mask", weapons:"Fafnir exotic shotgun (primary) · Scorpio or Pyromaniac (secondary)", spec:"Firewall", cores:"Yellow / Red mix", skills:"Firestarter Chem Launcher · Incinerator Turret", mods:"Skill Haste, Status Effects", note:"Spontaneous Combustion converts any status effect into a burn chance; Fafnir's Dragon's Breath shells stack right on top. Vile and Overdog gloves are the two exotics getting cited most for this build right now — grab whichever drops first.", best:"Packed enemy waves, status-heavy content"},
   {cat:"pve", tags:["Support","Healer","Raid"], name:"Future Initiative Healer", gear:"Future Initiative (4pc) + Alps Summit backpack", weapons:"Scorpio or Designated Hitter (primary) · Lefty (secondary)", spec:"Survivalist", cores:"Yellow / Blue mix", skills:"Restorer Hive · Reinforcer Chem Launcher", mods:"Repair Skills", note:"Ground Control converts your armor into a group damage buff while teammates stay topped up — the most reliable group healer in the game.", best:"Raids, Incursions, group support"},
   {cat:"pve", tags:["DPS","LMG","Legendary"], name:"Negotiator's Dilemma", gear:"Negotiator's Dilemma (4pc)", weapons:"Pestilence LMG (primary) · high-RPM AR (secondary)", spec:"Gunner", cores:"Red", skills:"Decoy · Reviver Hive", mods:"Crit Chance, Crit Damage", note:"Hostile Negotiations marks targets on crit and redistributes damage between them — note Pestilence's plague damage doesn't crit or transfer through marks.", best:"Legendary missions, multi-target pressure"},
-  {cat:"pve", tags:["DPS","LMG","Boss"], name:"Tipping Scales LMG", gear:"Tipping Scales (4pc)", weapons:"Big Alejandro (primary) · GR9 with Steady Handed (secondary)", spec:"Gunner", cores:"Red", skills:"Decoy · Reviver Hive", mods:"Crit Chance, Crit Damage", note:"Throttle Control ramps up to 100% bonus weapon damage the longer you fire from cover — built for stationary boss DPS windows.", best:"Boss encounters, Legendary missions"},
+  {cat:"pve", tags:["DPS","LMG","Boss"], name:"Tipping Scales LMG", gear:"Tipping Scales (4pc)", weapons:"Big Alejandro, Bluescreen or Bullet King (primary) · GR9 with Steady Handed (secondary)", spec:"Gunner", cores:"Red", skills:"Decoy · Reviver Hive", mods:"Crit Chance, Crit Damage", note:"Throttle Control ramps up to 100% bonus weapon damage the longer you fire from cover — built for stationary boss DPS windows. Any of the three exotic LMGs work; use whichever you own.", best:"Boss encounters, Legendary missions"},
   {cat:"pve", tags:["Skill","Crowd-control","Support"], name:"Eclipse Protocol Foam", gear:"Eclipse Protocol (4pc)", weapons:"Scorpio (primary) · Test Subject (secondary)", spec:"Firewall", cores:"Yellow / Blue mix", skills:"Riot Foam Chem Launcher · Stinger Hive", mods:"Skill Haste", note:"Indirect Transmission spreads status effects to nearby enemies when a carrier dies — locks down packed rooms almost for free.", best:"Farming packed waves, support role"},
   {cat:"pve", tags:["Support","Bleed","Team"], name:"Ongoing Directive Support", gear:"Ongoing Directive (4pc)", weapons:"Carnage or GR9 LMG (primary) · Scorpio (secondary)", spec:"Survivalist", cores:"Red / Yellow mix", skills:"Stinger Hive · Riot Foam", mods:"Crit Chance, Crit Damage", note:"Rules of Engagement hands the whole group Hollow-Point Ammo, amplifying teammates' weapon damage by up to 40%.", best:"Group farming, weapon-focused teams"},
   {cat:"pve", tags:["DPS","AR","Group"], name:"Heartbreaker PvE", gear:"Heartbreaker (4pc) + a defensive brand chest", weapons:"Carbine 7 / Police M4 / FAMAS with Flatline (primary) · ACS-12 shotgun (secondary)", spec:"Technician", cores:"Red / Blue mix", skills:"Crusader Shield · Reviver Hive", mods:"Crit Chance, Crit Damage", note:"Flatline primes targets; shooting a pulsed enemy stacks bonus damage and armor together.", best:"Heroic missions, group content"},
@@ -658,6 +629,21 @@ const CARDS = [
   {cat:"pvp", tags:["SMG","Close-range","Group-fight"], name:"Chatterbox Striker", gear:"Striker (4pc) + Sokolov chest + Grupo/Fox's Prayer", weapons:"The Chatterbox SMG (primary) · Vector or MPX (secondary)", spec:"Firewall", cores:"Red / Blue mix", skills:"Striker Shield · Jammer Pulse", mods:"Crit Chance, Crit Damage", note:"Chatterbox's rate of fire climbs after reloading near an enemy, layering on top of Striker's own stacking damage.", best:"Group-fight SMG pressure"},
   {cat:"pvp", tags:["AR","Pulsed","Trade"], name:"Heartbreaker PvP", gear:"Heartbreaker (4pc) + Fox's Prayer", weapons:"Police M4 / Carbine 7 / FAMAS with Flatline (primary) · ACS-12 shotgun (secondary)", spec:"Technician with Linked Laser Pointer", cores:"Blue / Red mix", skills:"Jammer Pulse · Decoy", mods:"Crit Chance, Crit Damage", note:"Flatline triggers off pulsed targets specifically — pair it with a pulse skill and stacking damage + armor snowballs in trades.", best:"Mid-range PvP trades"},
   {cat:"pvp", tags:["SMG","Aggressive","Close-range"], name:"Hunter's Fury SMG PvP", gear:"Hunter's Fury (4pc) + Ceska/Grupo/Sokolov backpack with Adrenaline Rush + chest with Unbreakable", weapons:"Ouroboros or Vector (primary) · M870 or an SMG (secondary)", spec:"Firewall", cores:"Red / Blue mix", skills:"Striker Shield · Jammer Pulse", mods:"Crit Chance, Crit Damage", note:"Extra damage against nearby enemies plus armor recovery on kills — built to dive fights and keep diving.", best:"Close-range PvP fights"},
+
+  // ---- Matchmaker coverage: one build per remaining gear set ----
+  {cat:"pvp", tags:["Rifle","Burst","Aggressive"], name:"Umbra Peek-Shooter", gear:"Umbra Initiative (4pc) + Fox's Prayer", weapons:"Merciless or Diamondback (primary) · Chameleon or ACS-12 (secondary)", spec:"Firewall or Survivalist", cores:"Red / Blue mix", skills:"Decoy · Firefly", mods:"Crit Damage, Headshot Damage", note:"Umbra Initiative pays out separate buffs for being in and out of cover, so the loop is popping out, landing one big semi-auto hit, and dropping back down before the enemy can punish the exposure.", best:"Aggressive Dark Zone and Conflict peek-fights"},
+  {cat:"pve", tags:["Skill","Support","Solo"], name:"Rigger Double Skill", gear:"Rigger (4pc) + a Skill Haste backpack", weapons:"Capacitor or Harmony (primary) · Scorpio (secondary)", spec:"Technician", cores:"Yellow / Blue mix", skills:"Striker Drone · Assault Turret", mods:"Skill Haste, Skill Duration", note:"Tend and Befriend rewards running two or more skills that support each other — Rigger just wants uptime on both, so a weapon that doesn't need constant attention is the priority.", best:"Solo skill play, low-pressure farming"},
+  {cat:"pve", tags:["Skill","Cooldown","Solo"], name:"Hard Wired Cooldown Loop", gear:"Hard Wired (4pc) + a Skill Haste backpack", weapons:"Capacitor or Harmony (primary) · Scorpio (secondary)", spec:"Technician", cores:"Yellow-heavy", skills:"Assault Turret · Striker Drone · Reinforcer Chem Launcher", mods:"Skill Haste", note:"Feedback Loop shaves cooldown off your other skills every time one goes on cooldown itself, so it wants three skills stacked and cycling rather than one held back for a big moment.", best:"Skill-spam solo play, dense enemy waves"},
+  {cat:"raid", tags:["DPS","LMG","Debuff","Single-target"], name:"True Patriot Marked DPS", gear:"True Patriot (4pc)", weapons:"GR9 LMG or Carbine 7 (primary) · Liberty (secondary)", spec:"Gunner", cores:"Red", skills:"Banshee Pulse · Assault Turret", mods:"Crit Chance, Crit Damage", note:"Red, White and Blue stacks three separate debuffs onto one marked target — the longer you keep shooting that target, the harder everyone else's damage lands too.", best:"Boss phases that reward focusing a single marked target"},
+  {cat:"pve", tags:["Signature","Flexible","Specialization"], name:"Tip of the Spear Signature Loop", gear:"Tip of the Spear (4pc)", weapons:"Your specialization's signature weapon — TAC-50 C, Explosive Tipped Crossbow, M32A1, M134 Minigun, P-017 Seeker Launcher, or K8-JetStream", spec:"Match whichever specialization you're built around", cores:"Match your specialization's core", skills:"Match your specialization's own kit", mods:"Signature Weapon Damage", note:"Aggressive Recon only cares about landing hits with your equipped signature weapon, so the set slots into any specialization without changing your loadout otherwise.", best:"Signature-weapon-focused play in any specialization"},
+  {cat:"pve", tags:["AR","Self-sufficient","Farming"], name:"System Corruption Self-Repair", gear:"System Corruption (4pc)", weapons:"St. Elmo's Engine or FAMAS (primary) · Chameleon (secondary)", spec:"Firewall", cores:"Red / Blue mix", skills:"Decoy · Jammer Pulse", mods:"Crit Chance, Crit Damage", note:"Hackstep Protocol swaps your armor kit for a fresh one instantly on a short cooldown, so you can keep pushing AR damage without breaking off to find cover and heal manually.", best:"Solo farming that punishes stopping to heal"},
+  {cat:"raid", tags:["Cover","Damage-reduction","Sustain"], name:"Cavalier Cover DPS", gear:"Cavalier (4pc)", weapons:"ACS-12 or Scorpio (primary) · GR9 LMG (secondary)", spec:"Survivalist", cores:"Blue / Red mix", skills:"Crusader Shield · Reinforcer Chem Launcher", mods:"Total Armor, Crit Chance", note:"Charging and Charged both reduce incoming damage while you're behind cover, so it rewards a patient, cover-heavy playstyle over aggressive pushing.", best:"Legendary rooms with heavy incoming fire"},
+  {cat:"pve", tags:["Turret","Burn","Skill"], name:"Ortiz: Exuro Turret Burn", gear:"Ortiz: Exuro (4pc)", weapons:"Fafnir or Iron Lung (primary) · Scorpio (secondary)", spec:"Firewall", cores:"Yellow / Red mix", skills:"Firestarter Chem Launcher · Incinerator Turret", mods:"Skill Haste, Status Effects", note:"Incinerator Turret Prototype is doing most of the damage here — bring a weapon that also applies Burn so the turret isn't carrying the fight alone.", best:"Packed rooms, status-heavy Legendary content"},
+  {cat:"raid", tags:["Tank","Stationary","Hybrid"], name:"Aegis Focus-Fire Tank", gear:"Aegis (4pc)", weapons:"ACS-12 or GR9 LMG (primary) · St. Elmo's Engine (secondary)", spec:"Gunner", cores:"Blue / Red mix", skills:"Crusader Shield · Reviver Hive", mods:"Total Armor, Crit Chance", note:"Stoic cuts damage from enemies actively focusing you, which pays off most while you're planted in one spot holding a lane — a dependable AR or shotgun is all the weapon synergy it needs.", best:"Holding chokepoints, tanking add pressure off the group"},
+  {cat:"pvp", tags:["Rifle","Stacking","Duel"], name:"Breaking Point Rifle Stacks", gear:"Breaking Point (4pc) + Fox's Prayer", weapons:"Merciless or Diamondback (primary) · The Ravenous or Steel & Sons ACR (secondary)", spec:"Sharpshooter", cores:"Red / Blue mix", skills:"Decoy · Reviver Hive", mods:"Crit Damage, Headshot Damage", note:"On Point stacks bonus damage specifically off rifle shots, so it wants semi-auto or burst rifles landing consistent hits rather than a full-auto spray.", best:"Rifle-focused PvP duels"},
+  {cat:"pve", tags:["Flexible","Dual-range","Solo"], name:"Virtuoso Range-Swap", gear:"Virtuoso (4pc)", weapons:"Scorpio or M870 (close) · Model 700 or Nemesis (long)", spec:"Sharpshooter", cores:"Red / Blue mix", skills:"Decoy · Firefly", mods:"Crit Chance, Crit Damage", note:"Symphony changes which bonus you get based on your current engagement range, so the build wants two genuinely different weapons in your loadout rather than two variations on the same range.", best:"Solo content with mixed close and long engagements"},
+  {cat:"raid", tags:["Support","Team","Skill Tier"], name:"Measured Assembly Huddle", gear:"Measured Assembly (4pc)", weapons:"Scorpio or Lefty (primary) · Designated Hitter (secondary)", spec:"Survivalist", cores:"Yellow / Blue mix", skills:"Restorer Hive · Reinforcer Chem Launcher · Stinger Hive", mods:"Repair Skills, Skill Haste", note:"Huddle grants Skill Tier bonuses for staying near allies, so it's a pure support slot — weapon choice comes down to personal comfort more than any real synergy.", best:"Raid and Incursion support roles"},
+  {cat:"pve", tags:["Marked","Team","Farming"], name:"Concentrated Company Marked Kills", gear:"Concentrated Company (4pc)", weapons:"Police M4 or FAMAS (primary) · Regulus (secondary)", spec:"Technician", cores:"Red / Yellow mix", skills:"Recon Pulse · Assault Turret", mods:"Crit Chance, Crit Damage", note:"Camaraderie pays out group-wide bonuses when a marked enemy dies, so it wants a weapon that can reliably finish off whatever your pulse just marked.", best:"Group farming with a dedicated marking skill"},
 ];
 
 // Gear-set ↔ weapon ↔ skill synergy map that powers the Build Matchmaker.
@@ -693,7 +679,7 @@ const SYNERGY = [
   {set:"Ortiz: Reficere", why:"Rapid Application Nanite Prototype is a burst-healing skill build — bring a comfortable support weapon, not a damage-maximizing one.", weapons:["Caduceus","Scorpio"], skills:["Restorer Hive","Reinforcer Chem Launcher"]},
   {set:"Ember Engine", why:"Spontaneous Combustion converts any status effect into a Burn chance, so it wants a weapon that already applies status on its own.", weapons:["Fafnir","Scorpio","Pyromaniac","Iron Lung"], skills:["Firestarter Chem Launcher","Incinerator Turret"]},
 ];
-const SYNERGY_ALIAS = {"Striker's Battlegear":"Striker"};
+const SYNERGY_ALIAS = {"Striker's Battlegear":"Striker", "Aces and Eights":"Aces &amp; Eights"};
 function synShort(name){return SYNERGY_ALIAS[name] || name;}
 const WEAPON_LIST = [...new Set(SYNERGY.flatMap(s=>s.weapons))].sort((a,b)=>a.localeCompare(b));
 
@@ -977,11 +963,6 @@ const GLOSSARY = [
   ["Status effect", "Mechanic", "A damage-over-time or debuff effect applied to an enemy — Bleed, Burn, Blind, Disorient and Trap are the main ones."],
 ];
 
-const CREATORS = [
-  {name:"TuxedoBandido", page:"youtube.com/@TuxedoBandido", url:"https://www.youtube.com/@TuxedoBandido", gave:"Known in the community simply as <b>Bandito</b> — build breakdowns and loadout showcases, often first out the gate reacting to a new season's meta shifts."},
-  {name:"RogueGold", page:"youtube.com/@RogueGold", url:"https://www.youtube.com/@RogueGold", gave:"Build guides and gearing walkthroughs, including step-by-step farming routes for the gear sets and exotics featured in this manual."},
-  {name:"NothingButSkillz", page:"youtube.com/@NothingButSkillz", url:"https://www.youtube.com/@NothingButSkillz", gave:"True to the name — skill-focused loadouts (Hive, Turret, Drone, Chem Launcher builds) that go deeper on skill-tier optimization than most gun-first guides."},
-];
 
 // ---------------- RENDER ----------------
 
@@ -1218,15 +1199,6 @@ document.getElementById("glossary-body").innerHTML = GLOSSARY.map(g=>
     });
   });
 })();
-
-document.getElementById("creators-grid").innerHTML = CREATORS.map((c,i)=>`
-  <div class="creator-card">
-    <span class="num">${String(i+1).padStart(2,"0")}</span>
-    <h4>${c.name}</h4>
-    <div class="contributed">${c.gave}</div>
-    <a class="visit" href="${c.url}" target="_blank" rel="noopener">${c.page} →</a>
-  </div>
-`).join("");
 
 // ---------------- SEARCH ----------------
 const search = document.getElementById("search");
