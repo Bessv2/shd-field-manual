@@ -1,4 +1,9 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SHD Field Manual</title>
+<meta name="description" content="A comprehensive, interactive Division 2 build reference — gear sets, weapons, recalibration workflow, and a build matchmaker for Red Horizon (Y8S3).">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23a85a0e'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-weight='700' font-size='19' fill='%23fffaf1' text-anchor='middle'%3ESHD%3C/text%3E%3C/svg%3E">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
@@ -104,6 +109,26 @@
     padding:3px 8px;border-radius:100px;white-space:nowrap;
   }
   .search-wrap{margin-left:auto;flex:0 1 320px;min-width:180px;}
+  .theme-toggle{
+    display:inline-flex;align-items:center;gap:7px;background:var(--surface-2);border:1px solid var(--border);
+    color:var(--text-muted);border-radius:8px;padding:8px 12px;font:inherit;font-size:12.5px;font-weight:600;
+    cursor:pointer;flex:none;
+  }
+  .theme-toggle:hover{border-color:var(--accent);color:var(--accent-strong);}
+  .theme-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+  .theme-icon{font-size:13px;line-height:1;flex:none;}
+  .theme-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.04em;}
+
+  .back-to-top{
+    position:fixed;right:22px;bottom:22px;z-index:60;width:42px;height:42px;border-radius:50%;
+    background:var(--accent);color:var(--accent-ink);border:1px solid var(--accent-strong);
+    font-size:18px;line-height:1;cursor:pointer;box-shadow:var(--shadow);
+    opacity:0;visibility:hidden;transform:translateY(8px);
+    transition:opacity .18s ease,transform .18s ease,visibility .18s;
+  }
+  .back-to-top.show{opacity:1;visibility:visible;transform:none;}
+  .back-to-top:hover{opacity:.9;}
+  .back-to-top:focus-visible{outline:2px solid var(--accent-strong);outline-offset:2px;}
   #search{
     width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--text);
     border-radius:8px;padding:9px 12px;font-family:var(--sans);font-size:14px;
@@ -374,6 +399,9 @@
     main{grid-column:1;padding:22px 18px 80px;}
     footer{grid-column:1;padding:22px 18px 50px;}
     .attr-grid{grid-template-columns:1fr;}
+    .theme-label{display:none;}
+    .theme-toggle{padding:8px;}
+    .back-to-top{right:14px;bottom:14px;width:38px;height:38px;font-size:16px;}
   }
 </style>
 
@@ -385,6 +413,9 @@
     <div class="search-wrap">
       <input id="search" type="text" placeholder="Search builds, gear sets, weapons…" autocomplete="off">
     </div>
+    <button id="theme-toggle" class="theme-toggle" type="button" title="Switch color theme" aria-label="Switch color theme">
+      <span class="theme-icon" aria-hidden="true"></span><span class="theme-label">Theme</span>
+    </button>
   </div>
 
   <nav class="sidenav" id="sidenav">
@@ -444,6 +475,7 @@
           <tbody id="spec-body"></tbody>
         </table>
       </div>
+      <div class="empty-msg hidden" id="empty-spec">No specializations match your search.</div>
     </section>
 
     <section id="matchmaker">
@@ -495,12 +527,13 @@
       <div class="twrap">
         <table>
           <thead><tr><th style="width:190px">Passive</th><th>What it does</th><th>Pick it if…</th></tr></thead>
-          <tbody>
+          <tbody id="recomb-body">
             <tr class="searchable" data-text="vacuum seal"><td class="name">Vacuum Seal</td><td>Removes the Pressure Gauge's natural decay entirely, but halves how much it gains per action.</td><td>You can keep near-constant pressure on the gauge — sustained boss fights, packed farming lanes, group content where you're rarely out of combat.</td></tr>
             <tr class="searchable" data-text="delayed venting"><td class="name">Delayed Venting</td><td>Lowers the gauge's four payout thresholds, so each tier of bonus triggers earlier.</td><td>Your fights are shorter or stop-and-start — solo missions, Legendary rooms with lulls between waves, anywhere you can't guarantee sustained uptime.</td></tr>
           </tbody>
         </table>
       </div>
+      <div class="empty-msg hidden" id="empty-recomb">No passive modifiers match your search.</div>
     </section>
 
     <section id="workflow">
@@ -515,6 +548,7 @@
       <div class="callout"><b>Exotic equip limit:</b> you can only run one exotic weapon (across your primary and secondary combined) and one exotic armor piece at a time — that's a hard game rule, not a build choice. Every card below keeps its exotic option(s) in a single weapon slot; the other slot lists only non-exotic or named alternatives, so any combination you pick from a card is legal to equip together.</div>
       <div class="filterbar" id="filter-pve"></div>
       <div class="cards" id="cards-pve"></div>
+      <div class="empty-msg hidden" id="empty-pve">No builds match the current search/filter — try clearing a tag above or the search bar.</div>
     </section>
 
     <section id="builds-raid">
@@ -529,6 +563,7 @@
       <div class="callout"><b>Exotic equip limit:</b> only one exotic weapon (primary + secondary combined) and one exotic armor piece can be equipped at once. Every card below keeps its exotic option(s) in a single weapon slot, so any combination it lists is legal to equip together.</div>
       <div class="filterbar" id="filter-raid"></div>
       <div class="cards" id="cards-raid"></div>
+      <div class="empty-msg hidden" id="empty-raid">No builds match the current search/filter — try clearing a tag above or the search bar.</div>
     </section>
 
     <section id="builds-pvp">
@@ -540,6 +575,7 @@
       <div class="callout"><b>Exotic equip limit:</b> only one exotic weapon (primary + secondary combined) and one exotic armor piece can be equipped at once. Every card below keeps its exotic option(s) in a single weapon slot, so any combination it lists is legal to equip together.</div>
       <div class="filterbar" id="filter-pvp"></div>
       <div class="cards" id="cards-pvp"></div>
+      <div class="empty-msg hidden" id="empty-pvp">No builds match the current search/filter — try clearing a tag above or the search bar.</div>
     </section>
 
     <section id="weapons">
@@ -551,6 +587,7 @@
           <tbody id="weapons-body"></tbody>
         </table>
       </div>
+      <div class="empty-msg hidden" id="empty-weapons">No weapons match your search.</div>
     </section>
 
     <section id="exotics">
@@ -563,6 +600,7 @@
           <tbody id="exotic-weapons-body"></tbody>
         </table>
       </div>
+      <div class="empty-msg hidden" id="empty-exotic-weapons">No exotic weapons match your search.</div>
       <h3>Exotic Armor</h3>
       <div class="twrap">
         <table>
@@ -570,6 +608,7 @@
           <tbody id="exotic-armor-body"></tbody>
         </table>
       </div>
+      <div class="empty-msg hidden" id="empty-exotic-armor">No exotic armor matches your search.</div>
 
       <h3>Named Weapons &amp; Armor</h3>
       <p class="lede">Named items are a step below Exotics: High-End-quality gear with a permanently locked talent that can't be rerolled, but without an exotic's unique mechanic. The game has roughly 150 of these — the tables below are a representative sample, not the full list. <span class="hint">Red Horizon (Y8S3) added several more, including weapons Teapot and Steamer and gear pieces Trick Shot, Rushdown, Melon Baller and Keeper — check in-game for their exact slot/archetype as they're still fresh.</span></p>
@@ -579,12 +618,14 @@
           <tbody id="named-weapons-body"></tbody>
         </table>
       </div>
+      <div class="empty-msg hidden" id="empty-named-weapons">No named weapons match your search.</div>
       <div class="twrap" style="margin-top:14px">
         <table>
           <thead><tr><th>Piece</th><th style="width:110px">Slot</th><th>Notes</th></tr></thead>
           <tbody id="named-armor-body"></tbody>
         </table>
       </div>
+      <div class="empty-msg hidden" id="empty-named-armor">No named armor matches your search.</div>
     </section>
 
     <section id="gearsets">
@@ -597,6 +638,7 @@
           <tbody id="gearsets-body"></tbody>
         </table>
       </div>
+      <div class="empty-msg hidden" id="empty-gearsets">No gear sets match your search.</div>
     </section>
 
     <section id="brandsets">
@@ -609,6 +651,7 @@
           <tbody id="brandsets-body"></tbody>
         </table>
       </div>
+      <div class="empty-msg hidden" id="empty-brandsets">No brand sets match your search.</div>
     </section>
 
     <section id="attributes">
@@ -620,6 +663,7 @@
           <tbody id="priority-body"></tbody>
         </table>
       </div>
+      <div class="empty-msg hidden" id="empty-priority">No archetypes match your search.</div>
     </section>
 
     <section id="glossary">
@@ -632,6 +676,7 @@
           <tbody id="glossary-body"></tbody>
         </table>
       </div>
+      <div class="empty-msg hidden" id="empty-glossary">No glossary terms match the current search/filter.</div>
     </section>
 
     <section id="build-creator">
@@ -720,6 +765,8 @@
     <div>This manual aggregates community theorycrafting current as of Red Horizon (Y8S3, ~September 2026). The Division 2's balance shifts nearly every season — treat exact percentages, material costs and drop tables as directional and verify against in-game tooltips before farming.</div>
   </footer>
 </div>
+
+<button id="back-to-top" class="back-to-top" type="button" title="Back to top" aria-label="Back to top">↑</button>
 
 <script>
 (function(){
@@ -1291,12 +1338,7 @@ function renderCat(cat, cardsId, filterId){
     const chip = e.target.closest(".chip.tag");
     if(!chip) return;
     chip.classList.toggle("on");
-    const active = [...fb.querySelectorAll(".chip.tag.on")].map(c=>c.dataset.filter);
-    document.querySelectorAll(`#${cardsId} .card`).forEach(card=>{
-      const tags = card.dataset.tags.split("|");
-      const show = active.length===0 || active.some(a=>tags.includes(a));
-      card.classList.toggle("hidden", !show);
-    });
+    refreshVisibility();
   });
 }
 renderCat("pve","cards-pve","filter-pve");
@@ -1379,9 +1421,9 @@ renderCat("pvp","cards-pvp","filter-pvp");
   function revealCard(name){
     const card = document.getElementById("card-"+slug(name));
     if(!card) return;
-    document.getElementById("search").value = "";
-    document.querySelectorAll(".searchable").forEach(n=>n.classList.remove("hidden"));
+    search.value = "";
     document.querySelectorAll(".filterbar .chip.tag.on").forEach(c=>c.classList.remove("on"));
+    refreshVisibility();
     card.scrollIntoView({behavior:"smooth", block:"center"});
     card.classList.remove("flash");
     void card.offsetWidth;
@@ -1762,11 +1804,7 @@ document.getElementById("glossary-body").innerHTML = GLOSSARY.map(g=>
     const chip = e.target.closest(".chip.tag");
     if(!chip) return;
     chip.classList.toggle("on");
-    const active = [...fb.querySelectorAll(".chip.tag.on")].map(c=>c.dataset.filter);
-    document.querySelectorAll("#glossary-body tr").forEach(row=>{
-      const show = active.length===0 || active.includes(row.dataset.cat);
-      row.classList.toggle("hidden", !show);
-    });
+    refreshVisibility();
   });
 })();
 
@@ -1840,16 +1878,68 @@ document.getElementById("glossary-body").innerHTML = GLOSSARY.map(g=>
   window.addEventListener("scroll", ()=>{ if(!pinned) hide(); }, true);
 })();
 
-// ---------------- SEARCH ----------------
+// ---------------- SEARCH + FILTER (unified visibility) ----------------
+// Search and the per-section tag/category filter chips both hide/show the
+// same .searchable elements, so they're combined here instead of each one
+// independently stomping on the other's `.hidden` state.
 const search = document.getElementById("search");
-search.addEventListener("input", ()=>{
+
+const FILTER_GROUPS = [
+  {container:"cards-pve", filterbar:"filter-pve", attr:"tags", empty:"empty-pve"},
+  {container:"cards-raid", filterbar:"filter-raid", attr:"tags", empty:"empty-raid"},
+  {container:"cards-pvp", filterbar:"filter-pvp", attr:"tags", empty:"empty-pvp"},
+  {container:"glossary-body", filterbar:"filter-glossary", attr:"cat", empty:"empty-glossary"},
+];
+const EMPTY_TARGETS = [
+  ...FILTER_GROUPS,
+  {container:"spec-body", empty:"empty-spec"},
+  {container:"recomb-body", empty:"empty-recomb"},
+  {container:"weapons-body", empty:"empty-weapons"},
+  {container:"exotic-weapons-body", empty:"empty-exotic-weapons"},
+  {container:"exotic-armor-body", empty:"empty-exotic-armor"},
+  {container:"named-weapons-body", empty:"empty-named-weapons"},
+  {container:"named-armor-body", empty:"empty-named-armor"},
+  {container:"gearsets-body", empty:"empty-gearsets"},
+  {container:"brandsets-body", empty:"empty-brandsets"},
+  {container:"priority-body", empty:"empty-priority"},
+];
+
+function activeFilterValues(filterbarId){
+  const fb = document.getElementById(filterbarId);
+  if(!fb) return [];
+  return [...fb.querySelectorAll(".chip.tag.on")].map(c=>c.dataset.filter);
+}
+
+function passesGroupFilter(node, group){
+  if(!group || !group.filterbar) return true;
+  const active = activeFilterValues(group.filterbar);
+  if(!active.length) return true;
+  if(group.attr==="tags"){
+    const tags = (node.dataset.tags || "").split("|");
+    return active.some(a=>tags.includes(a));
+  }
+  return active.includes(node.dataset.cat);
+}
+
+function refreshVisibility(){
   const q = search.value.trim().toLowerCase();
   document.querySelectorAll(".searchable").forEach(node=>{
-    if(!q){ node.classList.remove("hidden"); return; }
     const text = (node.dataset.text || node.textContent).toLowerCase();
-    node.classList.toggle("hidden", !text.includes(q));
+    const matchesSearch = !q || text.includes(q);
+    const group = FILTER_GROUPS.find(g=>node.closest(`#${g.container}`));
+    node.classList.toggle("hidden", !(matchesSearch && passesGroupFilter(node, group)));
   });
-});
+  EMPTY_TARGETS.forEach(t=>{
+    const container = document.getElementById(t.container);
+    const msg = document.getElementById(t.empty);
+    if(!container || !msg) return;
+    const items = [...container.querySelectorAll(".searchable")];
+    const anyVisible = items.some(n=>!n.classList.contains("hidden"));
+    msg.classList.toggle("hidden", items.length===0 || anyVisible);
+  });
+}
+
+search.addEventListener("input", refreshVisibility);
 
 // ---------------- NAV ACTIVE STATE ----------------
 const navLinks = [...document.querySelectorAll(".sidenav a")];
@@ -1863,6 +1953,45 @@ const io = new IntersectionObserver((entries)=>{
   });
 },{rootMargin:"-15% 0px -70% 0px"});
 sections.forEach(s=>{ if(s) io.observe(s); });
+
+refreshVisibility();
+
+// ---------------- THEME TOGGLE ----------------
+(function(){
+  const btn = document.getElementById("theme-toggle");
+  const icon = btn.querySelector(".theme-icon");
+  const ORDER = ["auto","light","dark"];
+  const ICON = {auto:"◐", light:"☀", dark:"☾"};
+  const LABEL = {auto:"Auto", light:"Light", dark:"Dark"};
+  let mode = localStorage.getItem("shdTheme") || "auto";
+  if(!ORDER.includes(mode)) mode = "auto";
+
+  function apply(){
+    if(mode==="auto") document.documentElement.removeAttribute("data-theme");
+    else document.documentElement.setAttribute("data-theme", mode);
+    icon.textContent = ICON[mode];
+    btn.querySelector(".theme-label").textContent = LABEL[mode];
+    btn.setAttribute("aria-label", `Color theme: ${LABEL[mode]} (click to change)`);
+  }
+  apply();
+
+  btn.addEventListener("click", ()=>{
+    mode = ORDER[(ORDER.indexOf(mode)+1) % ORDER.length];
+    localStorage.setItem("shdTheme", mode);
+    apply();
+  });
+})();
+
+// ---------------- BACK TO TOP ----------------
+(function(){
+  const btn = document.getElementById("back-to-top");
+  window.addEventListener("scroll", ()=>{
+    btn.classList.toggle("show", window.scrollY > 600);
+  }, {passive:true});
+  btn.addEventListener("click", ()=>{
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+})();
 
 })();
 </script>
