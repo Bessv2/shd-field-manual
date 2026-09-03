@@ -48,4 +48,35 @@ check(
   dupes.size === 0
 );
 
+// data/*.json is edited through the /admin CMS, so a bad save there is the
+// most likely way this site actually breaks — validate its shape directly.
+function checkJsonFile(file, itemFields) {
+  let data;
+  try {
+    data = JSON.parse(fs.readFileSync(file, "utf8"));
+  } catch (e) {
+    check(`${file} is valid JSON (${e.message})`, false);
+    return;
+  }
+  check(`${file} is valid JSON`, true);
+  const items = data && data.items;
+  check(`${file} has an "items" array`, Array.isArray(items));
+  if (!Array.isArray(items)) return;
+  const missing = items
+    .map((item, i) => itemFields.filter((f) => !(f in item)).map((f) => `#${i}.${f}`))
+    .flat();
+  check(
+    missing.length === 0
+      ? `every entry in ${file} has all required fields`
+      : `every entry in ${file} has all required fields (missing: ${missing.join(", ")})`,
+    missing.length === 0
+  );
+}
+
+checkJsonFile("data/cards.json", ["cat", "tags", "name", "gear", "weapons", "spec", "cores", "skills", "mods", "note", "best"]);
+checkJsonFile("data/glossary.json", ["term", "category", "description"]);
+
+check("admin/config.yml exists", fs.existsSync("admin/config.yml"));
+check("admin/index.html exists", fs.existsSync("admin/index.html"));
+
 process.exit(failed ? 1 : 0);
