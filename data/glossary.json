@@ -1,0 +1,299 @@
+{
+  "items": [
+    {
+      "term": "Red-heavy / All Red",
+      "category": "Core Split",
+      "description": "Most or all of your 6 gear pieces (mask, chest, backpack, gloves, holster, kneepads) have Red set as their core attribute — maximizes weapon damage at the cost of survivability and skill power."
+    },
+    {
+      "term": "Blue-heavy",
+      "category": "Core Split",
+      "description": "Most pieces are set to the Blue core — maximizes Total Armor and survivability, the default for tanks and frontline builds."
+    },
+    {
+      "term": "Yellow-heavy",
+      "category": "Core Split",
+      "description": "Most pieces are set to the Yellow core — maximizes Skill Tier and skill power, the default for skill and support builds."
+    },
+    {
+      "term": "Red / Blue mix",
+      "category": "Core Split",
+      "description": "Roughly half your pieces are Red, half Blue — a damage/survivability hybrid used by most Heroic-farming builds."
+    },
+    {
+      "term": "Red / Yellow mix",
+      "category": "Core Split",
+      "description": "Split between weapon damage and skill power — used by hybrid weapon-skill loadouts like Capacitor builds, where your gun scales off Skill Tier."
+    },
+    {
+      "term": "Yellow / Blue mix",
+      "category": "Core Split",
+      "description": "Split between skill power and survivability — the standard split for healer and support builds that need to stay alive while channeling skills."
+    },
+    {
+      "term": "3 Blue + Red (or similar)",
+      "category": "Core Split",
+      "description": "An explicit piece count instead of a general 'mix' — here, 3 of your 6 pieces are on Blue core and the rest on Red, used when a build needs a guaranteed survivability floor."
+    },
+    {
+      "term": "2/2/2 Red-Blue-Yellow",
+      "category": "Core Split",
+      "description": "An even split, two pieces on each core — used by cross-core sets like Core Strength that convert a share of your off-core bonuses back to you."
+    },
+    {
+      "term": "Shield (family)",
+      "category": "Skill",
+      "description": "A deployable riot shield you carry that blocks incoming fire from the front."
+    },
+    {
+      "term": "Crusader Shield",
+      "category": "Skill",
+      "description": "The mobile ballistic shield skill — you carry it and can fire your weapon around or over it while it blocks damage."
+    },
+    {
+      "term": "Striker Shield / Bulwark Shield",
+      "category": "Skill",
+      "description": "Shield variants (mod/skin choices) tuned toward stacking bonus damage the longer it's up, or toward holding aggro and soaking damage."
+    },
+    {
+      "term": "Hive (family)",
+      "category": "Skill",
+      "description": "A deployable support drone that hovers near you or an ally and applies an ongoing effect."
+    },
+    {
+      "term": "Reviver Hive",
+      "category": "Skill",
+      "description": "Automatically revives and heals downed allies (or yourself) who are within its range."
+    },
+    {
+      "term": "Restorer Hive",
+      "category": "Skill",
+      "description": "Pulses armor repair to you and nearby allies over time — the core skill of most healer builds."
+    },
+    {
+      "term": "Stinger Hive",
+      "category": "Skill",
+      "description": "Launches a swarm of small attack drones at nearby enemies instead of healing."
+    },
+    {
+      "term": "Pulse (family)",
+      "category": "Skill",
+      "description": "A radar-style burst that reveals and debuffs enemies in range, including through walls."
+    },
+    {
+      "term": "Recon Pulse",
+      "category": "Skill",
+      "description": "Marks enemies through walls and grants bonus critical hit chance against marked targets."
+    },
+    {
+      "term": "Banshee Pulse",
+      "category": "Skill",
+      "description": "A sonic burst that disorients and damages nearby enemies instead of just revealing them."
+    },
+    {
+      "term": "Jammer Pulse",
+      "category": "Skill",
+      "description": "Disables enemy skills, cameras and turrets caught in its blast radius — the go-to answer to enemy skill spam in PvP."
+    },
+    {
+      "term": "Turret (family)",
+      "category": "Skill",
+      "description": "A deployable, stationary gun that tracks and fires at enemies on its own."
+    },
+    {
+      "term": "Assault Turret",
+      "category": "Skill",
+      "description": "A mounted machine gun turret with strong sustained single-target damage."
+    },
+    {
+      "term": "Incinerator Turret",
+      "category": "Skill",
+      "description": "A turret variant that sprays fire in an arc instead of firing bullets — built for status/burn builds."
+    },
+    {
+      "term": "Drone (family)",
+      "category": "Skill",
+      "description": "A flying combat drone that either attacks on its own or protects you."
+    },
+    {
+      "term": "Striker Drone",
+      "category": "Skill",
+      "description": "Aggressively chases down and attacks the nearest enemy without your input."
+    },
+    {
+      "term": "Defender Drone",
+      "category": "Skill",
+      "description": "Hovers near you or an ally and intercepts incoming damage."
+    },
+    {
+      "term": "Chem Launcher (family)",
+      "category": "Skill",
+      "description": "A grenade launcher that fires chemical rounds instead of explosives."
+    },
+    {
+      "term": "Reinforcer Chem Launcher",
+      "category": "Skill",
+      "description": "Coats an area in a cloud that repairs the armor of anyone standing in it."
+    },
+    {
+      "term": "Riot Foam Chem Launcher",
+      "category": "Skill",
+      "description": "Fires an expanding foam that traps and immobilizes enemies caught in it — the core of every crowd-control build."
+    },
+    {
+      "term": "Firestarter Chem Launcher",
+      "category": "Skill",
+      "description": "Fires an incendiary round that ignites enemies and the ground beneath them."
+    },
+    {
+      "term": "Decoy",
+      "category": "Skill",
+      "description": "A standalone gadget that throws a holographic decoy to distract enemies and pull their aggro."
+    },
+    {
+      "term": "Firefly",
+      "category": "Skill",
+      "description": "A small utility drone that seeks out a target enemy and detonates or applies an effect on arrival."
+    },
+    {
+      "term": "Core attribute",
+      "category": "Attribute & Mod",
+      "description": "One of the three colors (Red, Blue, Yellow) that a gear piece's largest attribute slot is locked to — see the Foundations section above."
+    },
+    {
+      "term": "Skill Tier",
+      "category": "Attribute & Mod",
+      "description": "A 0–6 scale built almost entirely from Yellow-core attributes; each tier unlocks a stronger tier of skill mods, so most skill builds chase Skill Tier 6 before anything else."
+    },
+    {
+      "term": "Crit Chance / Crit Damage",
+      "category": "Attribute & Mod",
+      "description": "Your chance to land a critical hit, and how much bonus damage that critical hit does when it lands."
+    },
+    {
+      "term": "Hazard Protection",
+      "category": "Attribute & Mod",
+      "description": "Reduces incoming damage from environmental and status sources — gas, fire, radiation and similar hazards."
+    },
+    {
+      "term": "Disrupt Resistance / Pulse Resistance",
+      "category": "Attribute & Mod",
+      "description": "Reduces the duration or effect of enemy disabling skills, like being pulsed, jammed or disrupted."
+    },
+    {
+      "term": "Armor on Kill / Health on Kill",
+      "category": "Attribute & Mod",
+      "description": "Instantly restores a chunk of armor or health whenever you get a kill — a common sustain tool for aggressive close-range builds."
+    },
+    {
+      "term": "Heroic",
+      "category": "Activity & Difficulty",
+      "description": "The hardest standard mission difficulty below Legendary — needs a reasonably optimized build to clear comfortably."
+    },
+    {
+      "term": "Legendary",
+      "category": "Activity & Difficulty",
+      "description": "The top mission difficulty, tuned around a full 4-person group running near-max gear."
+    },
+    {
+      "term": "Countdown",
+      "category": "Activity & Difficulty",
+      "description": "The current endgame activity and the main source of most current-season exotic weapons and armor."
+    },
+    {
+      "term": "Summit",
+      "category": "Activity & Difficulty",
+      "description": "A tower-climb endgame mode with escalating floors and stacking modifiers."
+    },
+    {
+      "term": "Dark Zone",
+      "category": "Activity & Difficulty",
+      "description": "The hybrid PvE/PvP zone where other real players can attack you and steal your loot. Since Red Horizon it's split into normalized Toxic DZ (permanent, solo-safe) and full-power Blackout DZ (rotates weekly, uncapped stats) — see the PvP Builds section."
+    },
+    {
+      "term": "Conflict",
+      "category": "Activity & Difficulty",
+      "description": "The dedicated, structured competitive PvP mode."
+    },
+    {
+      "term": "Incursion",
+      "category": "Activity & Difficulty",
+      "description": "A small-group, high-difficulty scripted encounter — shorter and smaller than a raid, but built the same way."
+    },
+    {
+      "term": "Raid",
+      "category": "Activity & Difficulty",
+      "description": "The largest scripted endgame encounter, built for 8 players running defined roles like tank, healer and DPS."
+    },
+    {
+      "term": "Directive",
+      "category": "Activity & Difficulty",
+      "description": "An optional modifier you can toggle on a mission for bonus rewards in exchange for extra difficulty."
+    },
+    {
+      "term": "Gear Score",
+      "category": "Progression",
+      "description": "The older power-level number stamped on a piece of gear, capped at 515 — see the Recalibration &amp; Optimization Workflow section."
+    },
+    {
+      "term": "SHD Level",
+      "category": "Progression",
+      "description": "The endgame progression system that takes over once you've hit the Gear Score cap, unlocking perks instead of raw power."
+    },
+    {
+      "term": "Expertise Level",
+      "category": "Progression",
+      "description": "A per-item mastery track (caps at 30) that unlocks extra perks on that specific piece and is required before it can be converted to Prototype."
+    },
+    {
+      "term": "ProtoCore",
+      "category": "Progression",
+      "description": "The currency spent at the Protolab to convert an eligible piece of gear into Prototype quality."
+    },
+    {
+      "term": "Prototype",
+      "category": "Progression",
+      "description": "The highest gear quality tier — raises a piece's attribute ceiling and adds a bonus Augment slot, but locks it out of further Recalibration or Optimization."
+    },
+    {
+      "term": "Augment",
+      "category": "Progression",
+      "description": "A bonus perk (Quantum, Echo, Atomize or Amalgam) that only appears on Prototype-converted gear."
+    },
+    {
+      "term": "Stacking",
+      "category": "Mechanic",
+      "description": "A talent effect that gets stronger the longer a condition keeps being met — like Striker's Gamble growing while you fire without reloading — usually up to a cap."
+    },
+    {
+      "term": "Uptime",
+      "category": "Mechanic",
+      "description": "How much of an actual fight a talent's bonus is active for. A talent that's amazing on paper but hard to keep active has poor uptime."
+    },
+    {
+      "term": "Proc",
+      "category": "Mechanic",
+      "description": "Community slang for a talent effect triggering — 'it procs when you land a headshot' means the effect fires on headshot hits."
+    },
+    {
+      "term": "Primer / Detonator",
+      "category": "Mechanic",
+      "description": "A status effect (like Trap, Blind or Disorient) that 'primes' a target, which a separate skill or weapon talent can then 'detonate' for bonus damage."
+    },
+    {
+      "term": "Pulsed target",
+      "category": "Mechanic",
+      "description": "An enemy currently revealed or tagged by a Pulse skill — several talents (like Flatline) only trigger against pulsed targets."
+    },
+    {
+      "term": "Marked target",
+      "category": "Mechanic",
+      "description": "An enemy tagged by a skill or talent, such as Hostile Negotiations, for bonus or shared damage."
+    },
+    {
+      "term": "Status effect",
+      "category": "Mechanic",
+      "description": "A damage-over-time or debuff effect applied to an enemy — Bleed, Burn, Blind, Disorient and Trap are the main ones."
+    }
+  ]
+}

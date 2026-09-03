@@ -1,0 +1,96 @@
+backend:
+  name: github
+  repo: Bessv2/shd-field-manual
+  branch: main
+  # Uses Netlify's free hosted OAuth proxy so a login works even though the
+  # site itself is served from GitHub Pages, not Netlify. See README.md
+  # ("Editing the site through /admin") for the one-time setup steps.
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+
+site_url: https://bessv2.github.io/shd-field-manual/
+display_url: https://bessv2.github.io/shd-field-manual/
+logo_url: https://bessv2.github.io/shd-field-manual/screenshot.png
+
+media_folder: "assets/cms-uploads"
+public_folder: "/assets/cms-uploads"
+
+collections:
+  - name: "builds"
+    label: "Build Cards"
+    description: "The PvE / Raid / PvP build cards shown on the site. 'Category' controls which section (Best PvE Builds, Raid & Legendary Roles, Best PvP Builds) a card appears in."
+    files:
+      - name: "cards"
+        label: "All Build Cards"
+        file: "data/cards.json"
+        fields:
+          - label: "Builds"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.name}} — {{fields.cat}}"
+            fields:
+              - label: "Category"
+                name: "cat"
+                widget: "select"
+                options:
+                  - { label: "PvE", value: "pve" }
+                  - { label: "Raid / Legendary", value: "raid" }
+                  - { label: "PvP", value: "pvp" }
+              - label: "Tags"
+                name: "tags"
+                widget: "list"
+                field: { label: "Tag", name: "tag", widget: "string" }
+              - label: "Build Name"
+                name: "name"
+                widget: "string"
+              - label: "Gear"
+                name: "gear"
+                widget: "string"
+                hint: "e.g. \"Striker (4pc) + Memento backpack\""
+              - label: "Weapons"
+                name: "weapons"
+                widget: "string"
+                hint: "e.g. \"St. Elmo's Engine (primary) · GR9 LMG (secondary)\""
+              - label: "Specialization"
+                name: "spec"
+                widget: "string"
+              - label: "Core Attribute Split"
+                name: "cores"
+                widget: "string"
+                hint: "e.g. \"Red-heavy\", \"Red / Blue mix\""
+              - label: "Skills"
+                name: "skills"
+                widget: "string"
+              - label: "Mods / Attribute Priority"
+                name: "mods"
+                widget: "string"
+              - label: "Note"
+                name: "note"
+                widget: "text"
+              - label: "Best For"
+                name: "best"
+                widget: "string"
+
+  - name: "glossary"
+    label: "Glossary"
+    description: "Terms shown in the Glossary section and searchable site-wide."
+    files:
+      - name: "glossary"
+        label: "All Glossary Terms"
+        file: "data/glossary.json"
+        fields:
+          - label: "Terms"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.term}} — {{fields.category}}"
+            fields:
+              - label: "Term"
+                name: "term"
+                widget: "string"
+              - label: "Category"
+                name: "category"
+                widget: "string"
+                hint: "e.g. \"Core Split\", \"Skill\", \"Attribute & Mod\", \"Activity & Difficulty\", \"Progression\", \"Mechanic\""
+              - label: "Description"
+                name: "description"
+                widget: "text"
