@@ -498,38 +498,72 @@
 
     <section id="global-modifiers">
       <h2><span class="idx">03</span> Global Modifiers</h2>
-      <p class="lede">Red Horizon replaced the old Recombinant Modifiers system — modules, stacks, firmware sequencing — with <b>Global Modifiers</b>: a single build-agnostic mechanic that layers on top of whatever gear set or loadout you're already running. This is separate from Recalibration/Optimization below; you don't need a specific gear score or gear set to use it.</p>
+      <p class="lede">Red Horizon replaced the old Recombinant Modifiers system's module/stack/firmware math with <b>Global Modifiers</b> — a fast, cover-centric "Under Pressure" loop built around one universal Pressure Gauge that layers on top of whatever gear set or loadout you're already running. This is separate from Recalibration/Optimization below; you don't need a specific gear score or gear set to use it.</p>
 
-      <div class="callout"><b>Under Pressure:</b> the whole system now runs on one universal <b>Pressure Gauge</b> from 0% to 100% — no more per-role modules or firmware. It fills as you secure kills, with headshots and fire-based kills filling it much faster than a regular kill. Staying out of cover for extended periods drains it back down. Crossing roughly the 90% mark activates your currently equipped Global Modifier — a highly potent, fire-centric perk — so the payoff rewards sustained aggressive engagement rather than being an always-on passive bonus.</div>
+      <div class="callout"><b>The core loop:</b> build a Pressure Gauge from 0% to 100% in combat. There are no cooldown timers on seasonal abilities anymore — the gauge itself is the "currency" that fuels them: it climbs on kills, pays out automatic passive bonuses as it climbs, and lets you fire off one of three Active Modifiers once it crosses 90%. Using an Active Modifier drains the gauge back to 0%.</div>
 
-      <h3>Confirmed Global Modifiers</h3>
-      <div class="attr-grid">
-        <div class="attr-card">
-          <h4><span class="dot" style="background:var(--red)"></span>Fiery Aura</h4>
-          <p style="margin:0;font-size:13px;color:var(--text-muted)">Fire-centric perk that kicks in once the gauge crosses the threshold. Exact numbers aren't pinned down yet — treat it as a burst payoff, not a sustained buff.</p>
-          <div class="goal">Best on loadouts that can reliably land headshots or fire kills to keep the gauge fed.</div>
-        </div>
-        <div class="attr-card">
-          <h4><span class="dot" style="background:var(--red)"></span>Vicarious Combustion</h4>
-          <p style="margin:0;font-size:13px;color:var(--text-muted)">The other confirmed fire-centric perk so far, with the same activation trigger as Fiery Aura. Full details are still being verified in Red Horizon.</p>
-          <div class="goal">Same profile: pair with kill-focused, headshot/fire-heavy builds that can keep the gauge topped up.</div>
-        </div>
-      </div>
-
-      <div class="callout">There are likely more Global Modifiers than these two — this list will grow as they're confirmed in-game. Unlike last season's Recombinant Vendor/BTSU Firmware flow, there's no published detail yet on how Global Modifiers are unlocked, chosen, or slotted, so check your in-game character menu once you're playing Red Horizon rather than relying on the old process.</div>
-
-      <h3>Working the Gauge</h3>
+      <h3>Building &amp; Losing Pressure</h3>
       <div class="twrap">
         <table>
-          <thead><tr><th style="width:190px">Phase</th><th>What happens</th><th>How to play around it</th></tr></thead>
+          <thead><tr><th>Kill type</th><th style="width:110px">Gauge gain</th><th>Notes</th></tr></thead>
           <tbody id="global-mod-body">
-            <tr class="searchable" data-text="building pressure kills headshots fire"><td class="name">Building Pressure</td><td>Securing kills raises the gauge; headshots and fire-based kills raise it much faster than a regular kill.</td><td>Prioritize headshots and incendiary weapons/skills when you want to reach the threshold quickly.</td></tr>
-            <tr class="searchable" data-text="losing pressure cover drain"><td class="name">Losing Pressure</td><td>Staying out of cover for extended periods drains the gauge.</td><td>Break line of sight and duck into cover periodically instead of face-tanking in the open, even mid-fight.</td></tr>
-            <tr class="searchable" data-text="activating modifiers threshold 90 percent"><td class="name">Activating Modifiers</td><td>Crossing roughly the 90% threshold triggers your equipped Global Modifier.</td><td>Time your push so the threshold lands when you actually need the burst, not mid-reload or mid-retreat.</td></tr>
+            <tr class="searchable" data-text="fire kills"><td class="name">Fire kills</td><td>+5.0%</td><td>The fastest way to build pressure solo.</td></tr>
+            <tr class="searchable" data-text="skill status effect grenade kills"><td class="name">Skill / Status Effect / Grenade kills</td><td>+3.5%</td><td>Rewards skill- and DoT-heavy builds almost as much as fire does.</td></tr>
+            <tr class="searchable" data-text="regular headshot kills"><td class="name">Regular &amp; headshot kills</td><td>+2.5%</td><td>The baseline rate — a headshot no longer builds pressure faster than any other kill.</td></tr>
+            <tr class="searchable" data-text="multi-kills"><td class="name">Multi-kills</td><td>+2.0%</td><td>Per kill inside the multi-kill, on top of that kill's base value.</td></tr>
+            <tr class="searchable" data-text="group member kills assist"><td class="name">Group member kills</td><td>+1.0%</td><td>Lets support/healer builds that rarely land the finishing blow still build pressure.</td></tr>
           </tbody>
         </table>
       </div>
       <div class="empty-msg hidden" id="empty-global-mod">No entries match your search.</div>
+
+      <div class="callout"><b>Decay:</b> stay out in the open too long without a kill and the gauge drains rapidly. Sitting in cover, chaining cover-to-cover moves, or simply securing a kill pauses the decay — so the loop rewards working behind cover between kills rather than face-tanking in the open.</div>
+
+      <h3>Tiered Passive Bonuses</h3>
+      <p class="lede" style="margin-bottom:8px">As the gauge fills, you automatically get a passive Status Effect bonus at each threshold below — no activation needed.</p>
+      <div class="twrap">
+        <table>
+          <thead><tr><th style="width:110px">Gauge</th><th>Bonus</th></tr></thead>
+          <tbody>
+            <tr><td class="name">10–35%</td><td>+15% Status Effects</td></tr>
+            <tr><td class="name">35–65%</td><td>+25% Status Effects</td></tr>
+            <tr><td class="name">65–90%</td><td>+40% Status Effects</td></tr>
+            <tr><td class="name">90–100%</td><td>+65% Status Effects</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">Not running Status Effects? Passive Modifiers like <b>New Formula Beta</b> and <b>Gamma</b> swap this entire passive track over to Signature Weapon Damage or Hazard Protection instead — pick whichever matches what your build already leans on.</div>
+
+      <h3>Active Modifiers <span class="hint">(unlock at 90%+ gauge)</span></h3>
+      <div class="twrap">
+        <table>
+          <thead><tr><th style="width:190px">Modifier</th><th>Primary benefit</th><th>Secondary (Rank 3+)</th></tr></thead>
+          <tbody id="active-mod-body">
+            <tr class="searchable" data-text="fiery aura"><td class="name">Fiery Aura</td><td>Grants heavy damage resistance and sets nearby enemies on fire while you sprint.</td><td>Armor Regeneration</td></tr>
+            <tr class="searchable" data-text="vicarious combustion"><td class="name">Vicarious Combustion</td><td>Headshots on burning targets explode and spread fire to nearby enemies.</td><td>Weapon Damage / Crit</td></tr>
+            <tr class="searchable" data-text="signed shield delivered"><td class="name">Signed, Shield &amp; Delivered</td><td>Drastically boosts Shield skill health and rapidly refills Signature Weapon ammo.</td><td>Skill Efficiency</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="empty-msg hidden" id="empty-active-mod">No entries match your search.</div>
+      <div class="callout">Activating one triggers its effect immediately, and the gauge resets to 0% once the effect ends — so time your push for when you actually need the burst rather than popping it the instant you cross 90%.</div>
+
+      <h3>Hostile Modifiers <span class="hint">— enemy counter-play</span></h3>
+      <p class="lede" style="margin-bottom:8px">Enemies can spawn carrying their own modifiers this season, specifically to stop you from steamrolling content.</p>
+      <div class="twrap">
+        <table>
+          <thead><tr><th style="width:170px">Modifier</th><th>Effect</th></tr></thead>
+          <tbody id="hostile-mod-body">
+            <tr class="searchable" data-text="draining presence"><td class="name">Draining Presence</td><td>Slowly saps your built-up Pressure Gauge and your current magazine's ammo.</td></tr>
+            <tr class="searchable" data-text="achilles heal"><td class="name">Achilles Heal</td><td>Gives the enemy a heavy burst of healing right after you destroy its armor weak point.</td></tr>
+            <tr class="searchable" data-text="thousand cuts"><td class="name">Thousand Cuts</td><td>Stacks a damage debuff on you every time you get hit.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="empty-msg hidden" id="empty-hostile-mod">No entries match your search.</div>
+      <div class="callout"><b>Countering them:</b> fire is the cleanser. Setting an enemy on fire permanently purges all of its Hostile Modifiers for the rest of that fight, so keeping an incendiary weapon or fire skill on hand is worth it even in builds that don't otherwise lean on status effects.</div>
+
+      <div class="callout"><b>Open world — the D.C. Invasion:</b> the Cleaners have migrated south from NYC to Washington D.C. this season, ambushing open-world activities, hijacking Control Points, and sending an elite squad called <b>Company 95</b> after you. The D.C. skybox turns a hazy red as the seasonal narrative escalates — mostly flavor, but worth knowing before it catches you off guard mid-farming-run.</div>
     </section>
 
     <section id="workflow">
@@ -1779,6 +1813,8 @@ const EMPTY_TARGETS = [
   ...FILTER_GROUPS,
   {container:"spec-body", empty:"empty-spec"},
   {container:"global-mod-body", empty:"empty-global-mod"},
+  {container:"active-mod-body", empty:"empty-active-mod"},
+  {container:"hostile-mod-body", empty:"empty-hostile-mod"},
   {container:"weapons-body", empty:"empty-weapons"},
   {container:"exotic-weapons-body", empty:"empty-exotic-weapons"},
   {container:"exotic-armor-body", empty:"empty-exotic-armor"},
