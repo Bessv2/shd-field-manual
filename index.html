@@ -422,7 +422,7 @@
     <div class="grp">Start Here</div>
     <a href="#foundations">Foundations</a>
     <a href="#matchmaker">Build Matchmaker</a>
-    <a href="#recombinant">Recombinant Modifiers</a>
+    <a href="#global-modifiers">Global Modifiers</a>
     <a href="#workflow">Recalibration &amp; Optimization</a>
     <div class="grp">Builds</div>
     <a href="#builds-pve">PvE Builds</a>
@@ -496,44 +496,40 @@
       </div>
     </section>
 
-    <section id="recombinant">
-      <h2><span class="idx">03</span> Recombinant Modifiers</h2>
-      <p class="lede">Red Horizon's seasonal modifier system — a build-agnostic bonus layer that sits on top of whatever gear set or loadout you're already running. This is separate from Recalibration/Optimization below; you don't need a specific gear score or gear set to use it.</p>
+    <section id="global-modifiers">
+      <h2><span class="idx">03</span> Global Modifiers</h2>
+      <p class="lede">Red Horizon replaced the old Recombinant Modifiers system — modules, stacks, firmware sequencing — with <b>Global Modifiers</b>: a single build-agnostic mechanic that layers on top of whatever gear set or loadout you're already running. This is separate from Recalibration/Optimization below; you don't need a specific gear score or gear set to use it.</p>
 
-      <div class="callout"><b>Pressure Gauge:</b> the community calls this whole system <b>"Under Pressure"</b> — a meter that fills as you fight and pays out stronger bonuses at four thresholds as it climbs. Once it's full, it triggers your currently equipped <b>Active Modifier</b> — so Recombinant Modifiers reward sustained engagement in a fight rather than being an always-on passive bonus. Enemies can also apply <b>Hostile Modifiers</b> to you mid-fight, which stack extra debuffs on top of normal status effects; fire damage strips them off.</div>
+      <div class="callout"><b>Under Pressure:</b> the whole system now runs on one universal <b>Pressure Gauge</b> from 0% to 100% — no more per-role modules or firmware. It fills as you secure kills, with headshots and fire-based kills filling it much faster than a regular kill. Staying out of cover for extended periods drains it back down. Crossing roughly the 90% mark activates your currently equipped Global Modifier — a highly potent, fire-centric perk — so the payoff rewards sustained aggressive engagement rather than being an always-on passive bonus.</div>
 
-      <h3>Active Modifier Modules</h3>
+      <h3>Confirmed Global Modifiers</h3>
       <div class="attr-grid">
         <div class="attr-card">
-          <h4><span class="dot" style="background:var(--red)"></span>Offense — Blackout Pulse</h4>
-          <p style="margin:0;font-size:13px;color:var(--text-muted)">Fills fastest from dealing damage; built for DPS loadouts that want a periodic offensive payoff.</p>
-          <div class="goal">Pair with Red-heavy PvE builds already tuned around burst windows.</div>
+          <h4><span class="dot" style="background:var(--red)"></span>Fiery Aura</h4>
+          <p style="margin:0;font-size:13px;color:var(--text-muted)">Fire-centric perk that kicks in once the gauge crosses the threshold. Exact numbers aren't pinned down yet — treat it as a burst payoff, not a sustained buff.</p>
+          <div class="goal">Best on loadouts that can reliably land headshots or fire kills to keep the gauge fed.</div>
         </div>
         <div class="attr-card">
-          <h4><span class="dot" style="background:var(--blue)"></span>Defense — Cloud Armor</h4>
-          <p style="margin:0;font-size:13px;color:var(--text-muted)">Fills from taking and mitigating damage; built for tanks and frontline hybrids that need a survivability spike.</p>
-          <div class="goal">Pair with Blue-heavy builds or anything holding a chokepoint in Legendary/Raid content.</div>
-        </div>
-        <div class="attr-card">
-          <h4><span class="dot" style="background:var(--yellow)"></span>Utility — Optimize / Overload</h4>
-          <p style="margin:0;font-size:13px;color:var(--text-muted)">Fills from skill usage; built for skill and support builds that want more out of their Yellow investment.</p>
-          <div class="goal">Pair with skill-tier-6 support and hybrid builds — see the Build Matchmaker above.</div>
+          <h4><span class="dot" style="background:var(--red)"></span>Vicarious Combustion</h4>
+          <p style="margin:0;font-size:13px;color:var(--text-muted)">The other confirmed fire-centric perk so far, with the same activation trigger as Fiery Aura. Full details are still being verified in Red Horizon.</p>
+          <div class="goal">Same profile: pair with kill-focused, headshot/fire-heavy builds that can keep the gauge topped up.</div>
         </div>
       </div>
 
-      <div class="callout"><b>Unlocking &amp; slotting:</b> Recombinant Modifiers open up through the Season 3 Journey (from Mission 3 onward) and are purchased from the <b>Recombinant Vendor</b> at the Base of Operations using <b>BTSU Firmware</b>, a Red Horizon-specific currency. They're managed from a new tab in the character menu, between Specialization and SHD Watch. There are 20 Passive Modifiers to collect alongside the 3 Active ones above — and slot order matters, so check a modifier's placement before committing Firmware to it.</div>
+      <div class="callout">There are likely more Global Modifiers than these two — this list will grow as they're confirmed in-game. Unlike last season's Recombinant Vendor/BTSU Firmware flow, there's no published detail yet on how Global Modifiers are unlocked, chosen, or slotted, so check your in-game character menu once you're playing Red Horizon rather than relying on the old process.</div>
 
-      <h3>Passive Modifier Picks</h3>
+      <h3>Working the Gauge</h3>
       <div class="twrap">
         <table>
-          <thead><tr><th style="width:190px">Passive</th><th>What it does</th><th>Pick it if…</th></tr></thead>
-          <tbody id="recomb-body">
-            <tr class="searchable" data-text="vacuum seal"><td class="name">Vacuum Seal</td><td>Removes the Pressure Gauge's natural decay entirely, but halves how much it gains per action.</td><td>You can keep near-constant pressure on the gauge — sustained boss fights, packed farming lanes, group content where you're rarely out of combat.</td></tr>
-            <tr class="searchable" data-text="delayed venting"><td class="name">Delayed Venting</td><td>Lowers the gauge's four payout thresholds, so each tier of bonus triggers earlier.</td><td>Your fights are shorter or stop-and-start — solo missions, Legendary rooms with lulls between waves, anywhere you can't guarantee sustained uptime.</td></tr>
+          <thead><tr><th style="width:190px">Phase</th><th>What happens</th><th>How to play around it</th></tr></thead>
+          <tbody id="global-mod-body">
+            <tr class="searchable" data-text="building pressure kills headshots fire"><td class="name">Building Pressure</td><td>Securing kills raises the gauge; headshots and fire-based kills raise it much faster than a regular kill.</td><td>Prioritize headshots and incendiary weapons/skills when you want to reach the threshold quickly.</td></tr>
+            <tr class="searchable" data-text="losing pressure cover drain"><td class="name">Losing Pressure</td><td>Staying out of cover for extended periods drains the gauge.</td><td>Break line of sight and duck into cover periodically instead of face-tanking in the open, even mid-fight.</td></tr>
+            <tr class="searchable" data-text="activating modifiers threshold 90 percent"><td class="name">Activating Modifiers</td><td>Crossing roughly the 90% threshold triggers your equipped Global Modifier.</td><td>Time your push so the threshold lands when you actually need the burst, not mid-reload or mid-retreat.</td></tr>
           </tbody>
         </table>
       </div>
-      <div class="empty-msg hidden" id="empty-recomb">No passive modifiers match your search.</div>
+      <div class="empty-msg hidden" id="empty-global-mod">No entries match your search.</div>
     </section>
 
     <section id="workflow">
@@ -1782,7 +1778,7 @@ const FILTER_GROUPS = [
 const EMPTY_TARGETS = [
   ...FILTER_GROUPS,
   {container:"spec-body", empty:"empty-spec"},
-  {container:"recomb-body", empty:"empty-recomb"},
+  {container:"global-mod-body", empty:"empty-global-mod"},
   {container:"weapons-body", empty:"empty-weapons"},
   {container:"exotic-weapons-body", empty:"empty-exotic-weapons"},
   {container:"exotic-armor-body", empty:"empty-exotic-armor"},
