@@ -10,7 +10,7 @@ A comprehensive, interactive Division 2 build reference guide — gear sets, wea
 
 - **Foundations** — the three core attributes and six specializations everything else is built around
 - **Build Matchmaker** — pick a gear set to see its best weapons/skills, or a weapon to see which gear sets are built around it, with every recommendation clickable
-- **Recombinant Modifiers, Recalibration & Optimization workflow** — the current season's systems laid out as a strict step-by-step process
+- **Global Modifiers, Recalibration & Optimization workflow** — the current season's systems laid out as a strict step-by-step process
 - **PvE, Raid/Legendary and PvP build cards** — full loadouts, filterable by tag and searchable by name
 - **Weapon tier list, Exotics directory, Gear Sets, Brand Sets, Attribute cheat sheet, Glossary** — reference tables, all wired into the same global search
 - **Build Creator** — assemble a custom loadout, save it to your browser, or copy a shareable link
